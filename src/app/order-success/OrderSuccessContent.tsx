@@ -16,7 +16,7 @@ export default function OrderSuccessContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const sessionId = searchParams.get('session_id')
-  const { childName, selectedTitle, selectedPrice, reset } = useOrderStore()
+  const { childName, senderName, selectedTitle, selectedPrice, reset } = useOrderStore()
 
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [orderDetails, setOrderDetails] = useState<any>(null)
@@ -34,9 +34,27 @@ export default function OrderSuccessContent() {
       const res = await fetch(`/api/verify-payment?session_id=${sessionId}`)
       const data = await res.json()
       if (data.success) {
-        setOrderDetails(data)
-        setStatus('success')
-        reset()
+  setOrderDetails(data)
+  setStatus('success')
+
+  // Send confirmation email
+  await fetch('/api/send-confirmation', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customerName: data.customerName,
+      customerEmail: data.email,
+      childName: data.childName,
+      senderName: senderName,
+      bookTitle: data.bookTitle || selectedTitle,
+      orderId: data.orderId,
+      amountTotal: data.amountTotal,
+      shippingAddress: data.shippingAddress || 'See order details',
+    }),
+  })
+
+  reset()
+}
       } else {
         setStatus('error')
       }
