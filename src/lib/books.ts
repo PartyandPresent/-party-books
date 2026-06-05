@@ -24,18 +24,24 @@ export function getBookBySlug(slug: string): Book | undefined {
   return BOOKS.find(b => b.slug === slug)
 }
 
-// ─── GLOBAL STYLE RULES (injected into every prompt) ─────────────────────────
 const GLOBAL_STYLE = `
-GLOBAL TEXT RULES — apply exactly:
-TITLE FONT: "Intro Rust" style — bold thick rounded all-caps sans-serif.
-Fill: vivid red-orange (#E8420A). White stroke outline 4–5px.
-VERSE FONT: "KG Miss Kindy Marker" style — handwritten/cursive. Mixed case.
-Fill: white (#FFFFFF) on dark backgrounds. Dark navy (#1A2744) on light backgrounds.
-Soft drop shadow only. No hard outline.
-ART STYLE: Pixar/Disney 3D animated feature film quality. Warm cinematic lighting.
-Full bleed 2:1 landscape ratio. No borders. No watermarks.
-CHARACTER: Keep exact same child — same face, hair, skin tone, beige knit sweater.
-Full body visible unless scene requires otherwise.
+GLOBAL RULES — apply to every page without exception:
+
+ART STYLE: Pixar/Disney 3D animated feature film quality. Warm cinematic lighting. Soft volumetric light rays. Full bleed 2:1 landscape ratio. No borders. No watermarks.
+
+CHARACTER: Keep exact same child — same face, hair, skin tone, beige knit cardigan sweater with buttons, cream pants. Full body visible head to toe unless sleeping/kneeling scene.
+
+TITLE TEXT STYLE: Bold thick rounded ALL-CAPS sans-serif. Fill: vivid red-orange #E8420A. White stroke outline 4–5px. Clean crisp rendering. DO NOT write font name in the image.
+
+VERSE TEXT STYLE: Handwritten/cursive style. Mixed case. Fill: white #FFFFFF with soft drop shadow on dark backgrounds. Fill: dark navy #1A2744 on light backgrounds. DO NOT write font name in the image. Just render the verse text in a handwritten cursive style.
+
+IMPORTANT: Never render font names in the image. Only render the actual text content.
+
+CENTER SAFE ZONE: The center 15% of the image (x:42%–58%) is the book spine/binding area.
+- NO character body or face in the center zone.
+- NO important animals, props, or text in the center zone.
+- Background scenery only may pass through the center naturally.
+- Place character clearly on LEFT (x:8%–40%) or RIGHT (x:60%–90%) only.
 `
 
 export const BOOKS: Book[] = [
@@ -68,415 +74,352 @@ export const BOOKS: Book[] = [
       `${GLOBAL_STYLE}
 SCENE: Wide 2:1 landscape. Lush spring meadow at golden-pink sunset. Pink cherry blossom trees scattered across the midground. Dense colorful wildflowers — heart-shaped pink tulips, white daisies, purple lavender — carpet the foreground. Soft rolling green hills in the background. Multiple white doves and colorful butterflies (monarch orange, purple, blue) fly gracefully through warm glowing air. A soft pastel rainbow arcs across the upper-right sky. Warm golden cinematic lighting, soft lens warmth.
 
-CHARACTER: Place the child character standing in the RIGHT-CENTER of the image. Full body visible head to toe. Looking upward with wide joyful open-mouth smile. Height approximately 65% of image height. Feet resting naturally in the flower field.
+CHARACTER: Place the child character standing in the RIGHT-CENTER of the image (x:60%–80%, y:25%–88%). Full body visible head to toe. Looking upward with wide joyful open-mouth smile. Height approximately 60% of image height. Feet resting naturally in the flower field. Character strictly in right half only.
 
-TEXT PLACEMENT — render exactly as specified:
-- UPPER-RIGHT AREA — arranged in a gentle upward rainbow arc:
-  Text: "GOD'S PROMISES FOR"
-  Font style: Intro Rust — bold thick rounded all-caps.
-  Fill: bright orange-yellow (#F4900C). White stroke outline 5px.
-  Font size: 40px equivalent. Arc follows rainbow curve upper-right.
-  Position: X:9.09 inches from left, Y:0.3 inches from top.
+TEXT PLACEMENT — render exactly:
+- UPPER-RIGHT AREA — text follows the rainbow arc curve:
+  Render text: "GOD'S PROMISES FOR"
+  Bold thick rounded ALL-CAPS. Fill: bright orange-yellow #F4900C. White stroke 5px.
+  Size: large approximately 40px. Text curves upward following the rainbow arc shape.
+  Position: upper-right quadrant following rainbow.
 
-- BELOW THE ARC (right side, under arc curve):
-  Text: "[CHILD_NAME]"
-  Font style: KG Miss Kindy Marker — extra bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke outline 7px.
-  Font size: 50px equivalent — larger than arc text.
-  Position: X:10.84 inches from left, Y:1.1 inches from top.
+- BELOW THE ARC right side:
+  Render text: "[CHILD_NAME]"
+  Extra bold rounded ALL-CAPS. Fill: vivid red #E8420A. White stroke 7px.
+  Size: very large approximately 50px — noticeably bigger than title line.
+  Position: centered below the arc text on right side.
 
-- BOTTOM-RIGHT CORNER:
-  Text: "by : party&presents"
-  Font style: Wash Your Hand — small italic white.
-  Font size: 16px. Position: X:0.39 inches, Y:10.27 inches.
+- LEFT SIDE CENTER (x:18%–38%, y:42%–56%):
+  The second image provided is the party & presents logo. Place this EXACT logo in white on the left side of the cover. Render it faithfully — the PP icon mark with gift box ribbon design, and "party & presents" text beside it. All in white color. Size approximately 90px wide.
+
+- BOTTOM-RIGHT corner:
+  Render text: "by : party&presents"
+  Small italic white text. Size approximately 14px.
 
 STYLE: Pixar/Disney 3D animated feature film. 2:1 landscape. Full bleed. No borders.`,
 
       // PAGE 1 — DEDICATION
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. RIGHT HALF (50%–100% of width): Warm cozy animated nursery interior. Cream upper walls, sage-green lower wainscoting. Small wooden bookshelf with colorful board books. Plush white lamb stuffed toy on carpet. Neatly folded light-blue fleece blanket. Small wooden stool with glowing yellow smiley-face star nightlight. Tiny framed watercolor rainbow painting on wall. Hanging dove and star mobile. Tiny gold sparkle dust particles floating. Soft warm morning window light from off-frame right. LEFT HALF (0%–50%): Clean soft white — NO scene elements at all.
+SCENE: 2:1 landscape.
+RIGHT HALF (50%–100% of width): Warm cozy animated nursery interior. Cream upper walls, sage-green lower wainscoting. Small wooden bookshelf with colorful board books. Plush white lamb stuffed toy on carpet floor. Neatly folded light-blue fleece blanket. Small wooden stool with glowing yellow smiley-face star nightlight. Tiny framed watercolor rainbow painting on wall. Hanging dove and star mobile. Tiny gold sparkle dust particles floating. Soft warm morning window light from off-frame right.
+LEFT HALF (0%–50% of width): Completely clean pure white — NO scene elements, no textures, no gradients, nothing here at all. Pure white only.
 
-CHARACTER: Place the child character seated on the carpeted nursery floor in the RIGHT HALF, lower-center. Sitting naturally with legs loosely in front. Looking upward-left toward the text with a wide happy smile. Height approximately 55% of image height.
+CHARACTER: Place the child character seated on the carpeted nursery floor in the RIGHT HALF only (x:60%–85%, y:35%–90%). Sitting naturally with legs loosely in front. Looking upward-left toward the text with a wide happy smile. Height approximately 55% of image height. Character stays fully within right half.
 
-TEXT PLACEMENT — render on the LEFT WHITE HALF only:
-- UPPER AREA of left panel:
-  Line 1: "This book belongs to [CHILD_NAME]."
-  Line 2 (below with space): "[DEDICATION]"
-  Font style: KG Miss Kindy Marker — rounded handwritten. Mixed case. NOT all caps.
-  Fill: dark navy (#2D3748). No stroke. Soft shadow only.
-  Font size: 18px equivalent.
-  Position: X:9.68 inches from left, Y:0.69 inches from top.
-  Multi-line wrapping. Max width 85% of left panel. Comfortable line height.
+TEXT PLACEMENT — render on LEFT WHITE HALF only (x:2%–46%):
+- UPPER AREA of left half (x:4%–44%, y:8%–25%):
+  Render text: "This book belongs to [CHILD_NAME]."
+  Rounded handwritten style. Mixed case. NOT all caps.
+  Fill: dark navy #2D3748. No stroke. Soft shadow only. Size approximately 26px. Bold weight.
 
-CRITICAL: ALL text strictly inside left white half only. CHARACTER strictly inside right nursery half only. No text overlaps nursery scene.
+- BELOW with breathing space (x:4%–44%, y:30%–55%):
+  Render text: "[DEDICATION]"
+  Same rounded handwritten style. Size approximately 20px.
+  Fill: dark navy #2D3748. Multi-line. Comfortable line height.
+
+CRITICAL: ALL text strictly inside left white half. CHARACTER strictly inside right nursery half.
 STYLE: Pixar/Disney 3D. 2:1 landscape. Full bleed.`,
 
       // PAGE 2 — GOD WILL ALWAYS BE WITH YOU
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Magical enchanted forest at golden hour. Winding dirt path curves from foreground-center toward background-right. Ancient towering trees with massive gnarled trunks flank both sides. Thick canopy above with amber-green leaves. Warm golden-orange god-rays of sunlight pierce through the canopy illuminating the path in a heavenly glow. Colorful wildflowers lining the path edges — white daisies, blue bell flowers, purple lupines, golden yellow blooms. Colorful butterflies flutter in the light shafts. Small robin perched on a high branch at upper-left. Two small fluffy brown rabbits — one peeking from left flowers, one sitting right of the path. Glowing firefly-like light particles near the ground.
+SCENE: 2:1 landscape. Magical enchanted forest at golden hour. Winding dirt path curves from foreground-center toward background-right. Ancient towering trees with massive gnarled trunks flank both sides. Thick canopy above with amber-green leaves. Warm golden-orange god-rays of sunlight pierce through the canopy illuminating the path. Colorful wildflowers lining the path edges — white daisies, blue bell flowers, purple lupines, golden yellow blooms. Colorful butterflies flutter in the light shafts. Small bluebird perched on a high branch at upper-left. Two small fluffy brown rabbits on sides of the path. Glowing firefly-like light particles near the ground.
 
-CHARACTER: Place the child character walking forward along the path in the RIGHT-CENTER area. Full body visible. Mid-stride natural walking pose — left foot forward. Looking forward and slightly upward with a curious brave expression. Height approximately 62% of image height.
+CHARACTER: Place the child character walking forward along the path in RIGHT-CENTER area (x:60%–80%, y:25%–88%). Full body visible. Mid-stride natural walking pose — left foot forward. Looking forward with curious brave expression. Height approximately 62% of image height. Feet on the dirt path.
 
 TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD WILL ALWAYS BE WITH YOU, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 30px equivalent. 2 lines. Left-aligned within area.
-  Position: X:9.37 inches from left, Y:0.88 inches from top.
+- TOP-RIGHT QUADRANT (x:55%–95%, y:5%–25%):
+  Render text: "GOD WILL ALWAYS BE WITH YOU, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Left-aligned within that area.
+  Text does NOT overlap the character.
 
-- LOWER-LEFT AREA (over darker forest floor):
-  Text: "Haven't I commanded you? Be strong and courageous. Don't be afraid. Don't be dismayed, for Yahweh your God is with you wherever you go."
+- LOWER-LEFT AREA (x:2%–42%, y:45%–78%):
+  Over the darker forest floor area.
+  Render text in handwritten cursive style: "Haven't I commanded you? Be strong and courageous. Don't be afraid. Don't be dismayed, for Yahweh your God is with you wherever you go."
   New line: "Joshua 1:9"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow only.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:3.09 inches from top.
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Magical golden-hour forest. 2:1 landscape. Full bleed.`,
 
       // PAGE 3 — GOD MADE YOU SPECIAL
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Bright cheerful open meadow at midday. Pastel blue-pink sky with fluffy cotton-candy clouds. Soft pastel rainbow arcs across upper-right sky. Rolling soft green hills in far background. Lush colorful wildflowers fill foreground and midground — vibrant red poppies, white daisies, purple bell flowers, orange blooms. Leafy green tree branch extends from upper-right corner with two small adorable bluebirds. Multiple colorful butterflies flutter throughout. Small cute woodland animals — two-three small fluffy brown rabbits looking up adoringly. One baby fawn standing center-right. One rabbit near character's feet.
+SCENE: 2:1 landscape. Bright cheerful open meadow at midday. Pastel blue-pink sky with fluffy cotton-candy clouds. Soft pastel rainbow arcs across upper-right sky. Rolling soft green hills in far background. Lush colorful wildflowers — vibrant red poppies, white daisies, purple bell flowers, orange blooms. Leafy green tree branch from upper-right corner with two small adorable bluebirds. Multiple colorful butterflies throughout. Small cute woodland animals around the child — two-three fluffy brown rabbits looking up adoringly. One baby fawn near center-right. One rabbit near character's feet.
 
-CHARACTER: Place the child character standing upright in the LEFT-CENTER area of the meadow. Full body visible head to toe. Head tilted very slightly upward. Huge delighted open-mouth smile, sparkling happy eyes. Arms relaxed naturally at sides. Height approximately 68% of image height.
+CHARACTER: Place the child character standing upright in LEFT-CENTER area (x:15%–40%, y:18%–88%). Full body visible. Huge delighted open-mouth smile, sparkling happy eyes. Arms relaxed naturally at sides. Height approximately 68% of image height. Animals gathered around naturally.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD MADE YOU SPECIAL, BEAUTIFUL, AND WONDERFULLY YOU, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 3 lines. Left-aligned.
-  Position: X:1.13 inches from left, Y:0.56 inches from top.
+- TOP-LEFT AREA (x:2%–48%, y:3%–22%):
+  Render text: "GOD MADE YOU SPECIAL, BEAUTIFUL, AND WONDERFULLY YOU, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 3 lines. Left-aligned.
+  Text above and left of character — does not overlap.
 
-- RIGHT SIDE MID-HEIGHT (over lighter sky/meadow area):
-  Text: "I will give thanks to you, for I am fearfully and wonderfully made. Your works are wonderful. My soul knows that very well."
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:38%–70%):
+  Render text in handwritten cursive style: "I will give thanks to you, for I am fearfully and wonderfully made. Your works are wonderful. My soul knows that very well."
   New line: "Psalm 139:14"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.87 inches from top.
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Bright sunny meadow. 2:1 landscape. Full bleed.`,
 
-      // PAGE 4 — GOD WILL GIVE YOU STRENGTH
+      // PAGE 4 — GOD'S LOVE FOR YOU WILL NEVER END
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Dramatic mountain landscape at sunrise. Character stands on a rocky outcrop ledge. Towering rugged mountain peaks rise in the background, their snowy tips glowing orange-pink in the sunrise light. The sky — deep royal blue upper sky, transitioning to brilliant orange-gold at the horizon. Dramatic god-rays fan out from behind the mountains. Eagles or large hawks soar as silhouettes in the upper sky — 2-3 birds. Wildflowers grow from rocky crevices in the foreground. A small cascading waterfall visible in the background-left. Golden morning mist fills the valleys between peaks.
+SCENE: 2:1 landscape. Magical glowing ancient enormous tree at warm golden dusk. A massive ancient tree with enormous gnarled trunk dominates the center-background. Thick spreading roots, wide canopy glowing with warm golden-amber light from within. Light particles and fireflies float throughout. Pink cherry blossom-like flowers on branches. Open glowing books float magically in upper branches. Pink and yellow flowers carpet the ground around the tree base. Small birds perched at lower branches. Warm magical loving atmosphere.
 
-CHARACTER: Place the child character standing tall on the rocky outcrop in the LEFT-CENTER area. Full body visible. Standing with feet shoulder-width apart, strong confident stance. Both fists raised upward toward the sky in a triumphant victory pose. Head tilted back, looking upward with the biggest most joyful triumphant expression. Height approximately 65% of image height.
+CHARACTER: Place the child character sitting at the RIGHT side of the tree base (x:60%–80%, y:40%–88%). Back leaning contentedly against the right side of the trunk. Legs loosely out in front. Looking upward with joyful wonder-filled expression and big smile. Height approximately 42% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD WILL GIVE YOU STRENGTH, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2 lines. Left-aligned.
-  Position: X:1.13 inches from left, Y:0.56 inches from top.
+- TOP-RIGHT AREA (x:55%–95%, y:3%–18%):
+  Render text: "GOD'S LOVE FOR YOU, [CHILD_NAME], WILL NEVER END."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Right-aligned.
 
-- LOWER-RIGHT AREA (over lighter sky):
-  Text: "I can do all things through Christ, who strengthens me."
-  New line: "Philippians 4:13"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:0.88 inches from top.
+- LEFT SIDE MID-HEIGHT (x:2%–42%, y:35%–62%):
+  Render text in handwritten cursive style: "Yes, I have loved you with an everlasting love. Therefore I have drawn you with loving kindness."
+  New line: "Jeremiah 31:3"
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Epic mountain sunrise. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Magical glowing ancient tree. Warm golden light. 2:1 landscape. Full bleed.`,
 
-      // PAGE 5 — GOD'S LOVE FOR YOU NEVER ENDS
+      // PAGE 5 — GOD FILLS YOUR HEART WITH PEACE
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Breathtaking ocean beach at golden sunset. Wide sandy beach curves gently from foreground to background-right. Shallow crystal-clear turquoise water laps gently at the shore. The ocean stretches to the horizon on the right half. The sky — brilliant golden-orange sun low on the horizon, radiating warm golden light across everything. Dramatic pink-purple clouds in layers above. Warm light reflects off the wet sand and water creating golden shimmer. Several white seagulls soar in the sky. Small sandcastles in the foreground-left. Tiny colorful seashells scattered on the sand.
+SCENE: 2:1 landscape. Peaceful serene meadow beside a gentle stream at soft morning light. The stream winds gently through the lower-right area, sparkling softly. Lush green grass with wildflowers — white daisies, small purple flowers, yellow blooms. Tall cattail reeds and soft grasses at water's edge. Colorful butterflies and a white dove in flight. Sky is soft and peaceful — pale blue-white gradient, very light and airy. Purple mountains in far background. Soft morning mist over water. Scene feels deeply peaceful and still.
 
-CHARACTER: Place the child character standing in the LEFT-CENTER area at the water's edge. Full body visible head to toe. Standing with arms spread wide open — both arms extended outward like wings. Head slightly tilted back, huge joyful open-mouth smile, eyes sparkling. Feet at the very edge of the water with tiny gentle waves lapping around the feet. Height approximately 65% of image height.
+CHARACTER: Place the child character sitting peacefully on the grassy bank in CENTER-LEFT area (x:15%–40%, y:28%–88%). Sitting with legs loosely out front, hands resting on knees. Peaceful gentle smile, eyes soft and content. Looking slightly upward. Height approximately 55% of image height. Barefoot, completely relaxed.
 
 TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD'S LOVE FOR YOU NEVER ENDS, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 30px equivalent. 2 lines. Left-aligned within area.
-  Position: X:9.37 inches from left, Y:0.56 inches from top.
+- TOP-LEFT AREA (x:2%–48%, y:3%–18%):
+  Render text: "GOD FILLS YOUR HEART WITH PEACE, [CHILD_NAME], WHEN YOU NEED IT MOST."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Left-aligned.
 
-- CENTER-LEFT MID-HEIGHT (over lighter sky/ocean area):
-  Text: "Give thanks to Yahweh, for he is good, for his loving kindness endures forever."
-  New line: "Psalm 136:1"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:3.26 inches from top.
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:30%–60%):
+  Render text in handwritten cursive style: "Peace I leave with you. My peace I give to you; not as the world gives, I give to you. Don't let your heart be troubled, neither let it be fearful."
+  New line: "John 14:27"
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Golden ocean sunset. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Peaceful serene meadow stream. Soft morning light. 2:1 landscape. Full bleed.`,
 
-      // PAGE 6 — GOD WILL PROTECT YOU
+      // PAGE 6 — WHENEVER YOU TALK TO GOD HE LISTENS
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Magical night sky scene. Character sits on a gentle grassy hill. The sky — deep midnight blue-purple filled with thousands of glittering stars. A spectacular glowing full moon dominates the upper-right area, radiating soft silver-white light. The Milky Way galaxy visible as a soft glowing band across the upper sky. Several large golden stars near the moon glow extra bright. The hillside bathed in soft silver moonlight. Fireflies create tiny golden lights near the grass. Soft glowing flowers — white and pale blue — dot the hillside. A small fluffy owl perched on a branch at upper-left looks down toward the character. Soft mist in the distant valleys below.
+SCENE: 2:1 landscape. Warm cozy child's bedroom at peaceful night. Wooden bed in CENTER-RIGHT with patchwork quilt — soft blues, grays, creams. Wooden bedside table with warm lamp glowing softly. Open storybook on the floor. Small slippers near the bed. Plush bunny stuffed toy on the bed. Large window on the right showing beautiful night sky — deep blue with glowing crescent moon, stars twinkling, soft clouds. Magical soft sparkle light rays coming through the window. A glowing white dove visible outside the window. Scene feels warm, safe, deeply loved.
 
-CHARACTER: Place the child character sitting cross-legged on the grassy hillside in the CENTER-LEFT area. Full body visible. Sitting upright, hands resting gently on knees. Head tilted back looking up at the stars with pure wide-eyed wonder and awe — mouth slightly open in amazement, eyes very wide and sparkling. Height approximately 50% of image height.
+CHARACTER: Place the child character kneeling beside the bed in RIGHT-CENTER area (x:60%–82%, y:25%–88%). Both knees on the soft rug. Hands pressed together in prayer position in front of chest. Head bowed slightly, eyes closed. Expression completely peaceful, serene, trusting. Height approximately 55% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD WILL PROTECT YOU, [CHILD_NAME], THROUGH EVERY NIGHT."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 30px equivalent. 2 lines. Left-aligned.
-  Position: X:1.24 inches from left, Y:1.2 inches from top.
+- TOP-LEFT AREA (x:2%–48%, y:4%–20%):
+  Render text: "WHENEVER YOU TALK TO GOD, [CHILD_NAME], HE LISTENS."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 2 lines. Left-aligned.
 
-- RIGHT SIDE MID-HEIGHT (over darker night sky):
-  Text: "He will not allow your foot to be moved. He who keeps you will not slumber."
-  New line: "Psalm 121:3"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft glow drop shadow.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:3.26 inches from top.
-
-STYLE: Pixar/Disney 3D animated. Magical starry night. 2:1 landscape. Full bleed.`,
-
-      // PAGE 7 — GOD HEARS YOUR PRAYERS
-      `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Warm cozy bedroom interior at dusk/early night. Child kneels beside a small wooden bed on the RIGHT side. The bed has a soft white and cream quilted duvet, plush pillows. A glowing warm yellow nightlight on the bedside table. Through a window on the right wall — soft purple-blue twilight sky visible with a few early stars. Small bookshelf with colorful books on the left wall. A few beloved stuffed animals on the bed — small teddy bear, plush bunny. Small soft rug in pastel colors on the floor. Gold sparkle dust particles float softly in the warm nightlight glow. The entire scene feels warm, safe, and peaceful.
-
-CHARACTER: Place the child character kneeling beside the bed in the RIGHT-CENTER area. Full body visible. Kneeling on both knees on the soft rug. Hands pressed together in prayer position in front of chest. Head bowed slightly, eyes gently closed. Expression: perfectly peaceful, serene, trusting. Height approximately 55% of image height.
-
-TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD HEARS EVERY PRAYER YOU PRAY, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2 lines. Right-aligned within area.
-  Position: X:9.15 inches from left, Y:1.08 inches from top.
-
-- LEFT SIDE MID-HEIGHT (over darker left wall area):
-  Text: "Don't be anxious about anything, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God."
-  New line: "Philippians 4:6"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.87 inches from top.
+- LEFT SIDE MID-HEIGHT (x:2%–45%, y:35%–62%):
+  Render text in handwritten cursive style: "You shall call on me, and you shall go and pray to me, and I will listen to you."
+  New line: "Jeremiah 29:12"
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Warm cozy bedroom at night. 2:1 landscape. Full bleed.`,
 
-      // PAGE 8 — GOD GIVES YOU JOY
+      // PAGE 7 — GOD WATCHES OVER YOU DAY AND NIGHT
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Vibrant colorful carnival/festival scene outdoors. Bright blue sky with a few fluffy white clouds. String lights crisscross above between colorful striped tents. Bunting flags in rainbow colors hang between poles. Colorful carousel visible in the background-right. Balloons in every color float upward throughout — red, yellow, blue, green, pink, orange, purple. Carnival game booths with striped awnings in the background. Colorful confetti falls gently through the air. Cheerful colorful pennants and streamers everywhere. The entire scene is bursting with warm joyful energy.
+SCENE: 2:1 landscape. Child's cozy bedroom at deep peaceful night. Soft blue-gray moonlit atmosphere. Wooden bed in CENTER-RIGHT with child sleeping. Soft cream/gray quilted duvet. Multiple small stuffed animals on and around bed — teddy bear, plush bunny, plush dog. Bedside lamp glowing softly on right table. Large window on LEFT showing beautiful moonlit night sky — large glowing full moon, soft clouds, glowing stars. Moonlight streams through window casting soft silver-blue light. A softly glowing white dove hovers near the ceiling. Scene feels profoundly peaceful, safe, protected.
 
-CHARACTER: Place the child character in the CENTER-LEFT area. Full body visible head to toe. In pure mid-jump celebration pose — both feet off the ground, knees bent slightly upward. Both arms raised HIGH above the head, hands open with fingers spread wide in pure celebration. Head thrown back with the absolute biggest most joyful laughing open-mouth expression. Height approximately 65% of image height.
+CHARACTER: Place the child character lying in bed sleeping (x:42%–80%, y:32%–72%). Tucked snugly under covers, head on pillow, eyes closed. Peaceful sleeping expression. Surrounded by stuffed animals. Upper body and head visible above covers.
 
 TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD GIVES YOU JOY, [CHILD_NAME]!"
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 30px equivalent. 2 lines. Right-aligned.
-  Position: X:9.37 inches from left, Y:0.88 inches from top.
+- TOP-RIGHT AREA (x:52%–95%, y:3%–18%):
+  Render text: "GOD WATCHES OVER YOU, [CHILD_NAME], DAY AND NIGHT."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Right-aligned.
 
-- LOWER-LEFT AREA:
-  Text: "This is the day that Yahweh has made. We will rejoice and be glad in it."
-  New line: "Psalm 118:24"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:2.87 inches from top.
+- LEFT SIDE MID-HEIGHT (x:2%–45%, y:30%–60%):
+  Render text in handwritten cursive style: "Yahweh will keep you from all evil. He will keep your soul. Yahweh will keep your going out and your coming in, from this time forward, and forever more."
+  New line: "Psalm 121:7-8"
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Vibrant joyful carnival. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Peaceful moonlit bedroom. 2:1 landscape. Full bleed.`,
 
-      // PAGE 9 — GOD WILL GUIDE YOUR PATH
+      // PAGE 8 — WHEN YOU FEEL WEAK GOD WILL MAKE YOU STRONG
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Breathtaking aerial-perspective landscape at golden afternoon. A winding path winds from the foreground upward through the scene toward the horizon. On the LEFT of the path — a vibrant wildflower meadow. On the RIGHT — a gentle stream with sparkling water catching golden light, smooth pebbles, and lush ferns. The path ahead glows with warm golden light from the horizon. The sky — golden-hour perfection — warm amber, soft gold, light peach tones. A large white dove in flight in the upper-center of the sky, wings fully spread. Several monarch butterflies follow the path. Small directional signpost visible in the midground with a small heart symbol.
+SCENE: 2:1 landscape. Beautiful hilltop meadow at golden sunrise. Gentle grassy hill with scattered rocks in foreground. Lush wildflowers — yellow daisies, orange blooms, purple lavender, white flowers. Rolling green hills in background-right. Sky is breathtaking — brilliant golden-white sunrise light floods from upper-right, dramatic golden rays fanning outward. Puffy golden-lit clouds. Small birds soaring as silhouettes. Wind blowing softly — petals and leaves drift through the air. Scene feels energetic, triumphant, full of God's power.
 
-CHARACTER: Place the child character on the path in the LEFT-CENTER area, walking forward confidently. Full body visible. Walking with a purposeful cheerful stride — slight skip in the step. One arm swings forward naturally, the other hand points forward toward the glowing horizon with excitement. Head up, looking ahead with a bright confident adventurous smile. Height approximately 62% of image height.
+CHARACTER: Place the child character in LEFT-CENTER area on the hilltop (x:10%–38%, y:15%–85%). Standing in triumphant wind-blown pose — one foot forward on a rock, one arm raised upward toward the sky, other arm slightly back. Expression: joyful, brave, triumphant, exhilarated. Height approximately 60% of image height. Hair/clothes gently blown by breeze.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD WILL GUIDE YOUR PATH, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.56 inches from top.
+- TOP-LEFT AREA (x:2%–48%, y:3%–18%):
+  Render text: "WHEN YOU FEEL WEAK, [CHILD_NAME], GOD WILL MAKE YOU STRONG."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 2 lines. Left-aligned.
+  Text positioned above character — does not overlap.
 
-- LOWER-RIGHT AREA:
-  Text: "Trust in Yahweh with all your heart, and don't lean on your own understanding. In all your ways acknowledge him, and he will make your paths straight."
-  New line: "Proverbs 3:5-6"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.87 inches from top.
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:32%–60%):
+  Render text in handwritten cursive style: "He gives power to the weak. He increases the strength of him who has no might."
+  New line: "Isaiah 40:29"
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Glowing golden-hour path landscape. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Triumphant hilltop sunrise. 2:1 landscape. Full bleed.`,
 
-      // PAGE 10 — GOD BLESSES YOU WITH GIFTS AND TALENTS
+      // PAGE 9 — YOU NEVER HAVE TO BE AFRAID
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Bright cheerful creative studio/art room. Large wooden art table in the center-right. Art supplies everywhere — colorful paint jars open, brushes in cups, scattered crayons, sheets of colorful paper. On the art table — a large drawing/painting in progress showing a colorful rainbow landscape. Finished artworks hang on the wall behind — small colorful paintings in simple frames. A large window on the right wall lets in brilliant warm morning sunlight. Small potted plants on the windowsill. A colorful bunting banner hangs above with small star and heart shapes. Scattered flower petals and glitter on the floor near the table.
+SCENE: 2:1 landscape. Rainy day path — dramatic but hopeful atmosphere. A wet cobblestone/dirt path glistening in gentle rain. Soft light rain falling. Puddles reflecting soft light. Green grass and plants on the sides. A beautiful vibrant full rainbow arcs from LEFT side curving to RIGHT — bright vivid colors. The right side of sky is brighter — golden light breaking through dark clouds. Trees in background. Small orange fox sitting on LEFT side of path. Small fluffy rabbit on RIGHT side of path. Scene feels dramatic but full of hope.
 
-CHARACTER: Place the child character in the CENTER-LEFT area, standing in front of the art table. Full body visible. Standing at the table, one hand holding a large paintbrush raised upward with a flourish, the other hand on hip confidently. Head turned toward viewer with the biggest proudest most delighted smile — eyes sparkling. Height approximately 68% of image height.
+CHARACTER: Place the child character walking on the path in CENTER-LEFT area (x:18%–42%, y:15%–88%). Walking forward with determined expression. Holding a transparent clear umbrella with pink polka dots. Expression: wide-eyed but brave, determined, not afraid. Height approximately 60% of image height. Fox on left side, rabbit on right side.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD BLESSES YOU WITH GIFTS AND TALENTS, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2-3 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.56 inches from top.
+- TOP-LEFT AREA (x:2%–50%, y:3%–18%):
+  Render text: "YOU NEVER HAVE TO BE AFRAID, [CHILD_NAME], BECAUSE GOD IS WITH YOU."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 2 lines. Left-aligned.
+  Text above character — does not overlap.
 
-- RIGHT SIDE MID-HEIGHT (over lighter window area):
-  Text: "Each of you has received a gift. Use it to serve one another, as good stewards of God's grace."
-  New line: "1 Peter 4:10"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.87 inches from top.
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:25%–60%):
+  Render text in handwritten cursive style: "Don't you be afraid, for I am with you. Don't be dismayed, for I am your God. I will strengthen you. Yes, I will help you. Yes, I will uphold you with the right hand of my righteousness."
+  New line: "Isaiah 41:10"
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Warm creative art studio. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Rainy day path with rainbow. 2:1 landscape. Full bleed.`,
 
-      // PAGE 11 — GOD WANTS YOU TO BE BRAVE
+      // PAGE 10 — GOD HAS BEAUTIFUL PLANS FOR YOUR LIFE
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Epic adventure landscape — a grand stone bridge arching over a wide sparkling river gorge. The bridge is ancient, covered in moss and small wildflowers growing from the cracks. Below — a breathtaking river gorge with sparkling blue-white water rushing through, green ferns and vines on the rocky walls. Ahead of the bridge — a magical glowing forest, trees with golden-green leaves lit from within. The sky — stormy on the left side (dark dramatic purple-gray clouds) but brilliant golden sunlight breaking through on the right side. A rainbow begins on the dark left and ends in the magical golden forest ahead. Small birds fly in the golden right sky.
+SCENE: 2:1 landscape. Beautiful open golden meadow at brilliant sunrise. Wide open sky taking up upper 50% — soft blue transitioning to brilliant warm golden-white at horizon. Lush green meadow with colorful wildflowers everywhere. Rolling gentle hills in background. A winding path leads toward a distant glowing fairytale castle on a hill in background-right. Glowing golden stars trail upward in the sky. A colorful kite flying in upper-right sky. A hot air balloon in far upper-right. Small sailboat silhouette on horizon. Scene feels full of possibility, beautiful dreams, and hope.
 
-CHARACTER: Place the child character at the beginning of the bridge in the LEFT-CENTER area. Full body visible. Standing at the entrance to the bridge, one foot already stepping forward onto the bridge — mid-stride forward movement. Body turned slightly forward but head turned back toward viewer. Expression: determined, brave, slightly uncertain but pushing forward — small courageous smile, chin up. One hand raised slightly forward. Height approximately 65% of image height.
+CHARACTER: Place the child character in LEFT-CENTER area (x:15%–40%, y:18%–88%). Standing upright looking upward at the sky with wide-eyed wonder and hope. Both arms slightly out at sides, relaxed open pose. Mouth slightly open in awe and delight. Height approximately 60% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD WANTS YOU TO BE BRAVE, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.56 inches from top.
+- TOP-LEFT AREA (x:2%–48%, y:3%–18%):
+  Render text: "GOD HAS BEAUTIFUL PLANS FOR YOUR LIFE, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 2 lines. Left-aligned.
+  Text above character — does not overlap.
 
-- LOWER-RIGHT AREA (over lighter golden area):
-  Text: "Be strong and courageous. Don't be afraid or discouraged, for Yahweh your God is with you wherever you go."
-  New line: "Joshua 1:9"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.68 inches from top.
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:28%–58%):
+  Render text in handwritten cursive style: "For I know the thoughts that I think toward you, says Yahweh, thoughts of peace, and not of evil, to give you hope and a future."
+  New line: "Jeremiah 29:11"
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Epic bridge adventure landscape. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Open golden meadow sunrise. 2:1 landscape. Full bleed.`,
 
-      // PAGE 12 — GOD CREATED THE WHOLE WORLD FOR YOU TO ENJOY
+      // PAGE 11 — GOD WILL HELP LEAD YOU EVERY STEP
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Spectacular panoramic world-view scene. The character stands on a grassy clifftop overlook with a breathtaking view of an incredible landscape below. The scene shows the diversity of God's creation all at once — LEFT side: tropical ocean with turquoise water, white sand beach, palm trees. CENTER: lush green rolling hills and meadows with wildflowers. RIGHT side: dramatic snow-capped mountain peaks glowing in sunrise light. The sky — sunrise colors transitioning from deep blue upper sky through purple, rose pink, to brilliant gold-orange at the horizon. Multiple rainbows. White doves and colorful birds fly through the scene.
+SCENE: 2:1 landscape. Magical glowing stepping-stone path through an enchanted garden at golden hour. Beautiful stone stepping-stones wind from foreground-center toward a glowing warm horizon. Glowing golden arrow markers in the stones pointing forward. Small gentle waterfalls cascade on BOTH sides of the path. Lush green bushes, cherry blossom trees with pink petals, colorful flowers lining both sides. Japanese paper lanterns hanging from tree branches on left. Cherry blossom petals drifting through warm air. Fireflies and golden light particles throughout. Scene feels magical, gently guiding, warm.
 
-CHARACTER: Place the child character standing on the clifftop overlook in the CENTER-LEFT area. Full body visible head to toe. Standing with both arms spread wide open and upward — like embracing the entire world. Head tilted back looking up with an expression of absolute wonder and awe — mouth open in a silent "wow", eyes wide with joy. Height approximately 65% of image height.
+CHARACTER: Place the child character standing on the stepping stones in LEFT-CENTER area (x:15%–40%, y:15%–88%). Full body visible. Standing still looking forward and slightly upward with wonder, openness, and trust. Hands naturally at sides. Height approximately 60% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD CREATED THIS WHOLE BEAUTIFUL WORLD FOR YOU TO ENJOY, [CHILD_NAME]!"
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 3 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.97 inches from top.
+- TOP-RIGHT AREA (x:52%–96%, y:3%–18%):
+  Render text: "GOD WILL HELP LEAD YOU, [CHILD_NAME], EVERY STEP OF THE WAY."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Right-aligned.
 
-- LOWER-RIGHT AREA (over meadow area):
-  Text: "The earth is Yahweh's, with its fullness; the world, and those who dwell in it."
-  New line: "Psalm 24:1"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.68 inches from top.
+- RIGHT SIDE MID-HEIGHT (x:52%–96%, y:25%–55%):
+  Render text in handwritten cursive style: "I will instruct you and teach you in the way which you shall go. I will counsel you with my eye on you."
+  New line: "Psalm 32:8"
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
-STYLE: Pixar/Disney 3D animated. Spectacular panoramic world creation. 2:1 landscape. Full bleed.`,
+STYLE: Pixar/Disney 3D animated. Magical stepping stone path. Golden warm light. 2:1 landscape. Full bleed.`,
+
+      // PAGE 12 — GOD BRINGS JOY TO YOUR HEART EACH NEW DAY
+      `${GLOBAL_STYLE}
+SCENE: 2:1 landscape. Joyful vibrant colorful meadow on a bright sunny morning. Rich green meadow bursting with colorful wildflowers — red poppies, orange blooms, blue bell flowers, yellow daisies, purple lavender. Bright blue sky with soft white fluffy clouds. Dozens of transparent soap bubbles floating and drifting everywhere catching beautiful light. Colorful butterflies in flight. Bluebirds and yellow birds flying in upper area. Golden sparkle light particles drifting. Rolling green hills in background. Scene radiates pure happiness and morning joy.
+
+CHARACTER: Place the child character in RIGHT-CENTER area (x:60%–82%, y:15%–88%). Running/skipping forward joyfully through the meadow — mid-stride, one foot off ground. Arms slightly out for balance. Expression: the biggest most joyful open-mouth laughing smile, eyes sparkling with delight. Height approximately 58% of image height. Bubbles floating around character.
+
+TEXT PLACEMENT — render exactly:
+- TOP-RIGHT AREA (x:52%–96%, y:3%–18%):
+  Render text: "GOD BRINGS JOY TO YOUR HEART, [CHILD_NAME], EACH NEW DAY."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Right-aligned.
+  Text above and right of character — does not overlap.
+
+- LEFT SIDE MID-HEIGHT (x:2%–45%, y:32%–62%):
+  Render text in handwritten cursive style: "You will show me the path of life. In your presence is fullness of joy. In your right hand there are pleasures forever more."
+  New line: "Psalm 16:11"
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
+
+STYLE: Pixar/Disney 3D animated. Joyful bubble meadow. Bright sunny morning. 2:1 landscape. Full bleed.`,
 
       // PAGE 13 — GOD HELPS YOUR HEART GROW KIND
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Warm enchanted garden courtyard at golden afternoon. Beautiful stone garden path winds through the center. Lush blooming garden on both sides — climbing roses (pink, white, red) on stone walls, lavender bushes, flowering hedges. A charming wooden garden gate in the background-center covered in climbing vines and flowers. Warm golden afternoon light floods the scene from upper-right. Soft golden light particles and flower petals drift gently. Large colorful butterflies throughout. A small brown rabbit on LEFT looking up at character. Small orange-brown squirrel on RIGHT looking up at character.
+SCENE: 2:1 landscape. Beautiful warm enchanted garden at golden afternoon. Lush garden with stone pathway winding through the scene. Well-manicured green bushes and hedges. Beautiful climbing roses on trellises — pink, yellow, red. Colorful flowers everywhere — roses, lavender, foxgloves, peonies in full bloom. Fruit trees with berries in background. Warm golden afternoon sunlight streaming from upper-right. Golden light particles drifting softly. Orange and purple butterflies throughout. Garden feels warm, lush, full of life, kindness, and gentleness.
 
-CHARACTER: Place the child character in the CENTER-LEFT area. Kneeling down on one knee on the garden path. Both hands cupped gently together holding a small bright blue bluebird — bird sitting trustingly in the character's palms. Expression: gentle, tender, kind, wonder-filled soft smile. Looking down at the bird with complete love and care. Full body visible. Height (kneeling) approximately 50% of image height.
+CHARACTER: Place the child character in LEFT-CENTER area (x:12%–40%, y:22%–88%). Kneeling down on both knees on the garden path. Both hands cupped gently together in front, holding a small bright blue bluebird sitting trustingly in their palms. Expression: gentle, tender, kind, wonder-filled soft smile. Looking down at the bird with complete love and care. Height (kneeling) approximately 50% of image height. Small brown rabbit on LEFT side looking up adoringly. Small orange squirrel on RIGHT side looking up adoringly.
 
 TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD HELPS YOUR HEART GROW KIND, LOVING, AND GENTLE, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 27px equivalent. 2 lines. Right-aligned within area.
-  Position: X:8.84 inches from left, Y:0.8 inches from top.
+- TOP-LEFT AREA (x:2%–50%, y:3%–18%):
+  Render text: "GOD HELPS YOUR HEART GROW KIND, LOVING, AND GENTLE, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 27px. 2 lines. Left-aligned.
+  Text above character — does not overlap.
 
-- LEFT SIDE MID-HEIGHT:
-  Text: "But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faith, gentleness, and self-control. Against such things there is no law."
+- RIGHT SIDE MID-HEIGHT (x:50%–96%, y:28%–65%):
+  Render text in handwritten cursive style: "But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faith, gentleness, and self-control. Against such things there is no law."
   New line: "Galatians 5:22-23"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:2.87 inches from top.
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Warm enchanted garden. Golden afternoon light. 2:1 landscape. Full bleed.`,
 
       // PAGE 14 — GOD IS LOVING FORGIVING AND FULL OF MERCY
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Soft warm ethereal garden path at gentle morning. A stone cobblestone path runs center of image. Lush colorful garden on BOTH sides — LEFT: darker deeper tones — deep pink, purple blooms, dark green foliage. RIGHT: lighter warmer tones — yellow flowers, orange blooms, pink flowers, bright greens in warm backlight. Scattered golden light rays from upper-right. Gold and warm light particles float gently. Several small birds on the path. Orange monarch butterfly center upper area. A woven wicker basket tipped on its side on the path with red apples spilling out.
+SCENE: 2:1 landscape. Soft warm ethereal garden path at gentle morning. Stone cobblestone path runs through center. Lush colorful garden on BOTH sides — LEFT: darker deeper tones — deep pink, purple blooms, dark green foliage. RIGHT: lighter warmer tones — yellow flowers, orange blooms, pink flowers, bright greens in warm backlight. Scattered golden light rays from upper-right. Gold light particles float gently. Small brown sparrow on LEFT of path. Small blue-gray bird on RIGHT of path. Orange monarch butterfly center upper area. A woven wicker basket tipped on its side with red apples spilling out across cobblestones.
 
-CHARACTER: Place the child character sitting on the cobblestone path in the RIGHT-CENTER area. Sitting on the ground, legs loosely in front. One hand resting on the ground, leaning slightly. Looking upward-left toward the light with a remorseful but hopeful expression — slightly furrowed brow, eyes looking up with a small uncertain smile, like a child who made a mistake but knows they are still loved. Full body visible. Height (seated) approximately 42% of image height.
+CHARACTER: Place the child character sitting on cobblestone path in RIGHT-CENTER area (x:60%–80%, y:38%–88%). Sitting on the ground, legs loosely in front. One hand resting on cobblestones, leaning slightly. Looking upward-left with remorseful but hopeful expression. Height (seated) approximately 42% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA:
-  Text: "GOD IS LOVING, FORGIVING, AND FULL OF MERCY FOR YOU, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 2 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.66 inches from top.
+- TOP-RIGHT AREA (x:55%–96%, y:3%–20%):
+  Render text: "GOD IS LOVING, FORGIVING, AND FULL OF MERCY FOR YOU, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 30px. 2 lines. Right-aligned within area.
 
-- RIGHT SIDE MID-HEIGHT (over lighter right garden area):
-  Text: "If we confess our sins, he is faithful and righteous to forgive us the sins and to cleanse us from all unrighteousness."
+- LEFT SIDE MID-HEIGHT (x:2%–46%, y:32%–62%):
+  Render text in handwritten cursive style: "If we confess our sins, he is faithful and righteous to forgive us the sins and to cleanse us from all unrighteousness."
   New line: "1 John 1:9"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:2.68 inches from top.
+  Fill: white #FFFFFF. Soft dark drop shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Soft warm garden path. Warm forgiving tones. 2:1 landscape. Full bleed.`,
 
       // PAGE 15 — GOD FILLS YOUR LIFE WITH HOPE PEACE AND LIGHT
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. Magnificent hilltop vista at stunning sunset/dusk. Character stands on a grassy hilltop in lower-center-left. Rolling misty green hills and valleys stretch to the horizon. A glowing winding river of light — shimmering silver-white sparkles traces through the valley below. Tall wildflowers and grass at the hilltop edges — purple, pink, yellow, white blooms. The sky — dramatic sunset: Deep blue upper sky transitions through purple, to rose-pink, to warm amber-orange at the horizon. Fluffy pink-orange lit clouds in layers. Several small birds soar as silhouettes in the mid-sky. Entire scene feels expansive, hopeful, awe-inspiring.
+SCENE: 2:1 landscape. Magnificent hilltop vista at stunning sunset/dusk. Character stands on a grassy hilltop in lower-center-left. Rolling misty green hills and valleys stretch to the horizon. A glowing winding river of light — shimmering silver-white sparkles traces through the valley below like a path made of stars. Tall wildflowers and grass at hilltop edges — purple, pink, yellow, white blooms. Sky is the hero — dramatic sunset: deep blue upper sky transitions through purple, to rose-pink, to warm amber-orange at the horizon. Fluffy pink-orange lit clouds in layers. Several small birds soar as silhouettes in the mid-sky. Entire scene feels expansive, hopeful, awe-inspiring.
 
-CHARACTER: Place the child character standing on the hilltop in the LEFT-CENTER area. Full body visible head to toe. Standing upright, tall, confident, still. Hands clasped gently together in front at waist level. Looking forward toward the glowing horizon with a serene, peaceful, grateful expression. Warm sunset light catches the character from the front-right. Height approximately 65% of image height.
+CHARACTER: Place the child character standing on the hilltop in LEFT-CENTER area (x:10%–38%, y:18%–88%). Full body visible head to toe. Standing upright, tall, confident, still. Hands clasped gently together in front at waist level. Looking forward toward the glowing horizon with a serene, peaceful, grateful expression. Height approximately 65% of image height.
 
 TEXT PLACEMENT — render exactly:
-- TOP-RIGHT AREA:
-  Text: "GOD FILLS YOUR LIFE WITH HOPE, PEACE, AND LIGHT, [CHILD_NAME]."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 27px equivalent. 2 lines. Right-aligned within area.
-  Position: X:8.84 inches from left, Y:0.6 inches from top.
+- TOP-LEFT AREA (x:2%–50%, y:3%–20%):
+  Render text: "GOD FILLS YOUR LIFE WITH HOPE, PEACE, AND LIGHT, [CHILD_NAME]."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 27px. 2 lines. Left-aligned.
 
-- LEFT SIDE MID-HEIGHT (over darker left sky/hill area):
-  Text: "Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope in the power of the Holy Spirit."
+- RIGHT SIDE MID-HEIGHT (x:50%–96%, y:32%–62%):
+  Render text in handwritten cursive style: "Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope in the power of the Holy Spirit."
   New line: "Romans 15:13"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: white (#FFFFFF). Soft dark drop shadow.
-  Font size: 20px equivalent.
-  Position: X:1.24 inches from left, Y:2.87 inches from top.
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 20px. Centered within area.
 
 STYLE: Pixar/Disney 3D animated. Hilltop sunset vista. Dramatic pink-purple-gold sky. 2:1 landscape. Full bleed.`,
 
       // PAGE 16 — GOD'S BLESSINGS WILL GO WITH YOU
       `${GLOBAL_STYLE}
-SCENE: 2:1 landscape. SPLIT LAYOUT. LEFT HALF (0%–50%): Warm golden meadow scene at brilliant sunrise. Rolling green hills in background. Lush wildflowers in foreground — orange poppies, pink flowers, white daisies, purple blooms. Warm golden-white sunburst from center-upper area of left panel. Dozens of monarch butterflies fill the air along with small birds in flight. Pink flower petals drift through the warm air. Soft golden clouds. RIGHT HALF (50%–100%): Clean soft white background. A soft very subtle floral watercolor border can frame the right panel.
+SCENE: 2:1 landscape. STRICT SPLIT LAYOUT.
+LEFT HALF (0%–50%): Warm golden meadow scene at brilliant sunrise. Rolling green hills in background. Lush wildflowers in foreground — orange poppies, pink flowers, white daisies, purple blooms. Warm golden-white sunburst from center-upper area of left panel. Dozens of monarch butterflies fill the air along with small birds in flight. Pink flower petals drift through warm air. Soft golden clouds.
+RIGHT HALF (50%–100%): Completely clean soft white background. A soft very subtle floral watercolor border frames the outer edges of the right panel only. Center of right half is clean white.
 
-CHARACTER: Place the child character in the LEFT HALF, CENTER of left panel. Full body visible head to toe. Standing with arms spread wide open — both arms extended outward like wings, palms facing forward/upward in pure joyful celebration. Head tilted back slightly, looking upward with the biggest most joyful open-mouth smile and laughing expression. Height approximately 65% of left panel height.
+CHARACTER: Place the child character in LEFT HALF center of left panel (x:12%–40%, y:18%–88%). Full body visible head to toe. Standing with both arms spread wide open — both arms extended outward like wings, palms facing forward/upward in pure joyful celebration. Head tilted back slightly, looking upward with the biggest most joyful open-mouth laughing expression. Height approximately 65% of left panel height. Character fully within left half only.
 
 TEXT PLACEMENT — render exactly:
-- TOP-LEFT AREA of left panel:
-  Text: "GOD'S BLESSINGS WILL GO WITH YOU, [CHILD_NAME], TODAY AND ALWAYS."
-  Font style: Intro Rust — bold rounded all-caps.
-  Fill: vivid red (#E8420A). White stroke 5px.
-  Font size: 23px equivalent. 3 lines. Left-aligned.
-  Position: X:1.01 inches from left, Y:0.66 inches from top.
+- TOP-LEFT AREA of left panel (x:2%–46%, y:3%–22%):
+  Render text: "GOD'S BLESSINGS WILL GO WITH YOU, [CHILD_NAME], TODAY AND ALWAYS."
+  Bold thick rounded ALL-CAPS. Fill: #E8420A. White stroke 5px.
+  Size approximately 23px. 3 lines. Left-aligned.
 
-- LOWER-LEFT AREA of left panel:
-  Text: "Yahweh bless you, and keep you. Yahweh make his face to shine on you, and be gracious to you."
+- LOWER-LEFT AREA of left panel (x:2%–46%, y:65%–84%):
+  Render text in handwritten cursive style: "Yahweh bless you, and keep you. Yahweh make his face to shine on you, and be gracious to you."
   New line: "Numbers 6:24-25"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Soft shadow.
-  Font size: 20px equivalent.
-  Position: X:9.49 inches from left, Y:3.06 inches from top.
+  Fill: dark navy #1A2744. Soft shadow. Size approximately 18px. Centered within area.
 
-- RIGHT HALF — closing message:
-  Text: "With all our love, [SENDER_NAME]"
-  Font style: KG Miss Kindy Marker — handwriting cursive. Mixed case.
-  Fill: dark navy (#1A2744). Centered in right white panel.
-  Font size: 20px equivalent.
-  Position: X:0.86 inches from left, Y:5.91 inches from top (right panel).
+- CENTER of right white panel (x:55%–92%, y:38%–62%):
+  Render text in handwritten cursive style: "With all our love,"
+  New line: "[SENDER_NAME]"
+  Fill: dark navy #1A2744. Centered in right white panel. Size approximately 22px.
 
-STYLE: Pixar/Disney 3D animated. Glorious sunrise celebration left. Clean white right. 2:1 landscape. Full bleed.`,
+CRITICAL: RIGHT HALF must be clean white with only subtle floral border on outer edges.
+STYLE: Pixar/Disney 3D animated. Glorious sunrise left. Clean white right. 2:1 landscape. Full bleed.`,
     ],
   },
   {

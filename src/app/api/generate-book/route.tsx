@@ -1,20 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
 
+export const maxDuration = 300
+export const dynamic = 'force-dynamic'
+
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const MODEL = 'gemini-3-pro-image-preview'
+const MODEL = 'gemini-3.1-flash-image'
+const LOGO_URL = 'https://res.cloudinary.com/dft0hfbee/image/upload/f_auto,q_auto/Final_Logo_zvkrqg'
 
 async function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
 }
 
+async function fetchImageAsBase64(url: string): Promise<{ data: string; mimeType: string }> {
+  const res = await fetch(url)
+  const buffer = await res.arrayBuffer()
+  const base64 = Buffer.from(buffer).toString('base64')
+  const contentType = res.headers.get('content-type') || 'image/png'
+  return { data: base64, mimeType: contentType }
+}
+
 async function callGemini(promptParts: any[], expectImage = true): Promise<string> {
   const delays = [5000, 10000, 20000]
-
   for (let attempt = 0; attempt <= delays.length; attempt++) {
     try {
       const modalities = expectImage ? ['IMAGE'] : ['TEXT']
-
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 120000)
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`,
         {
@@ -24,43 +36,32 @@ async function callGemini(promptParts: any[], expectImage = true): Promise<strin
             contents: [{ parts: promptParts }],
             generationConfig: { responseModalities: modalities },
           }),
+          signal: controller.signal,
         }
       )
-
+      clearTimeout(timeout)
       if (res.status === 429 || res.status === 503) {
-        if (attempt < delays.length) {
-          await sleep(delays[attempt])
-          continue
-        }
+        if (attempt < delays.length) { await sleep(delays[attempt]); continue }
         throw new Error('Gemini server is overloaded. Please try again.')
       }
-
       if (!res.ok) {
         const e = await res.json().catch(() => ({}))
         const msg = e?.error?.message || `Gemini error ${res.status}`
-        if (msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded')) {
-          if (attempt < delays.length) {
-            await sleep(delays[attempt])
-            continue
-          }
+        if ((msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded')) && attempt < delays.length) {
+          await sleep(delays[attempt]); continue
         }
         throw new Error(msg)
       }
-
       const data = await res.json()
-
       if (expectImage) {
         const imgPart = data?.candidates?.[0]?.content?.parts?.find((p: any) => p.inlineData)
         if (!imgPart) throw new Error('No image returned from Gemini')
         return imgPart.inlineData.data as string
       }
-
       return data?.candidates?.[0]?.content?.parts?.[0]?.text || ''
-
     } catch (e: any) {
-      if (attempt < delays.length && (e.message?.includes('high demand') || e.message?.includes('overload'))) {
-        await sleep(delays[attempt])
-        continue
+      if (attempt < delays.length && (e.message?.includes('high demand') || e.message?.includes('overload') || e.message?.includes('abort'))) {
+        await sleep(delays[attempt]); continue
       }
       throw e
     }
@@ -68,7 +69,6 @@ async function callGemini(promptParts: any[], expectImage = true): Promise<strin
   throw new Error('Max retries exceeded')
 }
 
-// Rate limiting — disabled in development
 const rateLimitMap = new Map<string, number>()
 
 export async function POST(req: NextRequest) {
@@ -78,10 +78,7 @@ export async function POST(req: NextRequest) {
   const tenMinutes = 10 * 60 * 1000
   if (!isDev && Date.now() - lastCall < tenMinutes) {
     const waitSeconds = Math.ceil((tenMinutes - (Date.now() - lastCall)) / 1000)
-    return NextResponse.json(
-      { error: `Please wait ${waitSeconds} seconds before generating again.` },
-      { status: 429 }
-    )
+    return NextResponse.json({ error: `Please wait ${waitSeconds} seconds before generating again.` }, { status: 429 })
   }
 
   try {
@@ -98,59 +95,75 @@ export async function POST(req: NextRequest) {
 
     rateLimitMap.set(ip, Date.now())
 
+    // Fetch logo for cover page
+    let logoBase64 = ''
+    let logoMime = 'image/png'
+    try {
+      const logo = await fetchImageAsBase64(LOGO_URL)
+      logoBase64 = logo.data
+      logoMime = logo.mimeType
+    } catch (err) {
+      console.error('Failed to fetch logo:', err)
+    }
+
     // Step 1 — Generate character
     const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
-
-COPY THESE EXACTLY FROM THE PHOTO — do not change anything:
-- FACE: same face shape, same eyes, same nose, same lips, same cheeks, same expression
-- SKIN TONE: copy the exact skin tone from the photo — do not lighten or darken it
-- HAIR: copy the exact hair color precisely and copy the same hairstyle exactly
-- GENDER: if the photo shows a girl, generate a GIRL. If a boy, generate a BOY. Do not change.
-- FRECKLES or MARKS: if the child has freckles or marks, include them
-
-3D ANIMATION STYLE: Pixar/Disney quality, soft rounded toddler body proportions, chubby cheeks, big expressive eyes, smooth shading, warm cinematic lighting, premium storybook quality.
-OUTFIT: cream/beige knit sweater, neutral warm tones.
+COPY THESE EXACTLY FROM THE PHOTO:
+- FACE: same face shape, same eyes, same nose, same lips, same cheeks
+- SKIN TONE: copy exact skin tone — do not lighten or darken
+- HAIR: copy exact hair color and hairstyle exactly
+- GENDER: if photo shows a girl generate GIRL, if boy generate BOY
+- FRECKLES or MARKS: include any visible
+3D ANIMATION STYLE: Pixar/Disney quality, soft rounded toddler body proportions, chubby cheeks, big expressive eyes, smooth shading, warm cinematic lighting.
+OUTFIT: beige/cream knit cardigan sweater with buttons, cream/white pants, small shoes.
 BACKGROUND: plain white only — no scenery, no props, no text.
-POSE: full body head to toe, centered, natural standing pose, both feet visible.`
+POSE: full body head to toe, centered, natural standing pose, both feet visible, arms at sides.
+FORMAT: 1:1 square ratio.`
 
     const characterBase64 = await callGemini([
       { inlineData: { mimeType, data: photoBase64 } },
       { text: characterPrompt },
     ])
 
-    // Step 2 — Generate all 17 pages
+    // Step 2 — Generate pages
+    const indicesToGenerate: number[] = previewIndices ||
+      Array.from({ length: book.pagePrompts.length }, (_, i) => i)
+
     const generatedPages: string[] = []
 
-    const indicesToGenerate: number[] = previewIndices || Array.from({ length: book.pagePrompts.length }, (_, i) => i)
-for (let i = 0; i < indicesToGenerate.length; i++) {
-  const pageIndex = indicesToGenerate[i]
+    for (let i = 0; i < indicesToGenerate.length; i++) {
+      const pageIndex = indicesToGenerate[i]
       const pagePrompt = book.pagePrompts[pageIndex]
         .replace(/\[CHILD_NAME\]/g, childName)
         .replace(/\[SENDER_NAME\]/g, senderName)
-        .replace(/\[DEDICATION\]/g, dedication || `A book made with love for ${childName}.`)
+        .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)
 
       const fullPrompt = `${pagePrompt}
 
-IMPORTANT: Keep the exact same character — same face, hair, skin tone, and beige knit sweater outfit as shown in the reference image. Do not change the character's appearance in any way.`
+CHARACTER CONSISTENCY: Keep the exact same child character from the reference image — same face, hair, skin tone, and beige knit cardigan sweater. Do not change the character's appearance in any way.`
 
-      const pageBase64 = await callGemini([
-        { inlineData: { mimeType: 'image/png', data: characterBase64 } },
-        { text: fullPrompt },
-      ])
+      let parts: any[]
+      if (pageIndex === 0 && logoBase64) {
+        parts = [
+          { inlineData: { mimeType: 'image/png', data: characterBase64 } },
+          { inlineData: { mimeType: logoMime, data: logoBase64 } },
+          { text: `${fullPrompt}\n\nLOGO: The second image is the party & presents logo. Place this EXACT logo in white on the LEFT side of the cover (x:20%–38%, y:42%–55%).` },
+        ]
+      } else {
+        parts = [
+          { inlineData: { mimeType: 'image/png', data: characterBase64 } },
+          { text: fullPrompt },
+        ]
+      }
 
+      const pageBase64 = await callGemini(parts)
       generatedPages.push(pageBase64)
     }
 
-    return NextResponse.json({
-      character: characterBase64,
-      pages: generatedPages,
-    })
+    return NextResponse.json({ character: characterBase64, pages: generatedPages })
 
   } catch (err: any) {
     console.error('Generate book error:', err)
-    return NextResponse.json(
-      { error: err.message || 'Failed to generate book' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: err.message || 'Failed to generate book' }, { status: 500 })
   }
 }
