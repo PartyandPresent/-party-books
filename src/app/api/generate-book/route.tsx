@@ -108,17 +108,23 @@ export async function POST(req: NextRequest) {
 
     // Step 1 — Generate character
     const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
-COPY THESE EXACTLY FROM THE PHOTO:
-- FACE: same face shape, same eyes, same nose, same lips, same cheeks
-- SKIN TONE: copy exact skin tone — do not lighten or darken
-- HAIR: copy exact hair color and hairstyle exactly
-- GENDER: if photo shows a girl generate GIRL, if boy generate BOY
-- FRECKLES or MARKS: include any visible
-3D ANIMATION STYLE: Pixar/Disney quality, soft rounded toddler body proportions, chubby cheeks, big expressive eyes, smooth shading, warm cinematic lighting.
-OUTFIT: beige/cream knit cardigan sweater with buttons, cream/white pants, small shoes.
-BACKGROUND: plain white only — no scenery, no props, no text.
-POSE: full body head to toe, centered, natural standing pose, both feet visible, arms at sides.
-FORMAT: 1:1 square ratio.`
+
+COPY EXACTLY FROM THE PHOTO:
+- FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
+- SKIN TONE: copy exact skin tone — do not lighten, darken, or alter in any way
+- HAIR: copy exact hair color, length, and hairstyle exactly as shown
+- GENDER: match exactly — girl generates a girl character, boy generates a boy character
+- FRECKLES or MARKS: include any visible facial features
+
+3D ANIMATION STYLE: Pixar/Disney feature film quality. Soft rounded body proportions. Big expressive eyes. Smooth warm shading. Cinematic lighting — soft warm key light from slightly above and to one side.
+
+OUTFIT: Beige/cream knit cardigan sweater with visible buttons down the front. Cream or white pants. Small neat shoes.
+
+POSE: Full body head to toe. Relaxed natural standing pose. Slight 3/4 angle turned gently toward the viewer rather than straight-on. Warm gentle smile. Arms relaxed naturally at the sides.
+
+BACKGROUND: Plain clean white only. No scenery. No props. No text of any kind. No cast shadow on the background.
+
+FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 
     const characterBase64 = await callGemini([
       { inlineData: { mimeType, data: photoBase64 } },
@@ -140,14 +146,14 @@ FORMAT: 1:1 square ratio.`
 
       const fullPrompt = `${pagePrompt}
 
-CHARACTER CONSISTENCY: Keep the exact same child character from the reference image — same face, hair, skin tone, and beige knit cardigan sweater. Do not change the character's appearance in any way.`
+CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`
 
       let parts: any[]
       if (pageIndex === 0 && logoBase64) {
         parts = [
           { inlineData: { mimeType: 'image/png', data: characterBase64 } },
           { inlineData: { mimeType: logoMime, data: logoBase64 } },
-          { text: `${fullPrompt}\n\nLOGO: The second image is the party & presents logo. Place this EXACT logo in white on the LEFT side of the cover (x:20%–38%, y:42%–55%).` },
+          { text: `${fullPrompt}\n\nLOGO: The second image is the party & presents logo. Place this EXACT logo in white on the left-center side of the cover — clearly visible, faithfully rendered with the PP icon mark and "party & presents" wordmark. Sized to be readable but not dominant.` },
         ]
       } else {
         parts = [
