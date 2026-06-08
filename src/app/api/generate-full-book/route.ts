@@ -26,25 +26,28 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const logoWidth = Math.round(width * 0.14)
 
-    // Remove white background, convert logo mark to white on transparent
-    const { data, info } = await sharp(logoBuffer)
+    const resized = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
-      .ensureAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true })
+      .toBuffer()
 
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i], g = data[i + 1], b = data[i + 2]
-      if (r > 220 && g > 220 && b > 220) {
-        // Near-white background → transparent
-        data[i + 3] = 0
-      } else {
-        // Logo mark → white
-        data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; data[i + 3] = 255
-      }
+    const { width: lw, height: lh } = await sharp(resized).metadata()
+
+    const maskRaw = await sharp(resized)
+      .greyscale()
+      .negate()
+      .threshold(60)
+      .raw()
+      .toBuffer()
+
+    const rgba = Buffer.alloc(lw! * lh! * 4)
+    for (let i = 0; i < lw! * lh!; i++) {
+      rgba[i * 4] = 255
+      rgba[i * 4 + 1] = 255
+      rgba[i * 4 + 2] = 255
+      rgba[i * 4 + 3] = maskRaw[i]
     }
-    const whiteLogo = await sharp(data, {
-      raw: { width: info.width, height: info.height, channels: 4 },
+    const whiteLogo = await sharp(rgba, {
+      raw: { width: lw!, height: lh!, channels: 4 },
     }).png().toBuffer()
 
     const left = Math.round(width * 0.16)
