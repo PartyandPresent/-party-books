@@ -16,7 +16,7 @@ async function sleep(ms: number) {
 
 async function compositeLogoOnCover(coverBase64: string): Promise<string> {
   try {
-    const logoPath = path.join(process.cwd(), 'public', 'Final_Logo.png')
+    const logoPath = path.join(process.cwd(), 'public', 'Final_Logo_White.png')
     const logoBuffer = fs.readFileSync(logoPath)
     const coverBuffer = Buffer.from(coverBase64, 'base64')
 
@@ -24,32 +24,27 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const logoWidth = Math.round(width * 0.14)
 
-    // Resize first, then build a binary alpha mask from the grayscale-negated logo.
-    // White bg (255) → after negate → 0 → below threshold → mask = 0 (transparent)
-    // Dark logo ink (~30) → after negate → ~225 → above threshold → mask = 255 (opaque)
-    const resized = await sharp(logoBuffer)
+    // Flatten to RGB (in case source has alpha), then measure each pixel's
+    // distance from pure white. White bg → dist=0 → alpha=0 (transparent).
+    // Logo mark (even very light cream) → dist>0 → alpha proportional.
+    // All output pixels are forced to white so the logo appears clean white.
+    const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
-      .toBuffer()
-
-    const { width: lw, height: lh } = await sharp(resized).metadata()
-
-    const maskRaw = await sharp(resized)
-      .greyscale()
-      .negate()
-      .threshold(60)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
       .raw()
-      .toBuffer()
+      .toBuffer({ resolveWithObject: true })
 
-    // Build RGBA: solid white everywhere, alpha from mask
-    const rgba = Buffer.alloc(lw! * lh! * 4)
-    for (let i = 0; i < lw! * lh!; i++) {
+    const rgba = Buffer.alloc(info.width * info.height * 4)
+    for (let i = 0; i < info.width * info.height; i++) {
+      const r = data[i * 3], g = data[i * 3 + 1], b = data[i * 3 + 2]
+      const dist = (255 - r) + (255 - g) + (255 - b)
       rgba[i * 4] = 255
       rgba[i * 4 + 1] = 255
       rgba[i * 4 + 2] = 255
-      rgba[i * 4 + 3] = maskRaw[i]
+      rgba[i * 4 + 3] = Math.min(255, dist * 6)
     }
     const whiteLogo = await sharp(rgba, {
-      raw: { width: lw!, height: lh!, channels: 4 },
+      raw: { width: info.width, height: info.height, channels: 4 },
     }).png().toBuffer()
 
     const left = Math.round(width * 0.16)
