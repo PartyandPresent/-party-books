@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'party & presents <onboarding@resend.dev>',
       to: customerEmail,
-      reply_to: 'booksproject@partyandpresents.com',
+      replyTo: 'booksproject@partyandpresents.com',
       subject: `🎉 Your order is confirmed — ${childName}'s book is on its way!`,
       html: customerEmailHtml({
         customerName, childName, senderName,

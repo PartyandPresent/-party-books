@@ -18,7 +18,8 @@ export default function CheckoutPage() {
   const {
     selectedTitle, selectedPrice, selectedCover,
     childName, senderName, dedication,
-    photoDataUrl, setShippingDetails, setOrderId,
+    photoDataUrl, selectedSlug, characterDataUrl,
+    setShippingDetails, setOrderId,
   } = useOrderStore()
 
   const [form, setForm] = useState({
@@ -91,6 +92,14 @@ export default function CheckoutPage() {
       })
       const data = await res.json()
       if (data.url) {
+        // Save generation data before leaving — Zustand state won't survive the Stripe redirect
+        sessionStorage.setItem('pendingGeneration', JSON.stringify({
+          bookSlug: selectedSlug,
+          childName,
+          senderName,
+          dedication,
+          characterBase64: characterDataUrl,
+        }))
         window.location.href = data.url
       } else {
         throw new Error(data.error || 'Failed to create checkout session')

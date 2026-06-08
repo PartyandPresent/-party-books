@@ -34,27 +34,47 @@ export default function OrderSuccessContent() {
       const res = await fetch(`/api/verify-payment?session_id=${sessionId}`)
       const data = await res.json()
       if (data.success) {
-  setOrderDetails(data)
-  setStatus('success')
+        setOrderDetails(data)
+        setStatus('success')
 
-  // Send confirmation email
-  await fetch('/api/send-confirmation', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      customerName: data.customerName,
-      customerEmail: data.email,
-      childName: data.childName,
-      senderName: senderName,
-      bookTitle: data.bookTitle || selectedTitle,
-      orderId: data.orderId,
-      amountTotal: data.amountTotal,
-      shippingAddress: data.shippingAddress || 'See order details',
-    }),
-  })
+        // Send confirmation email
+        await fetch('/api/send-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerName: data.customerName,
+            customerEmail: data.email,
+            childName: data.childName,
+            senderName: senderName,
+            bookTitle: data.bookTitle || selectedTitle,
+            orderId: data.orderId,
+            amountTotal: data.amountTotal,
+            shippingAddress: data.shippingAddress || 'See order details',
+          }),
+        })
 
-  reset()
-}
+        // Fire full 17-page generation in the background — no await
+        const pending = sessionStorage.getItem('pendingGeneration')
+        if (pending) {
+          try {
+            const generationData = JSON.parse(pending)
+            sessionStorage.removeItem('pendingGeneration')
+            fetch('/api/generate-full-book', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ...generationData,
+                customerEmail: data.email,
+                customerName: data.customerName,
+                orderId: data.orderId,
+              }),
+            }).catch(err => console.error('Background generation error:', err))
+          } catch (e) {
+            console.error('Failed to parse pending generation data:', e)
+          }
+        }
+
+        reset()
       } else {
         setStatus('error')
       }
@@ -136,7 +156,7 @@ export default function OrderSuccessContent() {
         <div style={{ backgroundColor: '#fff', borderRadius: 20, padding: '32px 28px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)', marginBottom: 24 }}>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: HEADING, marginBottom: 24 }}>What happens next?</h2>
           {[
-            { icon: '🎨', title: 'We generate your full book', desc: 'Our AI illustrates all 17 pages with your child as the star character.', time: 'Within 24 hours' },
+            { icon: '🎨', title: 'We generate your full book', desc: 'Our AI is already illustrating all 17 pages with your child as the star character.', time: 'Within 15 minutes' },
             { icon: '✅', title: 'Quality check', desc: 'Our team reviews every page to make sure it looks perfect.', time: '1–2 business days' },
             { icon: '🖨️', title: 'Print & bind', desc: 'Your book is printed on premium paper and hardcover bound.', time: '2–3 business days' },
             { icon: '📦', title: 'Shipped to you', desc: 'Your book is carefully packaged and shipped to your door.', time: '3–5 business days' },

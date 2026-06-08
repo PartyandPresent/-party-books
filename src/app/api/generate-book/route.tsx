@@ -1,23 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
+import sharp from 'sharp'
+import path from 'path'
+import fs from 'fs'
 
 export const maxDuration = 300
 export const dynamic = 'force-dynamic'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const MODEL = 'gemini-3.1-flash-image'
-const LOGO_URL = 'https://res.cloudinary.com/dft0hfbee/image/upload/f_auto,q_auto/Final_Logo_zvkrqg'
 
 async function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
 }
 
-async function fetchImageAsBase64(url: string): Promise<{ data: string; mimeType: string }> {
-  const res = await fetch(url)
-  const buffer = await res.arrayBuffer()
-  const base64 = Buffer.from(buffer).toString('base64')
-  const contentType = res.headers.get('content-type') || 'image/png'
-  return { data: base64, mimeType: contentType }
+async function compositeLogoOnCover(coverBase64: string): Promise<string> {
+  try {
+    const logoPath = path.join(process.cwd(), 'public', 'Final_Logo.png')
+    const logoBuffer = fs.readFileSync(logoPath)
+    const coverBuffer = Buffer.from(coverBase64, 'base64')
+
+    const { width = 1792, height = 896 } = await sharp(coverBuffer).metadata()
+
+    const logoWidth = Math.round(width * 0.14)
+    const resizedLogo = await sharp(logoBuffer)
+      .resize(logoWidth, null, { fit: 'inside' })
+      .toBuffer()
+
+    const left = Math.round(width * 0.16)
+    const top = Math.round(height * 0.43)
+
+    const result = await sharp(coverBuffer)
+      .composite([{ input: resizedLogo, left, top }])
+      .png()
+      .toBuffer()
+
+    return result.toString('base64')
+  } catch (err) {
+    console.error('Logo composite failed, returning original:', err)
+    return coverBase64
+  }
 }
 
 async function callGemini(promptParts: any[], expectImage = true): Promise<string> {
@@ -95,17 +117,6 @@ export async function POST(req: NextRequest) {
 
     rateLimitMap.set(ip, Date.now())
 
-    // Fetch logo for cover page
-    let logoBase64 = ''
-    let logoMime = 'image/png'
-    try {
-      const logo = await fetchImageAsBase64(LOGO_URL)
-      logoBase64 = logo.data
-      logoMime = logo.mimeType
-    } catch (err) {
-      console.error('Failed to fetch logo:', err)
-    }
-
     // Step 1 — Generate character
     const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
 
@@ -148,21 +159,18 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 
 CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`
 
-      let parts: any[]
-      if (pageIndex === 0 && logoBase64) {
-        parts = [
-          { inlineData: { mimeType: 'image/png', data: characterBase64 } },
-          { inlineData: { mimeType: logoMime, data: logoBase64 } },
-          { text: `${fullPrompt}\n\nLOGO: The second image is the party & presents logo. Place this EXACT logo in white on the left-center side of the cover — clearly visible, faithfully rendered with the PP icon mark and "party & presents" wordmark. Sized to be readable but not dominant.` },
-        ]
-      } else {
-        parts = [
-          { inlineData: { mimeType: 'image/png', data: characterBase64 } },
-          { text: fullPrompt },
-        ]
+      const parts = [
+        { inlineData: { mimeType: 'image/png', data: characterBase64 } },
+        { text: fullPrompt },
+      ]
+
+      let pageBase64 = await callGemini(parts)
+
+      // Composite the real logo onto the cover after Gemini generates it
+      if (pageIndex === 0) {
+        pageBase64 = await compositeLogoOnCover(pageBase64)
       }
 
-      const pageBase64 = await callGemini(parts)
       generatedPages.push(pageBase64)
     }
 

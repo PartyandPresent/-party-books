@@ -77,8 +77,7 @@ DIRECTLY BELOW that first line, same right side:
   "[CHILD_NAME]"
   Medium-large bold ALL-CAPS rounded text — slightly bigger than the line above but still modest in scale. Vivid red-orange color with white outline. Does not overpower the scene.
 
-LEFT-CENTER of the image, in the open flower field area:
-  The second image is the party & presents logo. Place this EXACT logo here in white — faithful to the original, with the PP icon mark and "party & presents" wordmark beside it. Keep it small and unobtrusive — a subtle brand mark, not a focal point.
+LEFT SIDE: Keep the left-center area (left half of the image, around mid-height) open and relatively clear — a natural gap in the flowers and foliage where a small logo can be placed. No characters, no large objects in that zone.
 
 BOTTOM-RIGHT corner, very small:
   "by : party&presents"
