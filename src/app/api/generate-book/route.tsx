@@ -24,26 +24,21 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const logoWidth = Math.round(width * 0.14)
 
-    // Flatten to RGB (in case source has alpha), then measure each pixel's
-    // distance from pure white. White bg → dist=0 → alpha=0 (transparent).
-    // Logo mark (even very light cream) → dist>0 → alpha proportional.
-    // All output pixels are forced to white so the logo appears clean white.
+    // File is white-on-transparent. Preserve existing alpha, force all RGB to
+    // white so even the slightly cream bow becomes pure white on the cover.
     const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
-      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true })
 
-    const rgba = Buffer.alloc(info.width * info.height * 4)
     for (let i = 0; i < info.width * info.height; i++) {
-      const r = data[i * 3], g = data[i * 3 + 1], b = data[i * 3 + 2]
-      const dist = (255 - r) + (255 - g) + (255 - b)
-      rgba[i * 4] = 255
-      rgba[i * 4 + 1] = 255
-      rgba[i * 4 + 2] = 255
-      rgba[i * 4 + 3] = Math.min(255, dist * 6)
+      data[i * 4] = 255
+      data[i * 4 + 1] = 255
+      data[i * 4 + 2] = 255
+      // alpha at data[i * 4 + 3] unchanged
     }
-    const whiteLogo = await sharp(rgba, {
+    const whiteLogo = await sharp(Buffer.from(data), {
       raw: { width: info.width, height: info.height, channels: 4 },
     }).png().toBuffer()
 

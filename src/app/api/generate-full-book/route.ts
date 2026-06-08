@@ -28,20 +28,16 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
-      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true })
 
-    const rgba = Buffer.alloc(info.width * info.height * 4)
     for (let i = 0; i < info.width * info.height; i++) {
-      const r = data[i * 3], g = data[i * 3 + 1], b = data[i * 3 + 2]
-      const dist = (255 - r) + (255 - g) + (255 - b)
-      rgba[i * 4] = 255
-      rgba[i * 4 + 1] = 255
-      rgba[i * 4 + 2] = 255
-      rgba[i * 4 + 3] = Math.min(255, dist * 6)
+      data[i * 4] = 255
+      data[i * 4 + 1] = 255
+      data[i * 4 + 2] = 255
     }
-    const whiteLogo = await sharp(rgba, {
+    const whiteLogo = await sharp(Buffer.from(data), {
       raw: { width: info.width, height: info.height, channels: 4 },
     }).png().toBuffer()
 
