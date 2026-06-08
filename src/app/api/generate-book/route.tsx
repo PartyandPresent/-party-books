@@ -23,15 +23,26 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
     const { width = 1792, height = 896 } = await sharp(coverBuffer).metadata()
 
     const logoWidth = Math.round(width * 0.14)
-    const resizedLogo = await sharp(logoBuffer)
+
+    // Resize then convert all pixels to white, preserving alpha
+    const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
-      .toBuffer()
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true })
+
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255; data[i + 1] = 255; data[i + 2] = 255
+    }
+    const whiteLogo = await sharp(data, {
+      raw: { width: info.width, height: info.height, channels: 4 },
+    }).png().toBuffer()
 
     const left = Math.round(width * 0.16)
     const top = Math.round(height * 0.43)
 
     const result = await sharp(coverBuffer)
-      .composite([{ input: resizedLogo, left, top }])
+      .composite([{ input: whiteLogo, left, top }])
       .png()
       .toBuffer()
 
