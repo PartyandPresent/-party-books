@@ -24,7 +24,7 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const logoWidth = Math.round(width * 0.14)
 
-    // Resize then convert all pixels to white, preserving alpha
+    // Remove white background, convert logo mark to white on transparent
     const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
       .ensureAlpha()
@@ -32,7 +32,14 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
       .toBuffer({ resolveWithObject: true })
 
     for (let i = 0; i < data.length; i += 4) {
-      data[i] = 255; data[i + 1] = 255; data[i + 2] = 255
+      const r = data[i], g = data[i + 1], b = data[i + 2]
+      if (r > 220 && g > 220 && b > 220) {
+        // Near-white background → transparent
+        data[i + 3] = 0
+      } else {
+        // Logo mark → white
+        data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; data[i + 3] = 255
+      }
     }
     const whiteLogo = await sharp(data, {
       raw: { width: info.width, height: info.height, channels: 4 },
