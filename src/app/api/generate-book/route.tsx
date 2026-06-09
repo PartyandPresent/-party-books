@@ -42,11 +42,13 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
       raw: { width: info.width, height: info.height, channels: 4 },
     }).png().toBuffer()
 
-    const left = Math.round(width * 0.16)
-    const top = Math.round(height * 0.43)
+    // Centre the logo within the left page of the spread
+    const leftPageW = Math.round(width / 2)
+    const left = Math.round((leftPageW - info.width) / 2)
+    const top  = Math.round((height - info.height) / 2)
 
     const result = await sharp(coverBuffer)
-      .composite([{ input: whiteLogo, left, top }])
+      .composite([{ input: whiteLogo, left, top, blend: 'over' }])
       .png()
       .toBuffer()
 

@@ -42,11 +42,13 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
       raw: { width: info.width, height: info.height, channels: 4 },
     }).png().toBuffer()
 
-    const left = Math.round(width * 0.16)
-    const top = Math.round(height * 0.43)
+    // Centre the logo within the left page of the spread
+    const leftPageW = Math.round(width / 2)
+    const left = Math.round((leftPageW - info.width) / 2)
+    const top  = Math.round((height - info.height) / 2)
 
     const result = await sharp(coverBuffer)
-      .composite([{ input: whiteLogo, left, top }])
+      .composite([{ input: whiteLogo, left, top, blend: 'over' }])
       .png()
       .toBuffer()
 
@@ -177,6 +179,26 @@ async function uploadToCloudinary(base64: string, folder: string, publicId: stri
   return result.secure_url as string
 }
 
+async function saveOrderMeta(folder: string, meta: object) {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME!
+  const apiKey = process.env.CLOUDINARY_API_KEY!
+  const apiSecret = process.env.CLOUDINARY_API_SECRET!
+  const publicId = 'meta'
+  const timestamp = Math.round(Date.now() / 1000)
+  const paramStr = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}`
+  const signature = crypto.createHash('sha1').update(paramStr + apiSecret).digest('hex')
+
+  const form = new FormData()
+  form.append('file', `data:application/json;base64,${Buffer.from(JSON.stringify(meta)).toString('base64')}`)
+  form.append('api_key', apiKey)
+  form.append('timestamp', String(timestamp))
+  form.append('signature', signature)
+  form.append('folder', folder)
+  form.append('public_id', publicId)
+
+  await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`, { method: 'POST', body: form })
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -207,6 +229,11 @@ export async function POST(req: NextRequest) {
 
     const folder = `party-books/orders/${orderId}`
     const pageUrls: string[] = []
+
+    // Save order details so staff can regenerate any page without re-entering info
+    if (cloudinaryReady) {
+      saveOrderMeta(folder, { childName, senderName: senderName || '', dedication: dedication || '', bookSlug }).catch(() => {})
+    }
 
     for (let i = 0; i < book.pagePrompts.length; i++) {
       const pagePrompt = book.pagePrompts[i]
@@ -272,7 +299,7 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
       from: 'party & presents <onboarding@resend.dev>',
       to: 'booksproject@partyandpresents.com',
       subject: `📚 All 17 pages ready — ${childName}'s book (Order #${orderId?.slice(-8).toUpperCase()})`,
-      html: staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle: book.title, orderId, pageUrls, cloudinaryReady, baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' }),
+      html: staffEmailHtml({ customerName, customerEmail, childName, senderName, dedication, bookTitle: book.title, bookSlug, orderId, pageUrls, cloudinaryReady, baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' }),
     })
 
     return NextResponse.json({ success: true, totalPages: pageUrls.length })
@@ -283,9 +310,15 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
   }
 }
 
-function staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle, orderId, pageUrls, cloudinaryReady, baseUrl }: any) {
+function staffEmailHtml({ customerName, customerEmail, childName, senderName, dedication, bookTitle, bookSlug, orderId, pageUrls, cloudinaryReady, baseUrl }: any) {
   const shortId = orderId?.slice(-8).toUpperCase() || 'N/A'
-  const reviewUrl = `${baseUrl}/staff/order/${shortId}`
+  const reviewParams = new URLSearchParams({
+    childName: childName || '',
+    senderName: senderName || '',
+    dedication: dedication || '',
+    bookSlug: bookSlug || '',
+  }).toString()
+  const reviewUrl = `${baseUrl}/staff/order/${shortId}?${reviewParams}`
   const urlList = cloudinaryReady
     ? pageUrls.map((url: string, i: number) =>
         `<tr>
