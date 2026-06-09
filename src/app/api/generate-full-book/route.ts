@@ -272,7 +272,7 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
       from: 'party & presents <onboarding@resend.dev>',
       to: 'booksproject@partyandpresents.com',
       subject: `📚 All 17 pages ready — ${childName}'s book (Order #${orderId?.slice(-8).toUpperCase()})`,
-      html: staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle: book.title, orderId, pageUrls, cloudinaryReady }),
+      html: staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle: book.title, orderId, pageUrls, cloudinaryReady, baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' }),
     })
 
     return NextResponse.json({ success: true, totalPages: pageUrls.length })
@@ -283,8 +283,9 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
   }
 }
 
-function staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle, orderId, pageUrls, cloudinaryReady }: any) {
+function staffEmailHtml({ customerName, customerEmail, childName, senderName, bookTitle, orderId, pageUrls, cloudinaryReady, baseUrl }: any) {
   const shortId = orderId?.slice(-8).toUpperCase() || 'N/A'
+  const reviewUrl = `${baseUrl}/staff/order/${shortId}`
   const urlList = cloudinaryReady
     ? pageUrls.map((url: string, i: number) =>
         `<tr>
@@ -304,7 +305,10 @@ function staffEmailHtml({ customerName, customerEmail, childName, senderName, bo
 <body style="font-family:Arial,sans-serif;padding:24px;background:#f5f5f5;">
   <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;">
     <h2 style="color:#FF559C;margin:0 0 8px;">📚 All 17 pages generated!</h2>
-    <p style="color:#555;margin:0 0 24px;font-size:14px;">A new order is ready for review and PDF creation.</p>
+    <p style="color:#555;margin:0 0 16px;font-size:14px;">A new order is ready for review and PDF creation.</p>
+    <a href="${reviewUrl}" style="display:inline-block;background:linear-gradient(135deg,#FF559C,#FF3385);color:#fff;text-decoration:none;padding:12px 28px;border-radius:50px;font-size:14px;font-weight:800;margin-bottom:24px;">
+      🔍 Open Quality Review Page →
+    </a>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
       ${[
