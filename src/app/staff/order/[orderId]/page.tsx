@@ -91,7 +91,8 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
           <p style={{ margin: 0, fontSize: 12, color: MUTED, fontWeight: 700, letterSpacing: 1 }}>PARTY & PRESENTS — STAFF REVIEW</p>
           <h1 style={{ margin: '2px 0 0', fontSize: 20, fontWeight: 800, color: DARK }}>Order #{orderId}</h1>
         </div>
-        <button
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
           onClick={handleDownloadPdf}
           disabled={downloading}
           style={{
@@ -109,6 +110,7 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
         >
           {downloading ? '⏳ Generating PDF…' : '⬇ Download Spread PDF'}
         </button>
+        </div>
       </div>
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 24px' }}>

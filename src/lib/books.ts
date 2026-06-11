@@ -33,6 +33,8 @@ CHARACTER: The exact child from the reference image — match their face, hair, 
 
 SPINE ZONE — CRITICAL: The center 12% of the image is the book spine/binding area. Place NO character body, face, text, or important elements here. Character must stand clearly in the LEFT half or clearly in the RIGHT half — never straddling center. Background scenery only may pass through naturally.
 
+NO CENTER FOLD — CRITICAL: Do NOT render any center spine line, fold crease, gutter shadow, depth gradient, or visual divide at the horizontal midpoint. The canvas is a completely flat seamless 2:1 spread — background, sky, scenery, and lighting must flow continuously from the left edge to the right edge with no interruption, darkening, or separation at center.
+
 TEXT RENDERING: Render only the exact text content shown in each prompt. No font names. No labels. No extra words.
 `
 
