@@ -6,8 +6,10 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import BookCard from '@/components/ui/BookCard'
 import { BOOKS, REVIEWS, OCCASIONS, RECIPIENTS } from '@/lib/books'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export default function HomePage() {
+  const isMobile = useIsMobile()
   const [activeTab, setActiveTab]         = useState<'all' | 'occasion' | 'recipient'>('all')
   const [activeOccasion, setActiveOccasion] = useState('')
   const [activeRecipient, setActiveRecipient] = useState('')
@@ -24,77 +26,72 @@ export default function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section style={{
-        minHeight: '100vh',
         background: 'linear-gradient(135deg, #FFEEF5 0%, #fff 50%, #E6F8FE 100%)',
         display: 'flex', alignItems: 'center',
-        paddingTop: 90, paddingBottom: 60,
+        paddingTop: isMobile ? 90 : 110, paddingBottom: 60,
         position: 'relative', overflow: 'hidden',
       }}>
         {/* Decorative blobs */}
         <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'rgba(255,85,156,0.06)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: -80, left: -80, width: 400, height: 400, borderRadius: '50%', background: 'rgba(40,190,239,0.06)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center', width: '100%' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 20px' : '0 24px', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 60, alignItems: 'center', width: '100%' }}>
 
           {/* Left — Text */}
-          <div style={{ animation: 'fadeUp 0.7s ease-out forwards' }}>
+          <div>
             {/* Tag */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFEEF5', border: '1px solid #FF559C40', borderRadius: 50, padding: '6px 16px', marginBottom: 24 }}>
-              <span style={{ fontSize: 16 }}>✨</span>
-              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13, color: '#FF559C' }}>Pixar-Quality Personalized Books</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFEEF5', border: '1px solid #FF559C40', borderRadius: 50, padding: '6px 16px', marginBottom: 20 }}>
+              <span style={{ fontSize: 14 }}>✨</span>
+              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: '#FF559C' }}>Pixar-Quality Personalized Books</span>
             </div>
 
             {/* Headline */}
-            <h1 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: 'clamp(36px, 5vw, 58px)', color: '#2C2C2C', lineHeight: 1.15, marginBottom: 20 }}>
+            <h1 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 36 : 'clamp(36px, 5vw, 58px)', color: '#2C2C2C', lineHeight: 1.15, marginBottom: 16 }}>
               Books as unique as{' '}
               <span style={{ color: '#FF559C', display: 'block' }}>the child you love</span>
             </h1>
 
-            <p style={{ fontSize: 18, color: '#555555', lineHeight: 1.7, marginBottom: 32, maxWidth: 480 }}>
+            <p style={{ fontSize: isMobile ? 16 : 18, color: '#555555', lineHeight: 1.7, marginBottom: 24, maxWidth: 480 }}>
               Upload a photo, add a name, and watch as Gemini AI transforms your child into the hero of their very own storybook — in minutes.
             </p>
 
             {/* Stats */}
-            <div style={{ display: 'flex', gap: 28, marginBottom: 36, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: isMobile ? 20 : 28, marginBottom: 28, flexWrap: 'wrap' }}>
               {[
                 { num: '500+', label: 'Happy families' },
                 { num: '4.9★', label: 'Average rating' },
                 { num: '17', label: 'Pages per book' },
               ].map(s => (
                 <div key={s.num}>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 26, color: '#FF559C' }}>{s.num}</div>
+                  <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 22 : 26, color: '#FF559C' }}>{s.num}</div>
                   <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: '#888888', fontWeight: 600 }}>{s.label}</div>
                 </div>
               ))}
             </div>
 
             {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12, flexWrap: 'wrap' }}>
               <Link href="/books" style={{
                 background: '#FF559C', color: '#fff',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16,
-                padding: '16px 36px', borderRadius: 50, textDecoration: 'none',
+                padding: '15px 32px', borderRadius: 50, textDecoration: 'none',
                 boxShadow: '0 8px 24px rgba(255,85,156,0.35)',
-                transition: 'all 0.2s', display: 'inline-block',
-              }}
-                onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(255,85,156,0.45)' }}
-                onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(255,85,156,0.35)' }}>
+                display: 'block', textAlign: 'center',
+              }}>
                 ✨ Create Their Book
               </Link>
               <Link href="#how-it-works" style={{
                 background: 'transparent', color: '#FF559C',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 16,
-                padding: '16px 36px', borderRadius: 50, textDecoration: 'none',
-                border: '2px solid #FF559C', transition: 'all 0.2s', display: 'inline-block',
-              }}
-                onMouseOver={e => { e.currentTarget.style.background = '#FFEEF5' }}
-                onMouseOut={e => { e.currentTarget.style.background = 'transparent' }}>
+                padding: '15px 32px', borderRadius: 50, textDecoration: 'none',
+                border: '2px solid #FF559C', display: 'block', textAlign: 'center',
+              }}>
                 See How It Works
               </Link>
             </div>
 
             {/* Trust badges */}
-            <div style={{ display: 'flex', gap: 20, marginTop: 28, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: isMobile ? 12 : 20, marginTop: 24, flexWrap: 'wrap' }}>
               {['🎨 Pixar-quality art', '📦 Ships in 5–7 days', '💝 100% satisfaction'].map(b => (
                 <span key={b} style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: '#888888', fontWeight: 600 }}>{b}</span>
               ))}
@@ -102,8 +99,8 @@ export default function HomePage() {
           </div>
 
           {/* Right — Book Showcase */}
-          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', animation: 'float 4s ease-in-out infinite' }}>
-            <div style={{ position: 'relative', width: '100%', maxWidth: 460 }}>
+          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: isMobile ? 340 : 460 }}>
               {/* Main book */}
               <div style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(255,85,156,0.25)', border: '3px solid #fff' }}>
                 <Image
@@ -115,16 +112,16 @@ export default function HomePage() {
               </div>
               {/* Floating badge */}
               <div style={{
-                position: 'absolute', top: -16, right: -16,
+                position: 'absolute', top: -12, right: -8,
                 background: '#FF559C', color: '#fff',
-                fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 12,
-                padding: '8px 16px', borderRadius: 50,
+                fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 11,
+                padding: '6px 14px', borderRadius: 50,
                 boxShadow: '0 4px 14px rgba(255,85,156,0.4)',
               }}>
                 ⭐ Bestseller
               </div>
               {/* Small preview cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 10 }}>
                 {[
                   'https://res.cloudinary.com/dhf1caifd/image/upload/v1779427841/Page_3_u2rqpp.png',
                   'https://res.cloudinary.com/dhf1caifd/image/upload/v1779427841/Page_4_oxlsdp.png',

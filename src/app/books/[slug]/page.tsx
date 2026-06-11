@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { BOOKS } from '@/lib/books'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export default function BookDetailPage() {
   const params = useParams()
@@ -13,6 +14,7 @@ export default function BookDetailPage() {
   const book = BOOKS.find(b => b.slug === slug)
   const [activeImage, setActiveImage] = useState(0)
   const [activeTab, setActiveTab] = useState<'about' | 'pages' | 'shipping'>('about')
+  const isMobile = useIsMobile()
 
   if (!book) {
     return (
@@ -54,7 +56,7 @@ export default function BookDetailPage() {
         </div>
 
         {/* Main Content */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 80px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'start' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 16px 60px' : '0 24px 80px', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 60, alignItems: 'start' }}>
 
           {/* LEFT — Image Gallery */}
           <div>
@@ -196,7 +198,7 @@ export default function BookDetailPage() {
             </Link>
 
             {/* Trust badges */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 10, marginBottom: 28 }}>
               {[
                 { icon: '🎨', text: 'Pixar-quality art' },
                 { icon: '📦', text: 'Ships in 5–7 days' },

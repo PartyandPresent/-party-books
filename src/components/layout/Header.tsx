@@ -2,16 +2,21 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Close menu when switching to desktop
+  useEffect(() => { if (!isMobile) setMenuOpen(false) }, [isMobile])
 
   return (
     <header style={{
@@ -31,57 +36,69 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <Image src="/Icon.png" alt="party & presents" width={40} height={40} style={{ objectFit: 'contain' }} />
-          <Image src="/Logo_Text.png" alt="party & presents" width={110} height={36} style={{ objectFit: 'contain' }} />
+          <Image src="/Icon.png" alt="party & presents" width={36} height={36} style={{ objectFit: 'contain' }} />
+          {!isMobile && (
+            <Image src="/Logo_Text.png" alt="party & presents" width={110} height={36} style={{ objectFit: 'contain' }} />
+          )}
         </Link>
 
         {/* Desktop Nav */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="hidden md:flex">
-          <Link href="/books" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
-            onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
-            All Books
-          </Link>
-          <Link href="/books?filter=baptism" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
-            onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
-            By Occasion
-          </Link>
-          <Link href="/books?filter=baby" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
-            onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
-            By Recipient
-          </Link>
-          <a href="https://partyandpresents.com" target="_blank" rel="noopener noreferrer"
-            style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: 13, textDecoration: 'none' }}>
-            ← Main Store
-          </a>
-          <Link href="/books" style={{
-            background: '#FF559C', color: '#fff',
-            fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14,
-            padding: '10px 22px', borderRadius: 50, textDecoration: 'none',
-            transition: 'all 0.2s', boxShadow: '0 4px 14px rgba(255,85,156,0.3)',
-          }}
-            onMouseOver={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseOut={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}>
-            ✨ Create a Book
-          </Link>
-        </nav>
+        {!isMobile && (
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+            <Link href="/books" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}
+              onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
+              onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
+              All Books
+            </Link>
+            <Link href="/books?filter=baptism" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}
+              onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
+              onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
+              By Occasion
+            </Link>
+            <Link href="/books?filter=baby" style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}
+              onMouseOver={e => (e.currentTarget.style.color = '#FF559C')}
+              onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
+              By Recipient
+            </Link>
+            <a href="https://partyandpresents.com" target="_blank" rel="noopener noreferrer"
+              style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: 13, textDecoration: 'none' }}>
+              ← Main Store
+            </a>
+            <Link href="/books" style={{
+              background: '#FF559C', color: '#fff',
+              fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14,
+              padding: '10px 22px', borderRadius: 50, textDecoration: 'none',
+              boxShadow: '0 4px 14px rgba(255,85,156,0.3)',
+            }}
+              onMouseOver={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+              onMouseOut={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}>
+              ✨ Create a Book
+            </Link>
+          </nav>
+        )}
 
-        {/* Mobile Menu Button */}
-        <button onClick={() => setMenuOpen(!menuOpen)}
-          style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
-          className="flex md:hidden">
-          <div style={{ width: 24, display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <span style={{ height: 2, background: menuOpen ? '#FF559C' : '#1A1A1A', borderRadius: 2, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
-            <span style={{ height: 2, background: '#1A1A1A', borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: 'all 0.3s' }} />
-            <span style={{ height: 2, background: menuOpen ? '#FF559C' : '#1A1A1A', borderRadius: 2, transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none' }} />
+        {/* Mobile: CTA + Hamburger */}
+        {isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Link href="/books" style={{
+              background: '#FF559C', color: '#fff',
+              fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13,
+              padding: '8px 16px', borderRadius: 50, textDecoration: 'none',
+            }}>
+              ✨ Create
+            </Link>
+            <button onClick={() => setMenuOpen(!menuOpen)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, display: 'flex', flexDirection: 'column', gap: 5, width: 32 }}>
+              <span style={{ height: 2, background: menuOpen ? '#FF559C' : '#1A1A1A', borderRadius: 2, display: 'block', transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
+              <span style={{ height: 2, background: '#1A1A1A', borderRadius: 2, display: 'block', opacity: menuOpen ? 0 : 1, transition: 'all 0.3s' }} />
+              <span style={{ height: 2, background: menuOpen ? '#FF559C' : '#1A1A1A', borderRadius: 2, display: 'block', transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none' }} />
+            </button>
           </div>
-        </button>
+        )}
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
+      {/* Mobile Menu Drawer */}
+      {isMobile && menuOpen && (
         <div style={{
           background: '#fff', borderTop: '1px solid #FFEEF5',
           padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16,
@@ -97,6 +114,10 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          <a href="https://partyandpresents.com" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none' }}>
+            ← Main Store
+          </a>
           <Link href="/books" onClick={() => setMenuOpen(false)}
             style={{
               background: '#FF559C', color: '#fff', textAlign: 'center',
