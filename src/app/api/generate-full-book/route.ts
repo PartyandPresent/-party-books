@@ -5,7 +5,6 @@ import { Resend } from 'resend'
 import sharp from 'sharp'
 import path from 'path'
 import fs from 'fs'
-import { PDFDocument, rgb } from 'pdf-lib'
 
 export const maxDuration = 300
 export const dynamic = 'force-dynamic'
@@ -59,59 +58,6 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
   }
 }
 
-async function buildPreviewPdf(pageUrls: string[], childName: string, bookTitle: string): Promise<Buffer> {
-  const pdfDoc = await PDFDocument.create()
-
-  for (let i = 0; i < pageUrls.length; i++) {
-    const url = pageUrls[i]
-    if (!url) continue
-
-    // Fetch and normalise to JPEG for PDF embedding
-    const res = await fetch(url)
-    const imgBuffer = Buffer.from(await res.arrayBuffer())
-
-    // Resize to a consistent spread width (1792×896) and add fold shadow
-    const spreadWidth = 1792
-    const spreadHeight = 896
-
-    const resized = await sharp(imgBuffer)
-      .resize(spreadWidth, spreadHeight, { fit: 'fill' })
-      .toBuffer()
-
-    // SVG fold-shadow overlay — gradient stripe at center simulates spine crease
-    const foldSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${spreadWidth}" height="${spreadHeight}">
-      <defs>
-        <linearGradient id="fold" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="black" stop-opacity="0"/>
-          <stop offset="46%"  stop-color="black" stop-opacity="0.12"/>
-          <stop offset="49%"  stop-color="black" stop-opacity="0.22"/>
-          <stop offset="50%"  stop-color="white" stop-opacity="0.18"/>
-          <stop offset="51%"  stop-color="black" stop-opacity="0.22"/>
-          <stop offset="54%"  stop-color="black" stop-opacity="0.12"/>
-          <stop offset="100%" stop-color="black" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <rect x="${spreadWidth * 0.44}" y="0" width="${spreadWidth * 0.12}" height="${spreadHeight}" fill="url(#fold)"/>
-    </svg>`
-
-    const withFold = await sharp(resized)
-      .composite([{ input: Buffer.from(foldSvg), top: 0, left: 0 }])
-      .jpeg({ quality: 88 })
-      .toBuffer()
-
-    // PDF page sized to match the spread (points = pixels at 96dpi approx)
-    const pdfPage = pdfDoc.addPage([spreadWidth * 0.5, spreadHeight * 0.5])
-    const jpegImage = await pdfDoc.embedJpg(withFold)
-    pdfPage.drawImage(jpegImage, {
-      x: 0, y: 0,
-      width: pdfPage.getWidth(),
-      height: pdfPage.getHeight(),
-    })
-  }
-
-  const pdfBytes = await pdfDoc.save()
-  return Buffer.from(pdfBytes)
-}
 
 async function callGemini(promptParts: any[]): Promise<string> {
   const delays = [5000, 10000, 20000]
@@ -272,35 +218,15 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const uploadedUrls = pageUrls.filter(Boolean)
 
-    // Generate preview PDF and email to customer
-    if (uploadedUrls.length > 0) {
-      try {
-        const pdfBuffer = await buildPreviewPdf(pageUrls, childName, book.title)
-        await resend.emails.send({
-          from: 'party & presents <onboarding@resend.dev>',
-          to: customerEmail,
-          subject: `🎉 Your preview is ready — ${childName}'s book!`,
-          html: customerPdfEmailHtml({ customerName, childName, bookTitle: book.title, orderId }),
-          attachments: [{
-            filename: `${childName.replace(/\s+/g, '-')}-book-preview.pdf`,
-            content: pdfBuffer,
-          }],
-        })
-        console.log(`✓ Preview PDF emailed to ${customerEmail}`)
-      } catch (err) {
-        console.error('PDF generation or email failed:', err)
-      }
-    }
-
-    // Notify staff
+    // Notify staff immediately after generation — before any PDF work so we stay under 300s
     await resend.emails.send({
       from: 'party & presents <onboarding@resend.dev>',
       to: 'booksproject@partyandpresents.com',
       subject: `📚 All 17 pages ready — ${childName}'s book (Order #${orderId?.slice(-8).toUpperCase()})`,
       html: staffEmailHtml({ customerName, customerEmail, childName, senderName, dedication, bookTitle: book.title, bookSlug, orderId, pageUrls, cloudinaryReady, baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' }),
     })
+    console.log('✓ Staff email sent')
 
     return NextResponse.json({ success: true, totalPages: pageUrls.length })
 
@@ -372,45 +298,3 @@ function staffEmailHtml({ customerName, customerEmail, childName, senderName, de
 </html>`
 }
 
-function customerPdfEmailHtml({ customerName, childName, bookTitle, orderId }: any) {
-  const shortId = orderId?.slice(-8).toUpperCase() || 'N/A'
-  return `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#FAFAFA;font-family:Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAFA;padding:40px 20px;">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-        <tr>
-          <td style="background:linear-gradient(135deg,#FF559C,#FF3385);border-radius:20px 20px 0 0;padding:40px;text-align:center;">
-            <p style="margin:0 0 8px;color:rgba(255,255,255,0.85);font-size:13px;font-weight:700;letter-spacing:2px;">PARTY & PRESENTS</p>
-            <h1 style="margin:0 0 8px;color:#fff;font-size:28px;font-weight:800;">🎉 ${childName}'s book is ready!</h1>
-            <p style="margin:0;color:rgba(255,255,255,0.9);font-size:15px;">Your personalised preview is attached below.</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="background:#fff;padding:40px;border-radius:0 0 20px 20px;">
-            <p style="margin:0 0 20px;font-size:15px;color:#555;line-height:1.7;">
-              Hi ${customerName?.split(' ')[0] || 'there'}! 👋<br><br>
-              Amazing news — we've finished illustrating all 17 pages of <strong>${childName}'s</strong> personalised book!
-              Open the attached PDF to see your preview with the beautiful fold effect.
-            </p>
-            <div style="background:#FFEEF5;border-radius:12px;padding:20px;margin-bottom:24px;">
-              <p style="margin:0 0 6px;font-size:13px;color:#888;font-weight:700;">ORDER #${shortId}</p>
-              <p style="margin:0;font-size:14px;color:#2C2C2C;font-weight:700;">${bookTitle} — Personalised for ${childName}</p>
-            </div>
-            <p style="margin:0 0 8px;font-size:14px;color:#555;">
-              📎 <strong>Your preview PDF is attached to this email.</strong><br>
-              Open it to flip through all 17 pages of ${childName}'s book!
-            </p>
-            <p style="margin:20px 0 0;font-size:13px;color:#888;">
-              We'll be in touch once your book is printed and on its way. Questions? Reply to this email.
-            </p>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`
-}
