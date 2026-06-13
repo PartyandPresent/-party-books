@@ -168,6 +168,7 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
     for (let i = 0; i < indicesToGenerate.length; i++) {
       const pageIndex = indicesToGenerate[i]
       const pagePrompt = book.pagePrompts[pageIndex]
+        .replace(/\[CHILD_NAME_UPPER\]/g, childName.toUpperCase())
         .replace(/\[CHILD_NAME\]/g, childName)
         .replace(/\[SENDER_NAME\]/g, senderName)
         .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)

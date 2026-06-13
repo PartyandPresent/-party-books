@@ -183,6 +183,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < book.pagePrompts.length; i++) {
       const pagePrompt = book.pagePrompts[i]
+        .replace(/\[CHILD_NAME_UPPER\]/g, childName.toUpperCase())
         .replace(/\[CHILD_NAME\]/g, childName)
         .replace(/\[SENDER_NAME\]/g, senderName || '')
         .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)

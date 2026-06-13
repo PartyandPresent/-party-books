@@ -35,7 +35,7 @@ SPINE ZONE — CRITICAL: The center 12% of the image is the book spine/binding a
 
 NO CENTER FOLD — CRITICAL: Do NOT render any center spine line, fold crease, gutter shadow, depth gradient, or visual divide at the horizontal midpoint. The canvas is a completely flat seamless 2:1 spread — background, sky, scenery, and lighting must flow continuously from the left edge to the right edge with no interruption, darkening, or separation at center.
 
-TEXT RENDERING: Render only the exact text content shown in each prompt. No font names. No labels. No extra words.
+TEXT RENDERING: Render only the exact text content shown in each prompt. No font names. No labels. No extra words. Render every word EXACTLY as written — same case, same spelling, no alterations. If text is ALL-CAPS in the prompt, render it ALL-CAPS. If text is mixed case, render it mixed case. Never change the case of any word.
 `
 
 export const BOOKS: Book[] = [
@@ -76,7 +76,7 @@ UPPER-RIGHT area, curving gently to follow the rainbow arc:
   Small-to-medium bold ALL-CAPS rounded text. Bright orange-yellow color with white outline. Compact — sits neatly along the rainbow curve without taking up much space. The illustration should still be the hero.
 
 DIRECTLY BELOW that first line, same right side:
-  "[CHILD_NAME]"
+  "[CHILD_NAME_UPPER]"
   Medium-large bold ALL-CAPS rounded text — slightly bigger than the line above but still modest in scale. Vivid red-orange color with white outline. Does not overpower the scene.
 
 LEFT SIDE: Keep the left-center area (left half of the image, around mid-height) open and relatively clear — a natural gap in the flowers and foliage where a small logo can be placed. No characters, no large objects in that zone.
@@ -115,7 +115,7 @@ CHARACTER: Full body, head to toe. Walking forward along the path in the RIGHT H
 
 TEXT — render exactly:
 UPPER-RIGHT area, well above and to the right of the character:
-  "GOD WILL ALWAYS BE WITH YOU, [CHILD_NAME]."
+  "GOD WILL ALWAYS BE WITH YOU, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Does not overlap the character.
 
 LOWER-LEFT area, over the darker forest floor:
@@ -133,7 +133,7 @@ CHARACTER: Full body, head to toe. Standing upright in the LEFT HALF of the imag
 
 TEXT — render exactly:
 UPPER-LEFT area, above and to the left of the character:
-  "GOD MADE YOU SPECIAL, BEAUTIFUL, AND WONDERFULLY YOU, [CHILD_NAME]."
+  "GOD MADE YOU SPECIAL, BEAUTIFUL, AND WONDERFULLY YOU, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Three lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open meadow area:
@@ -151,7 +151,7 @@ CHARACTER: Full body. Sitting at the right side of the tree base — in the RIGH
 
 TEXT — render exactly:
 UPPER-RIGHT area, above the character:
-  "GOD'S LOVE FOR YOU, [CHILD_NAME], WILL NEVER END."
+  "GOD'S LOVE FOR YOU, [CHILD_NAME_UPPER], WILL NEVER END."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Right-aligned. Does not overlap the character.
 
 LEFT SIDE, middle height, in the open space beside the tree:
@@ -169,7 +169,7 @@ CHARACTER: Full body. Sitting peacefully on the grassy bank in the LEFT HALF of 
 
 TEXT — render exactly:
 UPPER-LEFT area, above and to the left of the character:
-  "GOD FILLS YOUR HEART WITH PEACE, [CHILD_NAME], WHEN YOU NEED IT MOST."
+  "GOD FILLS YOUR HEART WITH PEACE, [CHILD_NAME_UPPER], WHEN YOU NEED IT MOST."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open meadow area above the stream:
@@ -187,7 +187,7 @@ CHARACTER: Full body. Kneeling beside the bed in the RIGHT HALF of the image —
 
 TEXT — render exactly:
 UPPER-LEFT area:
-  "WHENEVER YOU TALK TO GOD, [CHILD_NAME], HE LISTENS."
+  "WHENEVER YOU TALK TO GOD, [CHILD_NAME_UPPER], HE LISTENS."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned.
 
 LEFT SIDE, middle height:
@@ -205,7 +205,7 @@ CHARACTER: Lying in bed sleeping in the RIGHT HALF of the image — tucked snugl
 
 TEXT — render exactly:
 UPPER-RIGHT area, above the sleeping child:
-  "GOD WATCHES OVER YOU, [CHILD_NAME], DAY AND NIGHT."
+  "GOD WATCHES OVER YOU, [CHILD_NAME_UPPER], DAY AND NIGHT."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Right-aligned. Does not overlap the character.
 
 LEFT SIDE, middle height, in the open moonlit area near the window:
@@ -223,7 +223,7 @@ CHARACTER: Full body, head to toe. Standing in the LEFT HALF of the image — le
 
 TEXT — render exactly:
 UPPER-LEFT area, above the character:
-  "WHEN YOU FEEL WEAK, [CHILD_NAME], GOD WILL MAKE YOU STRONG."
+  "WHEN YOU FEEL WEAK, [CHILD_NAME_UPPER], GOD WILL MAKE YOU STRONG."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open sky and hill area:
@@ -241,7 +241,7 @@ CHARACTER: Full body, head to toe. Walking on the path in the LEFT HALF of the i
 
 TEXT — render exactly:
 UPPER-LEFT area, above the character:
-  "YOU NEVER HAVE TO BE AFRAID, [CHILD_NAME], BECAUSE GOD IS WITH YOU."
+  "YOU NEVER HAVE TO BE AFRAID, [CHILD_NAME_UPPER], BECAUSE GOD IS WITH YOU."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the brighter open sky area:
@@ -259,7 +259,7 @@ CHARACTER: Full body, head to toe. Standing in the LEFT HALF of the image — le
 
 TEXT — render exactly:
 UPPER-LEFT area, above the character:
-  "GOD HAS BEAUTIFUL PLANS FOR YOUR LIFE, [CHILD_NAME]."
+  "GOD HAS BEAUTIFUL PLANS FOR YOUR LIFE, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open meadow and sky area:
@@ -277,7 +277,7 @@ CHARACTER: Full body, head to toe. Standing on the stepping stones in the LEFT H
 
 TEXT — render exactly:
 UPPER-RIGHT area, in the open garden above the path on the right side:
-  "GOD WILL HELP LEAD YOU, [CHILD_NAME], EVERY STEP OF THE WAY."
+  "GOD WILL HELP LEAD YOU, [CHILD_NAME_UPPER], EVERY STEP OF THE WAY."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Right-aligned.
 
 RIGHT SIDE, middle height, below the title — still in the open garden area:
@@ -295,7 +295,7 @@ CHARACTER: Full body, head to toe. Running or skipping joyfully through the mead
 
 TEXT — render exactly:
 UPPER-RIGHT area, above the character:
-  "GOD BRINGS JOY TO YOUR HEART, [CHILD_NAME], EACH NEW DAY."
+  "GOD BRINGS JOY TO YOUR HEART, [CHILD_NAME_UPPER], EACH NEW DAY."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Right-aligned. Does not overlap the character.
 
 LEFT SIDE, middle height, in the open meadow area:
@@ -313,7 +313,7 @@ CHARACTER: Full body. Kneeling on both knees on the garden path in the LEFT HALF
 
 TEXT — render exactly:
 UPPER-LEFT area, above the character:
-  "GOD HELPS YOUR HEART GROW KIND, LOVING, AND GENTLE, [CHILD_NAME]."
+  "GOD HELPS YOUR HEART GROW KIND, LOVING, AND GENTLE, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open garden area:
@@ -331,7 +331,7 @@ CHARACTER: Full body. Sitting on the cobblestone path in the RIGHT HALF of the i
 
 TEXT — render exactly:
 UPPER-RIGHT area, above the character:
-  "GOD IS LOVING, FORGIVING, AND FULL OF MERCY FOR YOU, [CHILD_NAME]."
+  "GOD IS LOVING, FORGIVING, AND FULL OF MERCY FOR YOU, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Right-aligned. Does not overlap the character.
 
 LEFT SIDE, middle height, in the darker garden area:
@@ -349,7 +349,7 @@ CHARACTER: Full body, head to toe. Standing on the hilltop in the LEFT HALF of t
 
 TEXT — render exactly:
 UPPER-LEFT area, above and to the left of the character:
-  "GOD FILLS YOUR LIFE WITH HOPE, PEACE, AND LIGHT, [CHILD_NAME]."
+  "GOD FILLS YOUR LIFE WITH HOPE, PEACE, AND LIGHT, [CHILD_NAME_UPPER]."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Two lines. Left-aligned. Does not overlap the character.
 
 RIGHT SIDE, middle height, in the open sky and valley area:
@@ -369,7 +369,7 @@ CHARACTER: Full body, head to toe. Standing entirely within the LEFT HALF only �
 
 TEXT — render exactly:
 UPPER-LEFT area of the left half, above the character:
-  "GOD'S BLESSINGS WILL GO WITH YOU, [CHILD_NAME], TODAY AND ALWAYS."
+  "GOD'S BLESSINGS WILL GO WITH YOU, [CHILD_NAME_UPPER], TODAY AND ALWAYS."
   Large bold ALL-CAPS rounded text. Red-orange color with white outline. Three lines. Left-aligned. Does not overlap the character.
 
 LOWER-LEFT area of the left half, below the character:
