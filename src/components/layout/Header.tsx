@@ -47,9 +47,9 @@ export default function Header() {
         {!isMobile && (
           <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
             {[
-              { href: '/books', label: 'All Books' },
-              { href: '/books?filter=baptism', label: 'By Occasion' },
-              { href: '/books?filter=baby', label: 'By Recipient' },
+              { href: '/collections', label: 'Collections' },
+              { href: '/collections/by-occasions', label: 'By Occasion' },
+              { href: '/collections/by-recipients', label: 'By Recipient' },
             ].map(l => (
               <Link key={l.href} href={l.href}
                 style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}

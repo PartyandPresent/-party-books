@@ -1,0 +1,198 @@
+import { BOOKS, Book } from './books'
+
+export type CollectionConfig = {
+  title: string
+  subtitle: string
+  description: string
+  icon: string
+  books: () => Book[]
+  giftHeading: string
+  giftPoints: string[]
+  relatedLinks: { href: string; label: string }[]
+}
+
+export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
+  baptism: {
+    title: 'Baptism Gifts',
+    subtitle: 'A keepsake for a sacred milestone',
+    description: "Mark this special day with a personalised book that carries their name, face, and God's promises into every page.",
+    icon: '✝️',
+    books: () => BOOKS.filter(b => b.occasion.includes('baptism')),
+    giftHeading: 'Why personalised books make the perfect baptism gift',
+    giftPoints: [
+      "A lifelong keepsake that commemorates the day they were welcomed into the faith",
+      "Scripture and God's promises woven into every beautifully illustrated page",
+      "A gift that grows with the child — meaningful at every age",
+    ],
+    relatedLinks: [
+      { href: '/milestones/baptism', label: 'Baptism & Christening' },
+      { href: '/collections/baby-newborn', label: 'Baby & Newborn' },
+      { href: '/collections/christmas', label: 'Christmas Gifts' },
+    ],
+  },
+  birthday: {
+    title: 'Birthday Gifts',
+    subtitle: 'Make their birthday truly unforgettable',
+    description: "A personalised book where they're the hero — their face, their name, their story. Far more memorable than any toy.",
+    icon: '🎂',
+    books: () => BOOKS.filter(b => b.occasion.includes('birthday')),
+    giftHeading: 'Why personalised books make the best birthday gift',
+    giftPoints: [
+      "They're the star of every single page — their face in every scene",
+      "A gift they'll reread for years, not forget in a week",
+      "Far more personal and memorable than a generic toy or voucher",
+    ],
+    relatedLinks: [
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+      { href: '/collections/baptism', label: 'Baptism Gifts' },
+      { href: '/collections/christmas', label: 'Christmas Gifts' },
+    ],
+  },
+  'baby-newborn': {
+    title: 'Baby & Newborn',
+    subtitle: 'The sweetest gift for a new arrival',
+    description: 'Welcome a new baby with a personalised book that tells their story from day one — beautiful enough to display on the nursery shelf.',
+    icon: '🐣',
+    books: () => BOOKS.filter(b => b.recipient.includes('baby')),
+    giftHeading: 'Why personalised books are the perfect newborn gift',
+    giftPoints: [
+      "A book that tells their story from the very beginning",
+      "Beautiful enough to display on the nursery shelf as a keepsake",
+      "A gift parents will treasure just as much as the child",
+    ],
+    relatedLinks: [
+      { href: '/milestones/new-baby', label: 'New Baby' },
+      { href: '/collections/baptism', label: 'Baptism Gifts' },
+      { href: '/collections/birthday', label: 'Birthday Gifts' },
+    ],
+  },
+  christmas: {
+    title: 'Christmas Gifts',
+    subtitle: "A gift they'll keep long after the tree comes down",
+    description: "Make this Christmas magical with a personalised book that puts them at the heart of the story. Read it every Christmas Eve as a new family tradition.",
+    icon: '🎄',
+    books: () => BOOKS.filter(b => b.occasion.includes('christmas')),
+    giftHeading: 'Why personalised books make magical Christmas gifts',
+    giftPoints: [
+      "So much more meaningful and lasting than another toy",
+      "A keepsake from the magic of this particular Christmas",
+      "Read it every Christmas Eve — a tradition that gets more precious each year",
+    ],
+    relatedLinks: [
+      { href: '/milestones/christmas', label: 'Christmas Magic' },
+      { href: '/collections/birthday', label: 'Birthday Gifts' },
+      { href: '/collections/baptism', label: 'Baptism Gifts' },
+    ],
+  },
+}
+
+export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
+  birthday: {
+    title: 'Birthday Books',
+    subtitle: 'A birthday gift as unique as they are',
+    description: "Make their big day unforgettable with a book where they're the star of every page.",
+    icon: '🎂',
+    books: () => BOOKS.filter(b => b.occasion.includes('birthday')),
+    giftHeading: 'Make their birthday truly special',
+    giftPoints: [
+      "Their face, their name — the hero of every single page",
+      "A gift they'll love to reread on every future birthday",
+      "So much more personal than a card and gift voucher",
+    ],
+    relatedLinks: [
+      { href: '/collections/birthday', label: 'Birthday Gifts' },
+      { href: '/milestones/baptism', label: 'Baptism & Christening' },
+      { href: '/milestones/just-because', label: 'Just Because Gifts' },
+    ],
+  },
+  baptism: {
+    title: 'Baptism & Christening',
+    subtitle: 'A keepsake for a sacred and joyful day',
+    description: "Celebrate their baptism or christening with a personalised book filled with scripture, promises, and their beautiful face.",
+    icon: '✝️',
+    books: () => BOOKS.filter(b => b.occasion.includes('baptism')),
+    giftHeading: 'The perfect baptism keepsake',
+    giftPoints: [
+      "A gift that marks the moment they were welcomed into the faith",
+      "God's promises made personal — woven through every illustrated page",
+      "A keepsake godparents and grandparents will love to give",
+    ],
+    relatedLinks: [
+      { href: '/collections/baptism', label: 'Baptism Gifts' },
+      { href: '/milestones/new-baby', label: 'New Baby' },
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+    ],
+  },
+  'new-baby': {
+    title: 'New Baby',
+    subtitle: 'Welcome the newest member of the family',
+    description: "A personalised book is the most thoughtful new baby gift — something parents and child will return to again and again.",
+    icon: '🐣',
+    books: () => BOOKS.filter(b => b.recipient.includes('baby')),
+    giftHeading: 'Why a personalised book is the perfect new baby gift',
+    giftPoints: [
+      "A story that begins with their very first day",
+      "Beautiful Pixar-quality illustrations featuring their real face",
+      "A gift the parents will treasure on the nursery shelf for years",
+    ],
+    relatedLinks: [
+      { href: '/collections/baby-newborn', label: 'Baby & Newborn' },
+      { href: '/milestones/baptism', label: 'Baptism & Christening' },
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+    ],
+  },
+  christmas: {
+    title: 'Christmas Magic',
+    subtitle: 'Make this Christmas unforgettable',
+    description: "Give the gift of a personalised Christmas book — and start a tradition they'll want to read every single year.",
+    icon: '🎄',
+    books: () => BOOKS.filter(b => b.occasion.includes('christmas')),
+    giftHeading: 'A Christmas gift that lasts a lifetime',
+    giftPoints: [
+      "More meaningful than any toy — a story made just for them",
+      "A keepsake from the magic of this exact Christmas",
+      "Read it every Christmas Eve — a tradition the whole family loves",
+    ],
+    relatedLinks: [
+      { href: '/collections/christmas', label: 'Christmas Gifts' },
+      { href: '/milestones/easter', label: 'Easter Gifts' },
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+    ],
+  },
+  easter: {
+    title: 'Easter Gifts',
+    subtitle: "A meaningful Easter gift they'll always remember",
+    description: "Swap the chocolate egg for something that lasts. A personalised book full of faith, joy and their beautiful face.",
+    icon: '🐰',
+    books: () => BOOKS.filter(b => b.occasion.includes('easter')),
+    giftHeading: 'Why a personalised book makes a better Easter gift',
+    giftPoints: [
+      "More lasting than chocolate — a keepsake they'll return to every Easter",
+      "Faith and joy woven through stunning Pixar-quality illustrations",
+      "A gift that reminds them of God's love in the most beautiful way",
+    ],
+    relatedLinks: [
+      { href: '/milestones/christmas', label: 'Christmas Magic' },
+      { href: '/milestones/baptism', label: 'Baptism & Christening' },
+      { href: '/milestones/just-because', label: 'Just Because Gifts' },
+    ],
+  },
+  'just-because': {
+    title: 'Just Because Gifts',
+    subtitle: 'No occasion needed — just love',
+    description: "Surprise them with a book that's entirely about them, on any ordinary day that deserves to feel extraordinary.",
+    icon: '💝',
+    books: () => BOOKS.filter(b => b.occasion.includes('any')),
+    giftHeading: 'Because they deserve to feel special today',
+    giftPoints: [
+      "No occasion needed — just a reason to show them they're loved",
+      "A surprise that feels completely personal, not off-the-shelf",
+      "The gift that shows you really know them and how special they are",
+    ],
+    relatedLinks: [
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+      { href: '/milestones/easter', label: 'Easter Gifts' },
+      { href: '/collections/birthday', label: 'Birthday Gifts' },
+    ],
+  },
+}

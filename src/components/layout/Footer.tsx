@@ -73,10 +73,10 @@ export default function Footer() {
           <div>
             <h4 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Browse By</h4>
             {[
-              { href: '/books?filter=baptism', label: 'Baptism Gifts' },
-              { href: '/books?filter=birthday', label: 'Birthday Gifts' },
-              { href: '/books?filter=baby', label: 'Baby & Newborn' },
-              { href: '/books?filter=christmas', label: 'Christmas Gifts' },
+              { href: '/collections/baptism', label: 'Baptism Gifts' },
+              { href: '/collections/birthday', label: 'Birthday Gifts' },
+              { href: '/collections/baby-newborn', label: 'Baby & Newborn' },
+              { href: '/collections/christmas', label: 'Christmas Gifts' },
             ].map(l => (
               <Link key={l.href} href={l.href}
                 style={{ display: 'block', color: DIM, fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none', marginBottom: 10 }}

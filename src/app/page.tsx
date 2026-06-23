@@ -56,12 +56,12 @@ const IMAGES = {
 // ─────────────────────────────────────────────────────────────
 
 const MILESTONES = [
-  { icon: '🎂', label: 'Birthday\nBooks',       filter: 'birthday'  },
-  { icon: '✝️', label: 'Baptism &\nChristening', filter: 'baptism'   },
-  { icon: '🐣', label: 'New\nBaby',              filter: 'baby'      },
-  { icon: '🎄', label: 'Christmas\nMagic',       filter: 'christmas' },
-  { icon: '🐰', label: 'Easter\nGifts',          filter: 'easter'    },
-  { icon: '💝', label: 'Just\nBecause',          filter: 'any'       },
+  { icon: '🎂', label: 'Birthday\nBooks',       href: '/milestones/birthday'     },
+  { icon: '✝️', label: 'Baptism &\nChristening', href: '/milestones/baptism'      },
+  { icon: '🐣', label: 'New\nBaby',              href: '/milestones/new-baby'     },
+  { icon: '🎄', label: 'Christmas\nMagic',       href: '/milestones/christmas'    },
+  { icon: '🐰', label: 'Easter\nGifts',          href: '/milestones/easter'       },
+  { icon: '💝', label: 'Just\nBecause',          href: '/milestones/just-because' },
 ]
 
 const STEPS = [
@@ -220,7 +220,7 @@ export default function HomePage() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
             {MILESTONES.map((m, i) => (
-              <Link key={i} href={`/books?filter=${m.filter}`} style={{ textDecoration: 'none' }}>
+              <Link key={i} href={m.href} style={{ textDecoration: 'none' }}>
                 <div style={{
                   background: '#fff', borderRadius: 16, padding: '20px 8px',
                   textAlign: 'center', cursor: 'pointer',
@@ -277,7 +277,7 @@ export default function HomePage() {
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: 0 }}>
               Featured Collections
             </h2>
-            <Link href="/books" style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: CORAL, fontWeight: 700, textDecoration: 'none' }}>
+            <Link href="/collections" style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: CORAL, fontWeight: 700, textDecoration: 'none' }}>
               View all collections →
             </Link>
           </div>
