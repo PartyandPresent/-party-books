@@ -271,60 +271,50 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURED COLLECTIONS ─────────────────────────── */}
-      <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 0' : '72px 0' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: 0 }}>
+      <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 20px' : '72px 24px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 8px' }}>
               Featured Collections
             </h2>
             <Link href="/collections" style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: CORAL, fontWeight: 700, textDecoration: 'none' }}>
               View all collections →
             </Link>
           </div>
-        </div>
-        <div style={{ position: 'relative' }}>
-          {!isMobile && (
-            <>
-              <button onClick={() => scroll('left')} style={{
-                position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)',
-                zIndex: 2, background: '#fff', border: '1.5px solid #EDE8DF',
-                borderRadius: '50%', width: 40, height: 40, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 18, color: GREEN, boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-              }}>‹</button>
-              <button onClick={() => scroll('right')} style={{
-                position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
-                zIndex: 2, background: '#fff', border: '1.5px solid #EDE8DF',
-                borderRadius: '50%', width: 40, height: 40, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 18, color: GREEN, boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-              }}>›</button>
-            </>
-          )}
-          <div ref={collectionsRef} style={{
-            display: 'flex', gap: 20, overflowX: 'auto', padding: '8px 24px 16px',
-            scrollbarWidth: 'none', msOverflowStyle: 'none',
-          }}>
-            {BOOKS.map(book => (
-              <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none', flexShrink: 0 }}>
-                <div style={{
-                  width: 200, background: '#fff', borderRadius: 16, overflow: 'hidden',
-                  border: '1.5px solid #EDE8DF', boxShadow: '0 2px 8px rgba(45,74,62,0.06)',
-                  transition: 'all 0.2s',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(45,74,62,0.12)' }}
-                  onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(45,74,62,0.06)' }}>
-                  <div style={{ position: 'relative', aspectRatio: '16/9' }}>
-                    <Image src={book.coverImage} alt={book.title} fill style={{ objectFit: 'cover' }} />
+          {(() => {
+            const book = BOOKS.find(b => b.slug === 'gods-promises-for-you')
+            if (!book) return null
+            return (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Link href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
+                  <div style={{
+                    width: isMobile ? 260 : 320, background: '#fff', borderRadius: 20, overflow: 'hidden',
+                    border: '1.5px solid #EDE8DF', boxShadow: '0 4px 24px rgba(45,74,62,0.10)',
+                    transition: 'all 0.2s',
+                  }}
+                    onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(45,74,62,0.16)' }}
+                    onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(45,74,62,0.10)' }}>
+                    <div style={{ position: 'relative', aspectRatio: '1/1' }}>
+                      <Image src={book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
+                      {book.badge && (
+                        <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
+                          {book.badge}
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ padding: '16px 18px 20px' }}>
+                      <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 16, color: GREEN, marginBottom: 6 }}>{book.title}</div>
+                      <div style={{ fontSize: 13, color: BODY, marginBottom: 14, lineHeight: 1.5 }}>{book.shortDesc}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 17, color: GREEN }}>${book.price.toFixed(2)}</span>
+                        <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, padding: '7px 14px', borderRadius: 50 }}>Personalise →</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ padding: '12px 14px' }}>
-                    <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13, color: GREEN, marginBottom: 4, lineHeight: 1.3 }}>{book.title}</div>
-                    <div style={{ fontSize: 12, color: CORAL, fontWeight: 700 }}>${book.price.toFixed(2)}</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              </div>
+            )
+          })()}
         </div>
       </section>
 

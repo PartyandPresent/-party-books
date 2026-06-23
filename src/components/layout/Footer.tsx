@@ -92,6 +92,7 @@ export default function Footer() {
             <h4 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Support</h4>
             {[
               { href: 'https://partyandpresents.com', label: 'Main Store ↗', external: true },
+              { href: '/about', label: 'About Us', external: false },
               { href: '/how-it-works', label: 'How It Works', external: false },
               { href: '/faq', label: 'FAQ', external: false },
               { href: '/shipping', label: 'Shipping Info', external: false },

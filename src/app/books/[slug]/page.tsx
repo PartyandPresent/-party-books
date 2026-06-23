@@ -81,7 +81,7 @@ export default function BookDetailPage() {
                       opacity: activeImage === i ? 1 : 0.6,
                       transition: 'all 0.2s',
                     }}>
-                      <Image src={src} alt={`View ${i + 1}`} fill style={{ objectFit: 'cover' }} />
+                      <Image src={src} alt={`View ${i + 1}`} fill unoptimized style={{ objectFit: 'cover' }} />
                     </div>
                   ))}
                 </div>
@@ -106,6 +106,7 @@ export default function BookDetailPage() {
                     src={allImages[activeImage]}
                     alt={book.title}
                     fill
+                    unoptimized
                     style={{
                       objectFit: 'cover',
                       objectPosition: activeImage === 0 ? 'right center' : 'center center',
@@ -145,7 +146,7 @@ export default function BookDetailPage() {
                         border: `2px solid ${activeImage === i ? CORAL : '#E0DDD5'}`,
                         opacity: activeImage === i ? 1 : 0.6,
                       }}>
-                        <Image src={src} alt={`View ${i + 1}`} fill style={{ objectFit: 'cover' }} />
+                        <Image src={src} alt={`View ${i + 1}`} fill unoptimized style={{ objectFit: 'cover' }} />
                       </div>
                     ))}
                   </div>
@@ -285,16 +286,15 @@ export default function BookDetailPage() {
               </div>
             </div>
 
-            {/* Open book spread image */}
-            {book.previewImages[0] && (
-              <div style={{
-                position: 'relative', aspectRatio: '2/1',
-                borderRadius: 20, overflow: 'hidden',
-                boxShadow: '0 20px 60px rgba(45,74,62,0.14)',
-              }}>
-                <Image src={book.previewImages[0]} alt="Inside the book" fill style={{ objectFit: 'cover' }} />
-              </div>
-            )}
+            {/* Cover image */}
+            <div style={{
+              position: 'relative', aspectRatio: '1/1',
+              borderRadius: 20, overflow: 'hidden',
+              boxShadow: '0 20px 60px rgba(45,74,62,0.14)',
+              flexShrink: 0, width: isMobile ? '100%' : 420,
+            }}>
+              <Image src={book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
+            </div>
           </div>
         </section>
 
