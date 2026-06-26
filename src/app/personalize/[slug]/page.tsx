@@ -8,10 +8,11 @@ import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { BOOKS } from '@/lib/books'
 
-const PINK = '#FF559C'
-const BLUSH = '#FFEEF5'
-const HEADING = '#2C2C2C'
-const BODY = '#555555'
+const GREEN = '#2D4A3E'
+const CORAL = '#E8836A'
+const BEIGE = '#F5F0E8'
+const CREAM = '#FAFAF5'
+const BODY = '#4A5568'
 const MUTED = '#888888'
 
 export default function PersonalizePage() {
@@ -91,24 +92,24 @@ export default function PersonalizePage() {
   }
   const headingStyle: React.CSSProperties = {
     fontFamily: 'Playfair Display, serif', fontSize: 26,
-    fontWeight: 700, color: HEADING, marginBottom: 8,
+    fontWeight: 700, color: GREEN, marginBottom: 8,
   }
   const subStyle: React.CSSProperties = {
     fontSize: 15, color: BODY, marginBottom: 28, lineHeight: 1.5,
   }
   const labelStyle: React.CSSProperties = {
     display: 'block', fontSize: 13, fontWeight: 700,
-    color: HEADING, marginBottom: 8, letterSpacing: 0.3,
+    color: GREEN, marginBottom: 8, letterSpacing: 0.3,
   }
   const inputStyle = (err?: boolean): React.CSSProperties => ({
     width: '100%', padding: '13px 16px', borderRadius: 12,
     border: `1.5px solid ${err ? '#E53E3E' : '#E0E0E0'}`,
-    fontFamily: 'Nunito, sans-serif', fontSize: 15, color: HEADING,
+    fontFamily: 'Nunito, sans-serif', fontSize: 15, color: GREEN,
     outline: 'none', boxSizing: 'border-box',
   })
   const errorText: React.CSSProperties = { fontSize: 13, color: '#E53E3E', marginTop: 6 }
   const primaryBtn: React.CSSProperties = {
-    width: '100%', padding: '16px 24px', backgroundColor: PINK,
+    width: '100%', padding: '16px 24px', backgroundColor: CORAL,
     color: '#fff', border: 'none', borderRadius: 50,
     fontFamily: 'Nunito, sans-serif', fontWeight: 800,
     fontSize: 17, cursor: 'pointer', marginTop: 32, letterSpacing: 0.3,
@@ -120,14 +121,14 @@ export default function PersonalizePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '90px 24px 80px' }}>
 
         {/* Book strip */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 14,
-          backgroundColor: BLUSH, borderRadius: 14, padding: '14px 18px',
+          backgroundColor: BEIGE, borderRadius: 14, padding: '14px 18px',
           marginBottom: 32, flexWrap: 'nowrap', overflow: 'hidden',
         }}>
           <Image
@@ -140,13 +141,13 @@ export default function PersonalizePage() {
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ fontSize: 11, color: MUTED, fontWeight: 700, margin: 0, letterSpacing: 0.5 }}>PERSONALIZING</p>
             <p style={{
-              fontSize: 15, fontWeight: 800, color: HEADING, margin: '2px 0 0',
+              fontSize: 15, fontWeight: 800, color: GREEN, margin: '2px 0 0',
               whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
             }}>
               {book.title}
             </p>
           </div>
-          <p style={{ flexShrink: 0, fontWeight: 800, fontSize: 17, color: PINK, margin: 0 }}>
+          <p style={{ flexShrink: 0, fontWeight: 800, fontSize: 17, color: CORAL, margin: 0 }}>
             ${book.price.toFixed(2)}
           </p>
         </div>
@@ -165,7 +166,7 @@ export default function PersonalizePage() {
                 >
                   <div style={{
                     width: 36, height: 36, borderRadius: '50%',
-                    backgroundColor: active || done ? PINK : '#E0E0E0',
+                    backgroundColor: active || done ? CORAL : '#E0E0E0',
                     color: active || done ? '#fff' : MUTED,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
@@ -174,7 +175,7 @@ export default function PersonalizePage() {
                   </div>
                   <span style={{
                     fontSize: 12, fontWeight: active ? 800 : 600,
-                    color: active || done ? PINK : MUTED, whiteSpace: 'nowrap',
+                    color: active || done ? CORAL : MUTED, whiteSpace: 'nowrap',
                   }}>
                     {label}
                   </span>
@@ -182,7 +183,7 @@ export default function PersonalizePage() {
                 {i < 2 && (
                   <div style={{
                     width: 60, height: 2,
-                    backgroundColor: done ? PINK : '#E0E0E0',
+                    backgroundColor: done ? CORAL : '#E0E0E0',
                     margin: '0 8px', marginBottom: 20, flexShrink: 0,
                   }} />
                 )}
@@ -207,9 +208,9 @@ export default function PersonalizePage() {
                 onDragLeave={() => setIsDragging(false)}
                 onClick={() => fileInputRef.current?.click()}
                 style={{
-                  border: `2.5px dashed ${isDragging ? PINK : '#D0D0D0'}`,
+                  border: `2.5px dashed ${isDragging ? CORAL : '#D0D0D0'}`,
                   borderRadius: 16,
-                  backgroundColor: isDragging ? BLUSH : '#FAFAFA',
+                  backgroundColor: isDragging ? BEIGE : CREAM,
                   padding: '48px 24px',
                   display: 'flex', flexDirection: 'column',
                   alignItems: 'center', justifyContent: 'center',
@@ -217,14 +218,14 @@ export default function PersonalizePage() {
                 }}
               >
                 <div style={{ fontSize: 48, marginBottom: 16 }}>📷</div>
-                <p style={{ fontWeight: 800, color: HEADING, fontSize: 16, margin: '0 0 8px' }}>
+                <p style={{ fontWeight: 800, color: GREEN, fontSize: 16, margin: '0 0 8px' }}>
                   Drag & drop a photo here
                 </p>
                 <p style={{ color: MUTED, fontSize: 14, margin: '0 0 20px' }}>
                   or click to browse your files
                 </p>
                 <div style={{
-                  backgroundColor: PINK, color: '#fff', borderRadius: 50,
+                  backgroundColor: CORAL, color: '#fff', borderRadius: 50,
                   padding: '10px 28px', fontWeight: 800, fontSize: 14,
                 }}>
                   Choose Photo
@@ -305,7 +306,7 @@ export default function PersonalizePage() {
 
             <div style={{ marginBottom: 24 }}>
               <label style={labelStyle}>
-                Child's first name <span style={{ color: PINK }}>*</span>
+                Child's first name <span style={{ color: CORAL }}>*</span>
               </label>
               <input
                 style={inputStyle(!!fieldErrors.childName)}
@@ -329,7 +330,7 @@ export default function PersonalizePage() {
 
             <div style={{ marginBottom: 24 }}>
               <label style={labelStyle}>
-                Your name (from whom) <span style={{ color: PINK }}>*</span>
+                Your name (from whom) <span style={{ color: CORAL }}>*</span>
               </label>
               <input
                 style={inputStyle(!!fieldErrors.senderName)}
@@ -384,7 +385,7 @@ export default function PersonalizePage() {
             {/* Photo + name + from */}
             <div style={{
               display: 'flex', gap: 20, marginBottom: 28,
-              backgroundColor: BLUSH, borderRadius: 16, padding: 20,
+              backgroundColor: BEIGE, borderRadius: 16, padding: 20,
               alignItems: 'center',
             }}>
               <img
@@ -401,7 +402,7 @@ export default function PersonalizePage() {
                   <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>
                     CHILD'S NAME
                   </span>
-                  <p style={{ margin: '2px 0 0', fontWeight: 800, fontSize: 17, color: HEADING }}>
+                  <p style={{ margin: '2px 0 0', fontWeight: 800, fontSize: 17, color: GREEN }}>
                     {childName}
                   </p>
                 </div>
@@ -447,12 +448,12 @@ export default function PersonalizePage() {
                   style={{ borderRadius: 8, objectFit: 'cover', flexShrink: 0 }}
                 />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: HEADING }}>{book.title}</p>
+                  <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: GREEN }}>{book.title}</p>
                   <p style={{ margin: '3px 0 0', fontSize: 13, color: MUTED }}>
                     Personalised hardcover · 17 pages
                   </p>
                 </div>
-                <p style={{ fontWeight: 800, fontSize: 18, color: HEADING, margin: 0, flexShrink: 0 }}>
+                <p style={{ fontWeight: 800, fontSize: 18, color: GREEN, margin: 0, flexShrink: 0 }}>
                   ${book.price.toFixed(2)}
                 </p>
               </div>
@@ -484,8 +485,8 @@ export default function PersonalizePage() {
                 ...primaryBtn,
                 fontSize: 18,
                 padding: '18px 24px',
-                background: `linear-gradient(135deg, ${PINK}, #FF3385)`,
-                boxShadow: '0 4px 20px rgba(255,85,156,0.4)',
+                backgroundColor: CORAL,
+                boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
               }}
               onClick={handleGenerate}
             >

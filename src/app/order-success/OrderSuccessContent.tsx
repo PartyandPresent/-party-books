@@ -6,10 +6,11 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 
-const PINK = '#FF559C'
-const BLUE = '#28BEEF'
-const HEADING = '#2C2C2C'
-const BODY = '#555555'
+const GREEN = '#2D4A3E'
+const CORAL = '#E8836A'
+const BEIGE = '#F5F0E8'
+const CREAM = '#FAFAF5'
+const BODY = '#4A5568'
 const MUTED = '#888888'
 
 export default function OrderSuccessContent() {
@@ -84,11 +85,11 @@ export default function OrderSuccessContent() {
   }
 
   if (status === 'loading') return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>⏳</div>
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: HEADING }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN }}>
           Confirming your order...
         </h1>
       </main>
@@ -97,11 +98,11 @@ export default function OrderSuccessContent() {
   )
 
   if (status === 'error') return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>😔</div>
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: HEADING, marginBottom: 12 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
           Something went wrong
         </h1>
         <p style={{ fontSize: 16, color: BODY, marginBottom: 32 }}>
@@ -109,7 +110,7 @@ export default function OrderSuccessContent() {
         </p>
         <button
           onClick={() => router.push('/')}
-          style={{ backgroundColor: PINK, color: '#fff', border: 'none', borderRadius: 50, padding: '14px 36px', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
+          style={{ backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '14px 36px', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
         >
           Back to Home
         </button>
@@ -119,13 +120,13 @@ export default function OrderSuccessContent() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 640, margin: '0 auto', padding: '70px 24px 80px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={{ fontSize: 80, marginBottom: 20 }}>🎉</div>
-          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 36, fontWeight: 700, color: HEADING, marginBottom: 12 }}>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 36, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
             Your order is confirmed!
           </h1>
           <p style={{ fontSize: 17, color: BODY, lineHeight: 1.6 }}>
@@ -135,7 +136,7 @@ export default function OrderSuccessContent() {
         </div>
 
         <div style={{ backgroundColor: '#fff', borderRadius: 20, padding: '32px 28px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)', marginBottom: 24 }}>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: HEADING, marginBottom: 24 }}>Order Details</h2>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: GREEN, marginBottom: 24 }}>Order Details</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {[
               { label: 'Order ID', value: orderDetails?.orderId || sessionId?.slice(-8).toUpperCase() },
@@ -147,14 +148,14 @@ export default function OrderSuccessContent() {
             ].map(({ label, value }) => value ? (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 14, borderBottom: '1px solid #F5F5F5' }}>
                 <span style={{ fontSize: 14, color: MUTED, fontWeight: 700 }}>{label}</span>
-                <span style={{ fontSize: 14, color: HEADING, fontWeight: 700, textAlign: 'right', maxWidth: '60%' }}>{value}</span>
+                <span style={{ fontSize: 14, color: GREEN, fontWeight: 700, textAlign: 'right', maxWidth: '60%' }}>{value}</span>
               </div>
             ) : null)}
           </div>
         </div>
 
         <div style={{ backgroundColor: '#fff', borderRadius: 20, padding: '32px 28px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)', marginBottom: 24 }}>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: HEADING, marginBottom: 24 }}>What happens next?</h2>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: GREEN, marginBottom: 24 }}>What happens next?</h2>
           {[
             { icon: '🎨', title: 'We generate your full book', desc: 'Our AI is already illustrating all 17 pages with your child as the star character.', time: 'Within 15 minutes' },
             { icon: '✅', title: 'Quality check', desc: 'Our team reviews every page to make sure it looks perfect.', time: '1–2 business days' },
@@ -162,13 +163,13 @@ export default function OrderSuccessContent() {
             { icon: '📦', title: 'Shipped to you', desc: 'Your book is carefully packaged and shipped to your door.', time: '3–5 business days' },
           ].map(({ icon, title, desc, time }, i) => (
             <div key={i} style={{ display: 'flex', gap: 16, marginBottom: i < 3 ? 24 : 0 }}>
-              <div style={{ width: 48, height: 48, borderRadius: '50%', flexShrink: 0, background: `linear-gradient(135deg, ${PINK}22, ${BLUE}22)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', flexShrink: 0, backgroundColor: BEIGE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
                 {icon}
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: HEADING }}>{title}</p>
-                  <span style={{ fontSize: 12, color: PINK, fontWeight: 700, backgroundColor: '#FFEEF5', padding: '3px 10px', borderRadius: 50 }}>{time}</span>
+                  <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: GREEN }}>{title}</p>
+                  <span style={{ fontSize: 12, color: CORAL, fontWeight: 700, backgroundColor: BEIGE, padding: '3px 10px', borderRadius: 50 }}>{time}</span>
                 </div>
                 <p style={{ margin: 0, fontSize: 14, color: BODY, lineHeight: 1.5 }}>{desc}</p>
               </div>
@@ -189,13 +190,13 @@ export default function OrderSuccessContent() {
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
           <button
             onClick={() => router.push('/')}
-            style={{ flex: 1, padding: '16px 24px', background: `linear-gradient(135deg, ${PINK}, #FF3385)`, color: '#fff', border: 'none', borderRadius: 50, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer', boxShadow: '0 4px 20px rgba(255,85,156,0.4)' }}
+            style={{ flex: 1, padding: '16px 24px', backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer', boxShadow: '0 4px 20px rgba(232,131,106,0.4)' }}
           >
             🎁 Order Another Book
           </button>
           <button
             onClick={() => router.push('/')}
-            style={{ flex: 1, padding: '16px 24px', backgroundColor: 'transparent', border: `2px solid ${PINK}`, color: PINK, borderRadius: 50, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
+            style={{ flex: 1, padding: '16px 24px', backgroundColor: 'transparent', border: `2px solid ${CORAL}`, color: CORAL, borderRadius: 50, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
           >
             ← Back to Home
           </button>

@@ -58,7 +58,7 @@ export const BOOKS: Book[] = [
     description: "A one-of-a-kind personalized storybook where your child is the main character — with their face, name, and God's promises woven into every single page. 17 beautifully illustrated scenes, each featuring a scripture verse and your child's likeness rendered in stunning Pixar-quality art.",
     shortDesc: "Your child's face meets God's promises — 17 stunning pages of faith and love.",
     badge: 'Bestseller',
-    badgeColor: '#FF559C',
+    badgeColor: '#E8836A',
     rating: 4.9,
     reviews: 248,
     featured: true,

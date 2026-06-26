@@ -7,10 +7,11 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 
-const PINK = '#FF559C'
-const BLUSH = '#FFEEF5'
-const HEADING = '#2C2C2C'
-const BODY = '#555555'
+const GREEN = '#2D4A3E'
+const CORAL = '#E8836A'
+const BEIGE = '#F5F0E8'
+const CREAM = '#FAFAF5'
+const BODY = '#4A5568'
 const MUTED = '#888888'
 
 export default function CheckoutPage() {
@@ -118,12 +119,12 @@ export default function CheckoutPage() {
   }
   const labelStyle: React.CSSProperties = {
     display: 'block', fontSize: 13, fontWeight: 700,
-    color: HEADING, marginBottom: 7, letterSpacing: 0.3,
+    color: GREEN, marginBottom: 7, letterSpacing: 0.3,
   }
   const inputStyle = (err?: boolean): React.CSSProperties => ({
     width: '100%', padding: '13px 16px', borderRadius: 12,
     border: `1.5px solid ${err ? '#E53E3E' : '#E0E0E0'}`,
-    fontFamily: 'Nunito, sans-serif', fontSize: 15, color: HEADING,
+    fontFamily: 'Nunito, sans-serif', fontSize: 15, color: GREEN,
     outline: 'none', boxSizing: 'border-box', backgroundColor: '#fff',
   })
   const errorText: React.CSSProperties = {
@@ -131,18 +132,18 @@ export default function CheckoutPage() {
   }
   const sectionTitle: React.CSSProperties = {
     fontFamily: 'Playfair Display, serif', fontSize: 20,
-    fontWeight: 700, color: HEADING, marginBottom: 20,
+    fontWeight: 700, color: GREEN, marginBottom: 20,
   }
   const row2: React.CSSProperties = {
     display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 18,
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 1000, margin: '0 auto', padding: '70px 24px 80px' }}>
 
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: HEADING, marginBottom: 8 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 8 }}>
           Checkout
         </h1>
         <p style={{ fontSize: 15, color: BODY, marginBottom: 36 }}>
@@ -160,18 +161,18 @@ export default function CheckoutPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{
                     width: 32, height: 32, borderRadius: '50%',
-                    backgroundColor: active || done ? PINK : '#E0E0E0',
+                    backgroundColor: active || done ? CORAL : '#E0E0E0',
                     color: '#fff', display: 'flex', alignItems: 'center',
                     justifyContent: 'center', fontWeight: 800, fontSize: 14,
                   }}>
                     {done ? '✓' : num}
                   </div>
-                  <span style={{ fontSize: 14, fontWeight: active ? 800 : 600, color: active || done ? PINK : MUTED }}>
+                  <span style={{ fontSize: 14, fontWeight: active ? 800 : 600, color: active || done ? CORAL : MUTED }}>
                     {label}
                   </span>
                 </div>
                 {i === 0 && (
-                  <div style={{ width: 40, height: 2, backgroundColor: done ? PINK : '#E0E0E0', margin: '0 12px' }} />
+                  <div style={{ width: 40, height: 2, backgroundColor: done ? CORAL : '#E0E0E0', margin: '0 12px' }} />
                 )}
               </div>
             )
@@ -188,12 +189,12 @@ export default function CheckoutPage() {
 
                 <div style={row2}>
                   <div>
-                    <label style={labelStyle}>First Name <span style={{ color: PINK }}>*</span></label>
+                    <label style={labelStyle}>First Name <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.firstName)} value={form.firstName} onChange={e => update('firstName', e.target.value)} placeholder="Maria" />
                     {errors.firstName && <p style={errorText}>{errors.firstName}</p>}
                   </div>
                   <div>
-                    <label style={labelStyle}>Last Name <span style={{ color: PINK }}>*</span></label>
+                    <label style={labelStyle}>Last Name <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.lastName)} value={form.lastName} onChange={e => update('lastName', e.target.value)} placeholder="Santos" />
                     {errors.lastName && <p style={errorText}>{errors.lastName}</p>}
                   </div>
@@ -201,7 +202,7 @@ export default function CheckoutPage() {
 
                 <div style={row2}>
                   <div>
-                    <label style={labelStyle}>Email Address <span style={{ color: PINK }}>*</span></label>
+                    <label style={labelStyle}>Email Address <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.email)} value={form.email} onChange={e => update('email', e.target.value)} placeholder="maria@email.com" type="email" />
                     {errors.email && <p style={errorText}>{errors.email}</p>}
                   </div>
@@ -212,14 +213,14 @@ export default function CheckoutPage() {
                 </div>
 
                 <div style={{ marginBottom: 18 }}>
-                  <label style={labelStyle}>Street Address <span style={{ color: PINK }}>*</span></label>
+                  <label style={labelStyle}>Street Address <span style={{ color: CORAL }}>*</span></label>
                   <input style={inputStyle(!!errors.street)} value={form.street} onChange={e => update('street', e.target.value)} placeholder="123 Rizal Street, Barangay San Antonio" />
                   {errors.street && <p style={errorText}>{errors.street}</p>}
                 </div>
 
                 <div style={{ ...row2, gridTemplateColumns: '1fr 1fr 1fr' }}>
                   <div>
-                    <label style={labelStyle}>City <span style={{ color: PINK }}>*</span></label>
+                    <label style={labelStyle}>City <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.city)} value={form.city} onChange={e => update('city', e.target.value)} placeholder="Manila" />
                     {errors.city && <p style={errorText}>{errors.city}</p>}
                   </div>
@@ -228,7 +229,7 @@ export default function CheckoutPage() {
                     <input style={inputStyle()} value={form.state} onChange={e => update('state', e.target.value)} placeholder="Metro Manila" />
                   </div>
                   <div>
-                    <label style={labelStyle}>ZIP Code <span style={{ color: PINK }}>*</span></label>
+                    <label style={labelStyle}>ZIP Code <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.zip)} value={form.zip} onChange={e => update('zip', e.target.value)} placeholder="1000" />
                     {errors.zip && <p style={errorText}>{errors.zip}</p>}
                   </div>
@@ -255,7 +256,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={handleContinue}
                   style={{
-                    width: '100%', padding: '16px 24px', backgroundColor: PINK,
+                    width: '100%', padding: '16px 24px', backgroundColor: CORAL,
                     color: '#fff', border: 'none', borderRadius: 50,
                     fontFamily: 'Nunito, sans-serif', fontWeight: 800,
                     fontSize: 17, cursor: 'pointer', letterSpacing: 0.3,
@@ -273,7 +274,7 @@ export default function CheckoutPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                       <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>SHIPPING TO</p>
-                      <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: HEADING }}>
+                      <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: GREEN }}>
                         {form.firstName} {form.lastName}
                       </p>
                       <p style={{ margin: '2px 0 0', fontSize: 14, color: BODY }}>
@@ -302,7 +303,7 @@ export default function CheckoutPage() {
                   }}>
                     <div style={{ fontSize: 32 }}>🔒</div>
                     <div>
-                      <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 14, color: HEADING }}>
+                      <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 14, color: GREEN }}>
                         Secure payment via Stripe
                       </p>
                       <p style={{ margin: 0, fontSize: 13, color: BODY }}>
@@ -335,11 +336,11 @@ export default function CheckoutPage() {
                     disabled={isProcessing}
                     style={{
                       width: '100%', padding: '18px 24px',
-                      background: isProcessing ? '#ccc' : `linear-gradient(135deg, ${PINK}, #FF3385)`,
+                      background: isProcessing ? '#ccc' : CORAL,
                       color: '#fff', border: 'none', borderRadius: 50,
                       fontFamily: 'Nunito, sans-serif', fontWeight: 800,
                       fontSize: 18, cursor: isProcessing ? 'not-allowed' : 'pointer',
-                      boxShadow: isProcessing ? 'none' : '0 4px 20px rgba(255,85,156,0.4)',
+                      boxShadow: isProcessing ? 'none' : '0 4px 20px rgba(232,131,106,0.4)',
                       letterSpacing: 0.3,
                     }}
                   >
@@ -371,7 +372,7 @@ export default function CheckoutPage() {
                   />
                 )}
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 15, color: HEADING }}>{selectedTitle}</p>
+                  <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 15, color: GREEN }}>{selectedTitle}</p>
                   <p style={{ margin: '0 0 4px', fontSize: 13, color: MUTED }}>Personalised for {childName}</p>
                   <p style={{ margin: 0, fontSize: 13, color: MUTED }}>17 pages · Hardcover</p>
                 </div>
@@ -387,7 +388,7 @@ export default function CheckoutPage() {
                   />
                   <div>
                     <p style={{ margin: '0 0 2px', fontSize: 12, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>PERSONALISED FOR</p>
-                    <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: HEADING }}>{childName}</p>
+                    <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: GREEN }}>{childName}</p>
                     <p style={{ margin: '2px 0 0', fontSize: 13, color: BODY }}>From: {senderName}</p>
                   </div>
                 </div>
@@ -405,21 +406,21 @@ export default function CheckoutPage() {
               <div style={{ marginBottom: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 14, color: BODY }}>Book</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: HEADING }}>${selectedPrice.toFixed(2)}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${selectedPrice.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 14, color: BODY }}>Shipping</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: HEADING }}>${shipping.toFixed(2)}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${shipping.toFixed(2)}</span>
                 </div>
                 <div style={{ height: 1, backgroundColor: '#F0F0F0', margin: '14px 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 16, fontWeight: 800, color: HEADING }}>Total</span>
-                  <span style={{ fontSize: 18, fontWeight: 800, color: PINK }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: GREEN }}>Total</span>
+                  <span style={{ fontSize: 18, fontWeight: 800, color: CORAL }}>${total.toFixed(2)}</span>
                 </div>
               </div>
 
               {/* Trust signals */}
-              <div style={{ backgroundColor: BLUSH, borderRadius: 12, padding: '14px 16px' }}>
+              <div style={{ backgroundColor: BEIGE, borderRadius: 12, padding: '14px 16px' }}>
                 {[
                   { icon: '🛡️', text: '100% satisfaction guarantee' },
                   { icon: '📦', text: 'Ships in 3–5 business days' },

@@ -6,11 +6,11 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 
-const PINK = '#FF559C'
-const BLUE = '#28BEEF'
-const BLUSH = '#FFEEF5'
-const HEADING = '#2C2C2C'
-const BODY = '#555555'
+const GREEN = '#2D4A3E'
+const CORAL = '#E8836A'
+const BEIGE = '#F5F0E8'
+const CREAM = '#FAFAF5'
+const BODY = '#4A5568'
 const MUTED = '#888888'
 
 // Only generate these 5 page indices (0=cover, 1=dedication, 2, 3, 16=last)
@@ -120,11 +120,11 @@ export default function PreviewPage() {
 
   // ── Error Screen ───────────────────────────────────────────────
   if (status === 'error') return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>😔</div>
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: HEADING, marginBottom: 12 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
           Something went wrong
         </h1>
         <p style={{ fontSize: 16, color: BODY, marginBottom: 12 }}>{errorMsg}</p>
@@ -133,7 +133,7 @@ export default function PreviewPage() {
         </p>
         <button
           onClick={generateBook}
-          style={{ backgroundColor: PINK, color: '#fff', border: 'none', borderRadius: 50, padding: '16px 40px', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
+          style={{ backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '16px 40px', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
         >
           Try Again
         </button>
@@ -144,11 +144,11 @@ export default function PreviewPage() {
 
   // ── Loading Screen ─────────────────────────────────────────────
   if (status === 'loading') return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 600, margin: '0 auto', padding: '60px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 20 }}>📖</div>
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: HEADING, marginBottom: 10 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 10 }}>
           Creating {childName}'s book...
         </h1>
         <p style={{ fontSize: 15, color: BODY, marginBottom: 36, lineHeight: 1.6 }}>
@@ -161,7 +161,7 @@ export default function PreviewPage() {
           <div style={{
             height: '100%',
             width: `${overallProgress}%`,
-            background: `linear-gradient(90deg, ${PINK}, ${BLUE})`,
+            background: `linear-gradient(90deg, ${CORAL}, ${GREEN})`,
             borderRadius: 50,
             transition: 'width 0.6s ease',
           }} />
@@ -182,7 +182,7 @@ export default function PreviewPage() {
                   width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
                   backgroundColor:
                     s === 'done' ? '#22C55E' :
-                    s === 'loading' ? PINK :
+                    s === 'loading' ? CORAL :
                     s === 'error' ? '#EF4444' : '#E8E8E8',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 13, color: '#fff', fontWeight: 800,
@@ -196,7 +196,7 @@ export default function PreviewPage() {
                 {/* Label */}
                 <span style={{
                   fontSize: 14, fontWeight: s === 'loading' ? 800 : 600,
-                  color: s === 'done' ? '#22C55E' : s === 'loading' ? PINK : s === 'error' ? '#EF4444' : MUTED,
+                  color: s === 'done' ? '#22C55E' : s === 'loading' ? CORAL : s === 'error' ? '#EF4444' : MUTED,
                   flex: 1,
                 }}>
                   {i === 0 ? `✨ Generating ${childName}'s character` : `🎨 Illustrating ${label}`}
@@ -225,14 +225,14 @@ export default function PreviewPage() {
 
   // ── Done Screen ────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAFA', fontFamily: 'Nunito, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px 80px' }}>
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 36, paddingTop: 12 }}>
           <div style={{ fontSize: 40, marginBottom: 10 }}>🎉</div>
-          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 32, fontWeight: 700, color: HEADING, marginBottom: 8 }}>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 32, fontWeight: 700, color: GREEN, marginBottom: 8 }}>
             {childName}'s book is ready!
           </h1>
           <p style={{ fontSize: 15, color: BODY }}>
@@ -301,7 +301,7 @@ export default function PreviewPage() {
                 style={{
                   flexShrink: 0, width: 80, height: 45,
                   borderRadius: 6, overflow: 'hidden',
-                  border: currentPage === i ? `3px solid ${PINK}` : '3px solid transparent',
+                  border: currentPage === i ? `3px solid ${CORAL}` : '3px solid transparent',
                   cursor: page ? 'pointer' : 'default',
                   padding: 0, backgroundColor: '#E8E8E8', position: 'relative',
                 }}
@@ -342,13 +342,13 @@ export default function PreviewPage() {
 
         {/* Locked pages banner */}
         <div style={{
-          backgroundColor: BLUSH, borderRadius: 16, padding: '20px 24px',
+          backgroundColor: BEIGE, borderRadius: 16, padding: '20px 24px',
           marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16,
           flexWrap: 'wrap',
         }}>
           <div style={{ fontSize: 32 }}>🔒</div>
           <div style={{ flex: 1 }}>
-            <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 16, color: HEADING }}>
+            <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 16, color: GREEN }}>
               12 more pages are waiting for {childName}!
             </p>
             <p style={{ margin: 0, fontSize: 14, color: BODY }}>
@@ -365,7 +365,7 @@ export default function PreviewPage() {
           flexWrap: 'wrap', gap: 20,
         }}>
           <div>
-            <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 18, color: HEADING }}>{selectedTitle}</p>
+            <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 18, color: GREEN }}>{selectedTitle}</p>
             <p style={{ margin: 0, fontSize: 14, color: MUTED }}>
               Personalised for {childName} · 17 pages · Hardcover
             </p>
@@ -374,8 +374,8 @@ export default function PreviewPage() {
             <button
               onClick={generateBook}
               style={{
-                backgroundColor: 'transparent', border: `2px solid ${PINK}`,
-                color: PINK, borderRadius: 50, padding: '12px 24px',
+                backgroundColor: 'transparent', border: `2px solid ${CORAL}`,
+                color: CORAL, borderRadius: 50, padding: '12px 24px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, cursor: 'pointer',
               }}
             >
@@ -384,10 +384,10 @@ export default function PreviewPage() {
             <button
               onClick={() => router.push('/checkout')}
               style={{
-                background: `linear-gradient(135deg, ${PINK}, #FF3385)`,
+                backgroundColor: CORAL,
                 color: '#fff', border: 'none', borderRadius: 50, padding: '14px 32px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17, cursor: 'pointer',
-                boxShadow: '0 4px 20px rgba(255,85,156,0.4)',
+                boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
               }}
             >
               Order This Book — ${selectedPrice.toFixed(2)}
