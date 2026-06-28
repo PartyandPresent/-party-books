@@ -121,10 +121,13 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { photoBase64, mimeType, bookSlug, childName, senderName, dedication, previewIndices } = await req.json()
+    const { photoBase64, mimeType, bookSlug, childName, senderName, dedication, previewIndices, characterBase64: preGeneratedCharacter } = await req.json()
 
-    if (!photoBase64 || !mimeType || !bookSlug || !childName || !senderName) {
+    if (!bookSlug || !childName || !senderName) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+    if (!preGeneratedCharacter && (!photoBase64 || !mimeType)) {
+      return NextResponse.json({ error: 'Missing photo or pre-generated character' }, { status: 400 })
     }
 
     const book = getBookBySlug(bookSlug)
@@ -132,10 +135,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Book not found or prompts missing' }, { status: 404 })
     }
 
-    rateLimitMap.set(ip, Date.now())
+    // Only apply rate limit when generating a fresh character (not pre-approved)
+    if (!preGeneratedCharacter) {
+      rateLimitMap.set(ip, Date.now())
+    }
 
-    // Step 1 — Generate character
-    const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
+    // Step 1 — Generate character (skip if already provided)
+    let characterBase64 = preGeneratedCharacter
+
+    if (!characterBase64) {
+      const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
 
 COPY EXACTLY FROM THE PHOTO:
 - FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
@@ -154,10 +163,11 @@ BACKGROUND: Plain clean white only. No scenery. No props. No text of any kind. N
 
 FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 
-    const characterBase64 = await callGemini([
-      { inlineData: { mimeType, data: photoBase64 } },
-      { text: characterPrompt },
-    ])
+      characterBase64 = await callGemini([
+        { inlineData: { mimeType, data: photoBase64 } },
+        { text: characterPrompt },
+      ])
+    }
 
     // Step 2 — Generate pages
     const indicesToGenerate: number[] = previewIndices ||

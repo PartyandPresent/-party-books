@@ -13,9 +13,11 @@ const CREAM = '#FAFAF5'
 const BODY = '#4A5568'
 const MUTED = '#888888'
 
-// Only generate these 5 page indices (0=cover, 1=dedication, 2, 3, 16=last)
 const PREVIEW_INDICES = [0, 1, 2, 3, 16]
 const PREVIEW_LABELS = ['Cover', 'Dedication', 'Page 2', 'Page 3', 'Final Page']
+
+type Status = 'loading-character' | 'character-ready' | 'loading-pages' | 'done' | 'error'
+type ErrorPhase = 'character' | 'pages'
 
 export default function PreviewPage() {
   const router = useRouter()
@@ -26,86 +28,107 @@ export default function PreviewPage() {
     setGeneratedPages, setCharacter,
   } = useOrderStore()
 
-  const [status, setStatus] = useState<'loading' | 'done' | 'error'>('loading')
-  const [pages, setPages] = useState<(string | null)[]>([null, null, null, null, null])
-  const [currentPage, setCurrentPage] = useState(0)
+  const [status, setStatus] = useState<Status>('loading-character')
+  const [errorPhase, setErrorPhase] = useState<ErrorPhase>('character')
   const [errorMsg, setErrorMsg] = useState('')
 
-  // Per-step progress
-  const [stepStatuses, setStepStatuses] = useState<('waiting' | 'loading' | 'done' | 'error')[]>(
-    ['waiting', 'waiting', 'waiting', 'waiting', 'waiting', 'waiting'] // character + 5 pages
+  const [characterBase64, setCharacterBase64] = useState<string | null>(null)
+  const [pages, setPages] = useState<(string | null)[]>([null, null, null, null, null])
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const [pageStatuses, setPageStatuses] = useState<('waiting' | 'loading' | 'done' | 'error')[]>(
+    ['waiting', 'waiting', 'waiting', 'waiting', 'waiting']
   )
   const [overallProgress, setOverallProgress] = useState(0)
-
-  const stepLabels = ['Character', ...PREVIEW_LABELS]
-
-  const setStepStatus = (index: number, s: 'waiting' | 'loading' | 'done' | 'error') => {
-    setStepStatuses(prev => {
-      const next = [...prev]
-      next[index] = s
-      return next
-    })
-  }
 
   useEffect(() => {
     if (!photoDataUrl || !selectedSlug) {
       router.push('/')
       return
     }
-    generateBook()
+    generateCharacter()
   }, [])
 
-  const generateBook = async () => {
-    setStatus('loading')
-    setOverallProgress(0)
-    setPages([null, null, null, null, null])
-    setStepStatuses(['waiting', 'waiting', 'waiting', 'waiting', 'waiting', 'waiting'])
+  // ── Phase 1: Generate character ────────────────────────────────
+  const generateCharacter = async () => {
+    setStatus('loading-character')
+    setCharacterBase64(null)
 
     try {
-      // Step 1 — Generate character
-      setStepStatus(0, 'loading')
-
-      const response = await fetch('/api/generate-book', {
+      const res = await fetch('/api/generate-character', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           photoBase64: photoDataUrl.split(',')[1],
           mimeType: photoMimeType,
+        }),
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Character generation failed')
+      }
+
+      const data = await res.json()
+      setCharacterBase64(data.character)
+      setCharacter(data.character)
+      setStatus('character-ready')
+
+    } catch (err: any) {
+      setErrorPhase('character')
+      setErrorMsg(err.message || 'Something went wrong. Please try again.')
+      setStatus('error')
+    }
+  }
+
+  // ── Phase 2: Generate pages ────────────────────────────────────
+  const generatePages = async () => {
+    setStatus('loading-pages')
+    setPages([null, null, null, null, null])
+    setPageStatuses(['waiting', 'waiting', 'waiting', 'waiting', 'waiting'])
+    setOverallProgress(0)
+
+    try {
+      const res = await fetch('/api/generate-book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           bookSlug: selectedSlug,
           childName,
           senderName,
           dedication,
+          characterBase64,
           previewIndices: PREVIEW_INDICES,
         }),
       })
 
-      if (!response.ok) {
-        const err = await response.json()
-        setStepStatus(0, 'error')
-        throw new Error(err.error || 'Generation failed')
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Page generation failed')
       }
 
-      // Stream-style: read the response as it comes
-      const data = await response.json()
-
-      setStepStatus(0, 'done')
-      setOverallProgress(16)
-
-      // Animate pages appearing one by one
+      const data = await res.json()
       const generatedPages: string[] = data.pages
-      setCharacter(data.character)
       setGeneratedPages(generatedPages)
 
       for (let i = 0; i < generatedPages.length; i++) {
-        setStepStatus(i + 1, 'loading')
+        setPageStatuses(prev => {
+          const next = [...prev]
+          next[i] = 'loading'
+          return next
+        })
         await new Promise(r => setTimeout(r, 300))
         setPages(prev => {
           const next = [...prev]
           next[i] = generatedPages[i]
           return next
         })
-        setStepStatus(i + 1, 'done')
-        setOverallProgress(Math.round(16 + ((i + 1) / generatedPages.length) * 84))
+        setPageStatuses(prev => {
+          const next = [...prev]
+          next[i] = 'done'
+          return next
+        })
+        setOverallProgress(Math.round(((i + 1) / generatedPages.length) * 100))
         await new Promise(r => setTimeout(r, 200))
       }
 
@@ -113,12 +136,13 @@ export default function PreviewPage() {
       setTimeout(() => setStatus('done'), 600)
 
     } catch (err: any) {
+      setErrorPhase('pages')
       setErrorMsg(err.message || 'Something went wrong. Please try again.')
       setStatus('error')
     }
   }
 
-  // ── Error Screen ───────────────────────────────────────────────
+  // ── Error screen ───────────────────────────────────────────────
   if (status === 'error') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
@@ -132,7 +156,7 @@ export default function PreviewPage() {
           This sometimes happens when our AI is busy. Please try again!
         </p>
         <button
-          onClick={generateBook}
+          onClick={errorPhase === 'character' ? generateCharacter : generatePages}
           style={{ backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '16px 40px', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer' }}
         >
           Try Again
@@ -142,17 +166,198 @@ export default function PreviewPage() {
     </div>
   )
 
-  // ── Loading Screen ─────────────────────────────────────────────
-  if (status === 'loading') return (
+  // ── Phase 1 loading: Generating character ──────────────────────
+  if (status === 'loading-character') return (
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
+      <Header />
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
+
+        {/* Animated portrait placeholder */}
+        <div style={{
+          width: 200, height: 200, borderRadius: '50%',
+          margin: '0 auto 32px',
+          background: `linear-gradient(135deg, ${BEIGE}, #E8E0D5)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 72,
+          boxShadow: '0 8px 40px rgba(45,74,62,0.12)',
+          animation: 'pulse 1.8s ease-in-out infinite',
+        }}>
+          🧒
+        </div>
+
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
+          Creating {childName}'s character...
+        </h1>
+        <p style={{ fontSize: 15, color: BODY, lineHeight: 1.7, marginBottom: 32, maxWidth: 400, margin: '0 auto 32px' }}>
+          Our AI is studying {childName}'s photo to build a personalised Pixar-style character.
+          This takes about 20–30 seconds.
+        </p>
+
+        {/* Progress dots */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginBottom: 32 }}>
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{
+              width: 10, height: 10, borderRadius: '50%', backgroundColor: CORAL,
+              animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
+            }} />
+          ))}
+        </div>
+
+        <p style={{ fontSize: 13, color: MUTED }}>
+          Please don't close this tab
+        </p>
+
+        <style>{`
+          @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.04);opacity:0.85} }
+          @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        `}</style>
+      </main>
+      <Footer />
+    </div>
+  )
+
+  // ── Phase 2: Character approval ────────────────────────────────
+  if (status === 'character-ready') return (
+    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
+      <Header />
+      <main style={{ maxWidth: 640, margin: '0 auto', padding: '60px 24px 80px' }}>
+
+        {/* Heading */}
+        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>✨</div>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 34, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
+            Meet {childName}!
+          </h1>
+          <p style={{ fontSize: 16, color: BODY, lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
+            This is how {childName} will look in every illustration — on every single page of the book.
+          </p>
+        </div>
+
+        {/* Character portrait */}
+        <div style={{
+          backgroundColor: '#fff',
+          borderRadius: 24,
+          padding: 24,
+          boxShadow: '0 8px 40px rgba(45,74,62,0.10)',
+          marginBottom: 28,
+          textAlign: 'center',
+        }}>
+          {characterBase64 && (
+            <img
+              src={`data:image/png;base64,${characterBase64}`}
+              alt={`${childName}'s character`}
+              style={{
+                width: '100%', maxWidth: 360,
+                aspectRatio: '1/1',
+                objectFit: 'cover',
+                borderRadius: 16,
+                display: 'block',
+                margin: '0 auto',
+              }}
+            />
+          )}
+
+          {/* Labels below portrait */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
+            {['Pixar-style illustration', 'Matches your photo', 'Appears on every page'].map(tag => (
+              <span key={tag} style={{
+                fontSize: 12, fontWeight: 700, color: GREEN,
+                backgroundColor: BEIGE, padding: '5px 14px', borderRadius: 50,
+              }}>
+                ✓ {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Tip */}
+        <div style={{
+          backgroundColor: '#F0FDF4', borderRadius: 14, padding: '14px 18px',
+          marginBottom: 28, display: 'flex', gap: 12, alignItems: 'flex-start',
+        }}>
+          <span style={{ fontSize: 20 }}>💡</span>
+          <p style={{ margin: 0, fontSize: 14, color: '#166534', lineHeight: 1.6 }}>
+            <strong>Not quite right?</strong> The likeness depends on the photo quality.
+            A well-lit, front-facing photo with no sunglasses or hats gives the best result.
+            You can regenerate for a fresh attempt, or go back to upload a better photo.
+          </p>
+        </div>
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <button
+            onClick={generatePages}
+            style={{
+              width: '100%', padding: '18px 24px',
+              backgroundColor: CORAL, color: '#fff',
+              border: 'none', borderRadius: 50,
+              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 18,
+              cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
+            }}
+          >
+            ✓ Looks perfect — Generate my book →
+          </button>
+
+          <button
+            onClick={generateCharacter}
+            style={{
+              width: '100%', padding: '15px 24px',
+              backgroundColor: 'transparent',
+              border: `2px solid ${GREEN}`,
+              color: GREEN, borderRadius: 50,
+              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
+              cursor: 'pointer',
+            }}
+          >
+            🔄 Try a different look
+          </button>
+
+          <button
+            onClick={() => router.back()}
+            style={{
+              background: 'none', border: 'none', color: MUTED,
+              fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14,
+              cursor: 'pointer', padding: '8px 0',
+            }}
+          >
+            ← Go back and change photo
+          </button>
+        </div>
+
+      </main>
+      <Footer />
+    </div>
+  )
+
+  // ── Phase 3 loading: Generating pages ─────────────────────────
+  if (status === 'loading-pages') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 600, margin: '0 auto', padding: '60px 24px', textAlign: 'center' }}>
-        <div style={{ fontSize: 64, marginBottom: 20 }}>📖</div>
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 10 }}>
-          Creating {childName}'s book...
+
+        {/* Approved character thumbnail */}
+        {characterBase64 && (
+          <div style={{
+            width: 80, height: 80, borderRadius: '50%',
+            margin: '0 auto 20px',
+            overflow: 'hidden',
+            border: `3px solid ${CORAL}`,
+            boxShadow: '0 4px 16px rgba(232,131,106,0.3)',
+          }}>
+            <img
+              src={`data:image/png;base64,${characterBase64}`}
+              alt={childName}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+        )}
+
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 10 }}>
+          Illustrating {childName}'s book...
         </h1>
         <p style={{ fontSize: 15, color: BODY, marginBottom: 36, lineHeight: 1.6 }}>
-          Our AI is illustrating every page just for {childName}.<br />
+          Using {childName}'s approved character to paint every page.<br />
           Please don't close this tab!
         </p>
 
@@ -167,17 +372,16 @@ export default function PreviewPage() {
           }} />
         </div>
 
-        {/* Per-step progress list */}
+        {/* Per-page status */}
         <div style={{ backgroundColor: '#fff', borderRadius: 16, padding: '24px 28px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', textAlign: 'left' }}>
-          {stepLabels.map((label, i) => {
-            const s = stepStatuses[i]
+          {PREVIEW_LABELS.map((label, i) => {
+            const s = pageStatuses[i]
             return (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 14,
                 padding: '10px 0',
-                borderBottom: i < stepLabels.length - 1 ? '1px solid #F0F0F0' : 'none',
+                borderBottom: i < PREVIEW_LABELS.length - 1 ? '1px solid #F0F0F0' : 'none',
               }}>
-                {/* Status icon */}
                 <div style={{
                   width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
                   backgroundColor:
@@ -188,25 +392,17 @@ export default function PreviewPage() {
                   fontSize: 13, color: '#fff', fontWeight: 800,
                   transition: 'background-color 0.3s',
                 }}>
-                  {s === 'done' ? '✓' :
-                   s === 'loading' ? '…' :
-                   s === 'error' ? '✗' : ''}
+                  {s === 'done' ? '✓' : s === 'loading' ? '…' : s === 'error' ? '✗' : ''}
                 </div>
-
-                {/* Label */}
                 <span style={{
                   fontSize: 14, fontWeight: s === 'loading' ? 800 : 600,
                   color: s === 'done' ? '#22C55E' : s === 'loading' ? CORAL : s === 'error' ? '#EF4444' : MUTED,
                   flex: 1,
                 }}>
-                  {i === 0 ? `✨ Generating ${childName}'s character` : `🎨 Illustrating ${label}`}
+                  🎨 Illustrating {label}
                 </span>
-
-                {/* Status text */}
                 <span style={{ fontSize: 12, color: MUTED, fontWeight: 600 }}>
-                  {s === 'done' ? 'Done!' :
-                   s === 'loading' ? 'Working...' :
-                   s === 'error' ? 'Failed' : 'Waiting'}
+                  {s === 'done' ? 'Done!' : s === 'loading' ? 'Working...' : s === 'error' ? 'Failed' : 'Waiting'}
                 </span>
               </div>
             )
@@ -214,22 +410,19 @@ export default function PreviewPage() {
         </div>
 
         <p style={{ fontSize: 13, color: MUTED, marginTop: 24 }}>
-          Generating a preview of 5 pages — this takes about 60–90 seconds
+          Generating 5 preview pages — this takes about 60–90 seconds
         </p>
-
-        <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
       </main>
       <Footer />
     </div>
   )
 
-  // ── Done Screen ────────────────────────────────────────────────
+  // ── Phase 4: Done — show preview pages ────────────────────────
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px 80px' }}>
 
-        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 36, paddingTop: 12 }}>
           <div style={{ fontSize: 40, marginBottom: 10 }}>🎉</div>
           <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 32, fontWeight: 700, color: GREEN, marginBottom: 8 }}>
@@ -243,7 +436,6 @@ export default function PreviewPage() {
         {/* Main viewer */}
         <div style={{ backgroundColor: '#fff', borderRadius: 20, padding: 24, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', marginBottom: 24 }}>
 
-          {/* Current page */}
           <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', marginBottom: 16, backgroundColor: '#F0F0F0', aspectRatio: '2/1' }}>
             {pages[currentPage] ? (
               <img
@@ -257,80 +449,55 @@ export default function PreviewPage() {
               </div>
             )}
 
-            {/* Prev arrow */}
             {currentPage > 0 && (
-              <button
-                onClick={() => setCurrentPage(p => p - 1)}
-                style={{
-                  position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
-                  backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
-                  width: 44, height: 44, fontSize: 22, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                }}
-              >‹</button>
+              <button onClick={() => setCurrentPage(p => p - 1)} style={{
+                position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
+                width: 44, height: 44, fontSize: 22, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              }}>‹</button>
             )}
 
-            {/* Next arrow */}
             {currentPage < pages.filter(Boolean).length - 1 && (
-              <button
-                onClick={() => setCurrentPage(p => p + 1)}
-                style={{
-                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
-                  width: 44, height: 44, fontSize: 22, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                }}
-              >›</button>
+              <button onClick={() => setCurrentPage(p => p + 1)} style={{
+                position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
+                width: 44, height: 44, fontSize: 22, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              }}>›</button>
             )}
           </div>
 
-          {/* Page label */}
           <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, fontWeight: 700, margin: '0 0 16px' }}>
             {PREVIEW_LABELS[currentPage]} — Page {currentPage + 1} of 5 preview pages
           </p>
 
-          {/* Thumbnail strip — 5 previews + locked overlay */}
+          {/* Thumbnail strip */}
           <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 8 }}>
-            {/* 5 unlocked previews */}
             {pages.map((page, i) => (
-              <button
-                key={i}
-                onClick={() => page && setCurrentPage(i)}
-                style={{
-                  flexShrink: 0, width: 80, height: 45,
-                  borderRadius: 6, overflow: 'hidden',
-                  border: currentPage === i ? `3px solid ${CORAL}` : '3px solid transparent',
-                  cursor: page ? 'pointer' : 'default',
-                  padding: 0, backgroundColor: '#E8E8E8', position: 'relative',
-                }}
-              >
+              <button key={i} onClick={() => page && setCurrentPage(i)} style={{
+                flexShrink: 0, width: 80, height: 45, borderRadius: 6, overflow: 'hidden',
+                border: currentPage === i ? `3px solid ${CORAL}` : '3px solid transparent',
+                cursor: page ? 'pointer' : 'default',
+                padding: 0, backgroundColor: '#E8E8E8',
+              }}>
                 {page
                   ? <img src={`data:image/png;base64,${page}`} alt={PREVIEW_LABELS[i]} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   : <div style={{ width: '100%', height: '100%', backgroundColor: '#F0F0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: MUTED }}>...</div>
                 }
               </button>
             ))}
-
-            {/* 12 locked page thumbnails */}
             {Array.from({ length: 12 }).map((_, i) => (
-              <div
-                key={`locked-${i}`}
-                style={{
-                  flexShrink: 0, width: 80, height: 45,
-                  borderRadius: 6, overflow: 'hidden',
-                  border: '3px solid transparent',
-                  backgroundColor: '#E8E8E8',
-                  position: 'relative',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}
-              >
+              <div key={`locked-${i}`} style={{
+                flexShrink: 0, width: 80, height: 45, borderRadius: 6,
+                border: '3px solid transparent', backgroundColor: '#E8E8E8',
+                position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
                 <div style={{
-                  position: 'absolute', inset: 0,
-                  backgroundColor: 'rgba(0,0,0,0.45)',
-                  display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', justifyContent: 'center', gap: 2,
+                  position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.45)',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2,
                 }}>
                   <span style={{ fontSize: 14 }}>🔒</span>
                   <span style={{ fontSize: 8, color: '#fff', fontWeight: 700 }}>LOCKED</span>
@@ -343,8 +510,7 @@ export default function PreviewPage() {
         {/* Locked pages banner */}
         <div style={{
           backgroundColor: BEIGE, borderRadius: 16, padding: '20px 24px',
-          marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16,
-          flexWrap: 'wrap',
+          marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
         }}>
           <div style={{ fontSize: 32 }}>🔒</div>
           <div style={{ flex: 1 }}>
@@ -372,20 +538,19 @@ export default function PreviewPage() {
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
             <button
-              onClick={generateBook}
+              onClick={generatePages}
               style={{
                 backgroundColor: 'transparent', border: `2px solid ${CORAL}`,
                 color: CORAL, borderRadius: 50, padding: '12px 24px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, cursor: 'pointer',
               }}
             >
-              🔄 Regenerate
+              🔄 Regenerate pages
             </button>
             <button
               onClick={() => router.push('/checkout')}
               style={{
-                backgroundColor: CORAL,
-                color: '#fff', border: 'none', borderRadius: 50, padding: '14px 32px',
+                backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '14px 32px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17, cursor: 'pointer',
                 boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
               }}
