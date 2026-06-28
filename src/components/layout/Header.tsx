@@ -36,11 +36,8 @@ export default function Header() {
       }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <Image src="/Icon.png" alt="party & presents" width={36} height={36} style={{ objectFit: 'contain' }} />
-          {!isMobile && (
-            <Image src="/Logo_Text.png" alt="party & presents" width={110} height={36} style={{ objectFit: 'contain' }} />
-          )}
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <Image src="/Miloria Logo.png" alt="Miloria" width={140} height={44} style={{ objectFit: 'contain' }} />
         </Link>
 
         {/* Desktop Nav */}

@@ -17,15 +17,12 @@ export default function Footer() {
           <div>
             <div style={{ marginBottom: 16 }}>
               <Image
-                src="/Icon.png"
-                alt="party & presents"
-                width={52}
+                src="/Miloria Logo - white.png"
+                alt="Miloria"
+                width={160}
                 height={52}
-                style={{ objectFit: 'contain', background: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: 6 }}
+                style={{ objectFit: 'contain' }}
               />
-            </div>
-            <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 16, color: '#fff', marginBottom: 10 }}>
-              party & presents
             </div>
             <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: DIM, lineHeight: 1.7, maxWidth: 220 }}>
               Personalized storybooks that celebrate every milestone — crafted with love, treasured forever.
