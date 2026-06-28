@@ -37,7 +37,7 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <Image src="/Miloria Logo.png" alt="Miloria" width={140} height={44} style={{ objectFit: 'contain' }} />
+          <Image src="/Miloria Logo.png" alt="Miloria" width={140} height={44} style={{ objectFit: 'contain' }} unoptimized />
         </Link>
 
         {/* Desktop Nav */}

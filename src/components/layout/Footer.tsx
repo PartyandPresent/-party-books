@@ -22,6 +22,7 @@ export default function Footer() {
                 width={160}
                 height={52}
                 style={{ objectFit: 'contain' }}
+                unoptimized
               />
             </div>
             <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: DIM, lineHeight: 1.7, maxWidth: 220 }}>
