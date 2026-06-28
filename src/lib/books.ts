@@ -449,15 +449,15 @@ export const OCCASIONS = [
 export const REVIEWS = [
   {
     name: 'Maria S.',
-    location: 'Manila, PH',
+    location: 'Toronto, ON · Canada',
     rating: 5,
-    text: "We ordered this for our daughter's baptism and everyone cried happy tears. Seeing her face on every page was absolutely magical. Worth every peso!",
+    text: "We ordered this for our daughter's baptism and everyone cried happy tears. Seeing her face on every page was absolutely magical. Worth every penny!",
     book: "God's Promises For You",
     avatar: 'M',
   },
   {
     name: 'James R.',
-    location: 'Cebu, PH',
+    location: 'Vancouver, BC · Canada',
     rating: 5,
     text: "Jared absolutely loves seeing himself in the book. He asks us to read it every single night. The quality is stunning — looks just like a real published book.",
     book: "God's Promises For You",
@@ -465,7 +465,7 @@ export const REVIEWS = [
   },
   {
     name: 'Ana D.',
-    location: 'Davao, PH',
+    location: 'Austin, TX · USA',
     rating: 5,
     text: "I gave this as a birthday gift and the mom cried when she opened it. The illustrations are Pixar-level quality. Already ordering another one for Christmas!",
     book: 'Before You Were Born',
@@ -473,7 +473,7 @@ export const REVIEWS = [
   },
   {
     name: 'Grace T.',
-    location: 'Quezon City, PH',
+    location: 'Calgary, AB · Canada',
     rating: 5,
     text: "The dedication page made my heart melt. Such a thoughtful, beautiful keepsake. My nephew carries it everywhere and shows everyone 'that's me in the book!'",
     book: 'You Are Brave',
