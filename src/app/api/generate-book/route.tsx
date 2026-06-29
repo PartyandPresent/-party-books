@@ -113,12 +113,6 @@ const rateLimitMap = new Map<string, number>()
 export async function POST(req: NextRequest) {
   const isDev = process.env.NODE_ENV === 'development'
   const ip = req.headers.get('x-forwarded-for') || 'unknown'
-  const lastCall = rateLimitMap.get(ip) || 0
-  const tenMinutes = 10 * 60 * 1000
-  if (!isDev && Date.now() - lastCall < tenMinutes) {
-    const waitSeconds = Math.ceil((tenMinutes - (Date.now() - lastCall)) / 1000)
-    return NextResponse.json({ error: `Please wait ${waitSeconds} seconds before generating again.` }, { status: 429 })
-  }
 
   try {
     const { photoBase64, mimeType, bookSlug, childName, senderName, dedication, previewIndices, characterBase64: preGeneratedCharacter } = await req.json()
@@ -130,14 +124,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing photo or pre-generated character' }, { status: 400 })
     }
 
+    // Rate limit only applies to page generation (the expensive multi-call step),
+    // and only when not using a pre-approved character from the new flow
+    if (!preGeneratedCharacter) {
+      const lastCall = rateLimitMap.get(ip) || 0
+      const tenMinutes = 10 * 60 * 1000
+      if (!isDev && Date.now() - lastCall < tenMinutes) {
+        const waitSeconds = Math.ceil((tenMinutes - (Date.now() - lastCall)) / 1000)
+        return NextResponse.json({ error: `Please wait ${waitSeconds} seconds before generating again.` }, { status: 429 })
+      }
+      rateLimitMap.set(ip, Date.now())
+    }
+
     const book = getBookBySlug(bookSlug)
     if (!book || !book.pagePrompts || book.pagePrompts.length === 0) {
       return NextResponse.json({ error: 'Book not found or prompts missing' }, { status: 404 })
-    }
-
-    // Only apply rate limit when generating a fresh character (not pre-approved)
-    if (!preGeneratedCharacter) {
-      rateLimitMap.set(ip, Date.now())
     }
 
     // Step 1 — Generate character (skip if already provided)

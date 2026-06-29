@@ -55,26 +55,13 @@ async function callGemini(promptParts: any[]): Promise<string> {
   throw new Error('Max retries exceeded')
 }
 
-const rateLimitMap = new Map<string, number>()
-
 export async function POST(req: NextRequest) {
-  const isDev = process.env.NODE_ENV === 'development'
-  const ip = req.headers.get('x-forwarded-for') || 'unknown'
-  const lastCall = rateLimitMap.get(ip) || 0
-  const tenMinutes = 10 * 60 * 1000
-  if (!isDev && Date.now() - lastCall < tenMinutes) {
-    const waitSeconds = Math.ceil((tenMinutes - (Date.now() - lastCall)) / 1000)
-    return NextResponse.json({ error: `Please wait ${waitSeconds} seconds before generating again.` }, { status: 429 })
-  }
-
   try {
     const { photoBase64, mimeType } = await req.json()
 
     if (!photoBase64 || !mimeType) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
-
-    rateLimitMap.set(ip, Date.now())
 
     const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
 
