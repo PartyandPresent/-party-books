@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getBookBySlug } from '@/lib/books'
 
 export const maxDuration = 120
 export const dynamic = 'force-dynamic'
@@ -55,15 +56,7 @@ async function callGemini(promptParts: any[]): Promise<string> {
   throw new Error('Max retries exceeded')
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const { photoBase64, mimeType } = await req.json()
-
-    if (!photoBase64 || !mimeType) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
-
-    const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
+const DEFAULT_CHARACTER_PROMPT = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
 
 COPY EXACTLY FROM THE PHOTO:
 - FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
@@ -81,6 +74,24 @@ POSE: Full body head to toe. Relaxed natural standing pose. Slight 3/4 angle tur
 BACKGROUND: Plain clean white only. No scenery. No props. No text of any kind. No cast shadow on the background.
 
 FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
+
+
+export async function POST(req: NextRequest) {
+  try {
+    const { photoBase64, mimeType, bookSlug } = await req.json()
+
+    if (!photoBase64 || !mimeType) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    // Use book-specific character prompt if available, otherwise use default
+    let characterPrompt = DEFAULT_CHARACTER_PROMPT
+    if (bookSlug) {
+      const book = getBookBySlug(bookSlug)
+      if (book?.characterPrompt) {
+        characterPrompt = book.characterPrompt
+      }
+    }
 
     const characterBase64 = await callGemini([
       { inlineData: { mimeType, data: photoBase64 } },

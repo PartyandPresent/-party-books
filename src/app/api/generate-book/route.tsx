@@ -14,9 +14,12 @@ async function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
 }
 
-async function compositeLogoOnCover(coverBase64: string): Promise<string> {
+async function compositeLogoOnCover(coverBase64: string, logoStyle: 'white' | 'color' = 'white'): Promise<string> {
   try {
-    const logoPath = path.join(process.cwd(), 'public', 'Final_Logo_White.png')
+    // 'white' → Final_Logo_White.png forced pure white (for dark/illustrated covers)
+    // 'color' → Final_Logo.png in its natural brand colors (pink/coral)
+    const logoFile = logoStyle === 'color' ? 'Final_Logo.png' : 'Final_Logo_White.png'
+    const logoPath = path.join(process.cwd(), 'public', logoFile)
     const logoBuffer = fs.readFileSync(logoPath)
     const coverBuffer = Buffer.from(coverBase64, 'base64')
 
@@ -24,8 +27,32 @@ async function compositeLogoOnCover(coverBase64: string): Promise<string> {
 
     const logoWidth = Math.round(width * 0.14)
 
-    // File is white-on-transparent. Preserve existing alpha, force all RGB to
-    // white so even the slightly cream bow becomes pure white on the cover.
+    if (logoStyle === 'color') {
+      // Use the logo as-is — preserve its natural colors
+      const { info } = await sharp(logoBuffer)
+        .resize(logoWidth, null, { fit: 'inside' })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true })
+
+      const resizedLogo = await sharp(logoBuffer)
+        .resize(logoWidth, null, { fit: 'inside' })
+        .png()
+        .toBuffer()
+
+      const leftPageW = Math.round(width / 2)
+      const left = Math.round((leftPageW - info.width) / 2)
+      const top  = Math.round((height - info.height) / 2)
+
+      const result = await sharp(coverBuffer)
+        .composite([{ input: resizedLogo, left, top, blend: 'over' }])
+        .png()
+        .toBuffer()
+
+      return result.toString('base64')
+    }
+
+    // Force all RGB to white so even cream tones become pure white on the cover.
     const { data, info } = await sharp(logoBuffer)
       .resize(logoWidth, null, { fit: 'inside' })
       .ensureAlpha()
@@ -145,7 +172,7 @@ export async function POST(req: NextRequest) {
     let characterBase64 = preGeneratedCharacter
 
     if (!characterBase64) {
-      const characterPrompt = `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
+      const characterPrompt = book.characterPrompt || `Create a full-body 3D Pixar/Disney animated character of the EXACT child shown in the uploaded photo.
 
 COPY EXACTLY FROM THE PHOTO:
 - FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
@@ -184,9 +211,12 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
         .replace(/\[SENDER_NAME\]/g, senderName)
         .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)
 
+      const consistencyNote = book.characterConsistencyNote ||
+        `CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`
+
       const fullPrompt = `${pagePrompt}
 
-CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`
+${consistencyNote}`
 
       const parts = [
         { inlineData: { mimeType: 'image/png', data: characterBase64 } },
@@ -197,7 +227,7 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
 
       // Composite the real logo onto the cover after Gemini generates it
       if (pageIndex === 0) {
-        pageBase64 = await compositeLogoOnCover(pageBase64)
+        pageBase64 = await compositeLogoOnCover(pageBase64, book.coverLogoStyle ?? 'white')
       }
 
       generatedPages.push(pageBase64)

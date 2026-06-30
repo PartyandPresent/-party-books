@@ -61,6 +61,7 @@ export default function PreviewPage() {
         body: JSON.stringify({
           photoBase64: photoDataUrl.split(',')[1],
           mimeType: photoMimeType,
+          bookSlug: selectedSlug,
         }),
       })
 
