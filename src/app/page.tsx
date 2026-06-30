@@ -489,8 +489,78 @@ export default function HomePage() {
 
       {/* ── FINAL CTA ────────────────────────────────────── */}
       <section style={{ background: GREEN, padding: isMobile ? '48px 20px' : '72px 24px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', right: -40, bottom: -40, fontSize: 200, opacity: 0.04, lineHeight: 1, pointerEvents: 'none' }}>🏰</div>
-        <div style={{ position: 'absolute', left: -20, top: -20, fontSize: 120, opacity: 0.04, lineHeight: 1, pointerEvents: 'none' }}>🌸</div>
+        {/* ── Doodle: Open Book — bottom-right ── */}
+        <svg style={{ position:'absolute', right:-10, bottom:-10, opacity:0.07, pointerEvents:'none' }} width="240" height="170" viewBox="0 0 240 170" fill="none">
+          <path d="M120 150 C85 128 18 116 6 104 L6 22 C18 34 85 48 120 68" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M120 150 C155 128 222 116 234 104 L234 22 C222 34 155 48 120 68" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <line x1="120" y1="68" x2="120" y2="150" stroke="white" strokeWidth="2.5"/>
+          <line x1="28" y1="55" x2="110" y2="72" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          <line x1="28" y1="72" x2="110" y2="87" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          <line x1="28" y1="89" x2="110" y2="102" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          <line x1="130" y1="72" x2="212" y2="55" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          <line x1="130" y1="87" x2="212" y2="72" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+          <line x1="130" y1="102" x2="212" y2="89" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+        </svg>
+
+        {/* ── Doodle: Butterfly — top-left ── */}
+        <svg style={{ position:'absolute', left:32, top:18, opacity:0.08, pointerEvents:'none', transform:'rotate(-12deg)' }} width="100" height="80" viewBox="0 0 100 80" fill="none">
+          <path d="M50 40 C50 22 22 4 10 16 C-2 28 16 56 50 40Z" stroke="white" strokeWidth="2" fill="none"/>
+          <path d="M50 40 C50 22 78 4 90 16 C102 28 84 56 50 40Z" stroke="white" strokeWidth="2" fill="none"/>
+          <path d="M50 40 C50 58 22 76 10 64 C-2 52 16 28 50 40Z" stroke="white" strokeWidth="2" fill="none"/>
+          <path d="M50 40 C50 58 78 76 90 64 C102 52 84 28 50 40Z" stroke="white" strokeWidth="2" fill="none"/>
+          <line x1="50" y1="32" x2="50" y2="48" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M50 32 C46 25 40 20 36 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M50 32 C54 25 60 20 64 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+
+        {/* ── Doodle: Castle — top-right ── */}
+        <svg style={{ position:'absolute', right:60, top:-8, opacity:0.06, pointerEvents:'none' }} width="110" height="110" viewBox="0 0 110 110" fill="none">
+          <rect x="15" y="55" width="80" height="50" stroke="white" strokeWidth="2" fill="none"/>
+          <rect x="15" y="40" width="18" height="22" stroke="white" strokeWidth="2" fill="none"/>
+          <rect x="46" y="40" width="18" height="22" stroke="white" strokeWidth="2" fill="none"/>
+          <rect x="77" y="40" width="18" height="22" stroke="white" strokeWidth="2" fill="none"/>
+          <line x1="15" y1="30" x2="15" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="20" y1="30" x2="20" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="25" y1="30" x2="25" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="33" y1="30" x2="33" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="46" y1="28" x2="46" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="51" y1="28" x2="51" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="56" y1="28" x2="56" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="64" y1="28" x2="64" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="77" y1="30" x2="77" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="82" y1="30" x2="82" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="87" y1="30" x2="87" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="95" y1="30" x2="95" y2="40" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <rect x="42" y="75" width="26" height="30" stroke="white" strokeWidth="2" fill="none"/>
+        </svg>
+
+        {/* ── Doodle: Heart — left-center ── */}
+        <svg style={{ position:'absolute', left:'8%', bottom:'25%', opacity:0.09, pointerEvents:'none', transform:'rotate(-8deg)' }} width="52" height="48" viewBox="0 0 52 48" fill="none">
+          <path d="M26 44 C26 44 4 28 4 14 C4 7 9 3 16 3 C20 3 23 5 26 9 C29 5 32 3 36 3 C43 3 48 7 48 14 C48 28 26 44 26 44Z" stroke="white" strokeWidth="2" fill="none"/>
+        </svg>
+
+        {/* ── Doodle: Vine — left edge ── */}
+        <svg style={{ position:'absolute', left:-8, top:'20%', opacity:0.06, pointerEvents:'none' }} width="70" height="130" viewBox="0 0 70 130" fill="none">
+          <path d="M35 8 C14 22 56 45 35 65 C14 85 56 105 35 122" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
+          <path d="M35 28 C24 23 12 26 6 19" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M35 65 C50 58 63 63 68 55" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M35 100 C22 96 10 102 4 94" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+
+        {/* ── Doodle: Star cluster — right-center ── */}
+        <svg style={{ position:'absolute', right:'12%', top:'30%', opacity:0.08, pointerEvents:'none' }} width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <path d="M30 5 L33 22 L50 22 L37 33 L42 50 L30 40 L18 50 L23 33 L10 22 L27 22 Z" stroke="white" strokeWidth="1.8" fill="none"/>
+          <circle cx="8" cy="12" r="3" stroke="white" strokeWidth="1.4" fill="none"/>
+          <circle cx="52" cy="8" r="2" stroke="white" strokeWidth="1.4" fill="none"/>
+          <circle cx="55" cy="52" r="2.5" stroke="white" strokeWidth="1.4" fill="none"/>
+        </svg>
+
+        {/* ── Doodle: Scattered sparkle characters ── */}
+        <span style={{ position:'absolute', left:'25%', top:'12%', color:'white', opacity:0.12, fontSize:22, pointerEvents:'none', userSelect:'none' }}>✦</span>
+        <span style={{ position:'absolute', left:'60%', top:'8%', color:'white', opacity:0.10, fontSize:15, pointerEvents:'none', userSelect:'none' }}>✧</span>
+        <span style={{ position:'absolute', left:'42%', bottom:'18%', color:'white', opacity:0.10, fontSize:18, pointerEvents:'none', userSelect:'none' }}>⋆</span>
+        <span style={{ position:'absolute', right:'30%', bottom:'12%', color:'white', opacity:0.09, fontSize:13, pointerEvents:'none', userSelect:'none' }}>✦</span>
+        <span style={{ position:'absolute', left:'18%', top:'50%', color:'white', opacity:0.08, fontSize:16, pointerEvents:'none', userSelect:'none' }}>✧</span>
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center', position: 'relative' }}>
           <div style={{ display: 'flex', gap: 4, justifyContent: 'center', marginBottom: 16 }}>
             {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 18, color: GOLD }}>★</span>)}
