@@ -103,41 +103,36 @@ export default function Header() {
                 </Link>
 
                 {/* Dropdown panel */}
-                <div className="nav-dropdown" style={{
-                  background: '#fff',
-                  borderRadius: 14,
-                  boxShadow: '0 8px 40px rgba(45,74,62,0.13)',
-                  border: '1px solid #EDE8DF',
-                  borderTop: `2px solid ${CORAL}`,
-                  padding: '8px',
-                  minWidth: 210,
-                }}>
-                  {/* Small triangle pointer */}
+                <div className="nav-dropdown">
+                  {/* Visual card — sits inside the padded dropdown container */}
                   <div style={{
-                    position: 'absolute',
-                    top: -7,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: 12,
-                    height: 7,
-                    overflow: 'hidden',
+                    background: '#fff',
+                    borderRadius: 14,
+                    boxShadow: '0 8px 40px rgba(45,74,62,0.13)',
+                    border: '1px solid #EDE8DF',
+                    borderTop: `2px solid ${CORAL}`,
+                    padding: '8px',
+                    position: 'relative',
                   }}>
+                    {/* Triangle pointer */}
                     <div style={{
-                      width: 10,
-                      height: 10,
-                      background: CORAL,
-                      transform: 'rotate(45deg)',
-                      margin: '3px auto 0',
+                      position: 'absolute',
+                      top: -7, left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: 0, height: 0,
+                      borderLeft: '7px solid transparent',
+                      borderRight: '7px solid transparent',
+                      borderBottom: `7px solid ${CORAL}`,
                     }} />
-                  </div>
 
-                  {item.items.map(sub => (
-                    <Link key={sub.href} href={sub.href} className="nav-dropdown-link">
-                      <span style={{ fontSize: 15 }}>{sub.icon}</span>
-                      <span style={{ flex: 1 }}>{sub.label}</span>
-                      <span className="dd-arrow" style={{ color: CORAL }}>→</span>
-                    </Link>
-                  ))}
+                    {item.items.map(sub => (
+                      <Link key={sub.href} href={sub.href} className="nav-dropdown-link">
+                        <span className="dd-icon">{sub.icon}</span>
+                        <span style={{ flex: 1 }}>{sub.label}</span>
+                        <span className="dd-arrow">→</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}

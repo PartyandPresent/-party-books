@@ -132,9 +132,9 @@
 
 .nav-dropdown {
   position: absolute;
-  top: calc(100% + 14px);
+  top: 100%;          /* flush to trigger — no gap for mouse to fall through */
   left: 50%;
-  transform: translateX(-50%) translateY(-6px);
+  transform: translateX(-50%) translateY(-4px);
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
@@ -142,7 +142,8 @@
               transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
               visibility 0s linear 0.22s;
   z-index: 200;
-  min-width: 200px;
+  min-width: 210px;
+  padding-top: 10px;  /* invisible buffer keeps hover alive while moving to panel */
 }
 
 .nav-group:hover .nav-dropdown,
@@ -182,6 +183,21 @@
 .nav-dropdown-link:hover .dd-arrow {
   opacity: 1;
   transform: translateX(2px);
+}
+
+/* Sparkle pop on dropdown icon hover */
+.nav-dropdown-link .dd-icon {
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.22s ease;
+}
+.nav-dropdown-link:hover .dd-icon {
+  transform: scale(1.4) rotate(-10deg);
+  filter: drop-shadow(0 0 5px rgba(232,184,75,0.95))
+          drop-shadow(0 0 10px rgba(232,131,106,0.6));
+  animation: starPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ── BUTTON SHINE ───────────────────────────────────────────────────── */
