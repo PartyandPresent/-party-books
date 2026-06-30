@@ -17,7 +17,7 @@ export default function Footer() {
           <div>
             <div style={{ marginBottom: 16 }}>
               <Image
-                src="/Miloria Logo - white.png"
+                src="/images/Miloria Logo - white.svg"
                 alt="Miloria"
                 width={160}
                 height={52}
