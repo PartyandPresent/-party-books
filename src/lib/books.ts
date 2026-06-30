@@ -530,344 +530,250 @@ STYLE: Pixar/Disney 3D animated. Glorious sunrise left half. Soft blush right ha
 
       // PAGE 0 — COVER
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. Warm cream-ivory background across the entire spread. Soft 3D rendered flower shapes, soft 3D curved rose petals, 3D sparkle stars, and tiny 3D heart shapes float gently throughout both halves at varying scales.
+A dreamy children's storybook cover with a magical wedding atmosphere. The character from the reference image stands on the RIGHT side of the canvas, full body, holding a flower basket, smiling with innocent excitement and gentle anticipation, looking slightly downward as if imagining the wonderful day ahead. Floating flower petals, tiny sparkles, pastel flowers and soft doodle hearts surround the character. The LEFT half remains mostly empty with a warm creamy gradient for visual balance.
 
-LEFT HALF: Clean open warm cream-ivory. CRITICAL — KEEP LEFT CENTER COMPLETELY CLEAR for logo placement. No character, no large elements blocking left center. Floating 3D petals and tiny 3D flowers fine at the very edges.
+Background: soft warm ivory with cream-to-beige gradient, gentle glowing vignette, subtle paper texture, floating flower petals, tiny pastel sparkles, small floral doodles, soft magical lighting.
 
-RIGHT HALF: Warm cream background with character and floating 3D decorative elements.
+TEXT — render exactly in the top-right quadrant:
 
-CHARACTER: Full body, head to toe. Standing RIGHT HALF, right of center, clear of spine zone. Gentle 3/4 pose toward viewer. Sweet innocent smile. Holding woven petal basket. Ivory flower girl dress with blush sash and blush headband. Does not cross center.
-
-TEXT — render EXACTLY as shown below, RIGHT HALF only:
-
-UPPER-RIGHT, above the character — LARGE bold playful decorative rounded font — VIVID HOT PINK with BOLD WHITE OUTLINE:
+MAIN TITLE — large playful brush script, rounded handwritten style, bubble-like curves, PINK:
   Before the
   Music Plays
 
-JUST BELOW that — MEDIUM rounded font — SOFT LAVENDER-BLUE with thin WHITE OUTLINE:
+SUBTITLE — rounded handwritten font, LAVENDER, medium weight:
   A Story for [CHILD_NAME]
 
-LOWER-RIGHT, below the character — MEDIUM rounded font — CORAL-PINK with thin WHITE OUTLINE:
+BOOK SUBTITLE — thick rounded bubble font, WHITE fill with PINK OUTLINE:
   On the Day She Was Chosen
 
-BOTTOM-RIGHT, very small — SMALL font — SOFT CORAL-PINK:
-  by : party&presents`,
+AUTHOR — small rounded playful font, PURPLE:
+  by : party&presents
+
+PUBLISHER LOGO — left-center of canvas, small, pink: party&presents logo`,
 
       // PAGE 1 — DEDICATION
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. Strict left-right split.
+Minimal dedication page with elegant ribbon curling across the bottom-right. Small pastel flowers and scattered petals decorate the page. Calm, peaceful, sentimental atmosphere. No character present.
 
-LEFT HALF: Completely plain white. Clean and empty like a blank page. No texture, no scenery, no objects, no decorative elements in this half.
+Mood: warm, heartfelt, quiet, elegant.
 
-RIGHT HALF: Warm soft cream-ivory background. A gently curling ivory or white satin ribbon winds gracefully across the lower-center area. Small soft 3D miniature flower blooms rest around the ribbon — tiny 3D rounded blue, yellow, and pink flower shapes with real petal depth and soft shadows. Soft 3D curved rose petals scattered. Small 3D sparkle shapes near edges. Warm gentle light.
+Background: mostly white page with cream glow on right side, soft vignette, ribbon with realistic folds and natural sheen, small floating flower petals, tiny pastel flowers scattered softly.
 
-NO CHARACTER anywhere on this spread.
+TEXT to render in the upper-right area, centered:
+For [CHILD_NAME], who said yes. And for the day that needed exactly the right person to make it complete.`,
 
-TEXT — render on RIGHT HALF only, in the upper portion above the ribbon — BOLD ROUNDED VERY DARK NAVY font, centered in right half, no outline:
-  For [CHILD_NAME], who said yes.
-  And for the day that needed
-  exactly the right person
-  to make it complete.`,
-
-      // PAGE 2 — WAKING UP (Pages 2–3 in reference)
+      // PAGE 2 — MORNING EXCITEMENT
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image has just awakened in bed, smiling with wide-eyed excitement, amazement and joyful anticipation. Hands tucked near the face in delighted surprise as soft flower petals float through the room. Morning sunlight pours through a large window. Character wears soft children's pajamas — NOT the flower girl dress.
 
-CHARACTER AND BACKGROUND — RIGHT HALF: [CHILD_NAME] sits up happily in bed wearing soft children's pajamas or sleeping outfit — NOT the flower girl dress. She has just woken up. Expression: excited, cozy, full of wonder — hands raised near her face or cheeks with joy, mouth open in delight. Sitting up against soft pillows and floral bedding.
+Emotion: delighted, amazed, excited, hopeful, innocent wonder.
 
-BACKGROUND behind the character: plain pale peach background with a softly faded bedroom scene — a soft bed shape, fluffy pillows, a small window glowing with warm golden morning sunlight, and a few soft flower shapes near the window. Everything extremely blurred like soft bokeh photography. Floating small soft 3D flower shapes (NOT flat 2D) and soft 3D curved petals drift gently around [CHILD_NAME].
+Background: cozy bedroom, warm sunrise, soft glowing window, cream bedding, floating blossoms, airy pastel atmosphere.
 
-LEFT HALF: Plain pale peach. No scenery.
+Character on the RIGHT side. LEFT side clear for text.
 
-CHARACTER: Sitting up in bed, RIGHT HALF, in pajamas only. Clear of spine zone. Does not cross center.
+TEXT to render on the LEFT side, centered vertically:
+On the morning of the day everyone had been waiting for, [CHILD_NAME] woke up to a house full of flowers and a feeling that something wonderful was about to happen.`,
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  On the morning of the day everyone
-  had been waiting for, [CHILD_NAME] woke up to
-  a house full of flowers and a feeling
-  that something wonderful was about
-  to happen.`,
-
-      // PAGE 3 — GETTING DRESSED (Pages 4–5)
+      // PAGE 3 — GETTING READY
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+A caring adult gently helps the character from the reference image get dressed. The child stands calmly, looking upward with admiration, trust, curiosity and growing excitement. Flower basket rests nearby on the floor.
 
-CHARACTER AND BACKGROUND — LEFT HALF: [CHILD_NAME] stands in her ivory or cream flower girl dress with soft tulle, flutter sleeves, and blush sash. An adult helper — a warm woman wearing an elegant rose-colored dress, with gentle visible features and a styled updo — stands close beside or behind her, tenderly adjusting the blush sash or soft tulle. [CHILD_NAME] looks shy, happy, and amazed. A small woven petal basket with a blush bow sits on the floor beside them.
+Emotion: trusting, calm, curious, quietly excited, feeling special.
 
-BACKGROUND behind them: plain soft blush-pink background with a softly faded dressing-room scene — a faint mannequin/dress form silhouette, soft curtain shapes, a blurred elegant tufted chair, delicate wedding flowers in the far distance. Everything soft and secondary. Floating soft 3D flower shapes and soft 3D blush petals at the edges.
+Background: soft blush room, minimal furniture, dress form mannequin, vintage chair, plush rug, gentle pastel lighting.
 
-RIGHT HALF: Plain soft blush-pink-cream. No scenery.
+Character and adult are on the LEFT side. RIGHT side clear for text.
 
-CHARACTER: Full body LEFT HALF. Clear of spine zone. Does not cross center.
+TEXT to render on the RIGHT side, centered:
+There was a special dress laid out — just for today. She tried it on slowly, like it might be magic.`,
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  There was a special dress
-  laid out — just for today.
-
-  She tried it on slowly,
-  like it might be magic.`,
-
-      // PAGE 4 — MIRROR (Pages 6–7)
+      // PAGE 4 — MIRROR
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. [CHILD_NAME] looks at herself in a large ornate mirror and sees her flower girl reflection.
+The character from the reference image stands before a large decorative mirror, smiling softly while admiring the reflection. The reflection appears magical, surrounded by sparkling lights. Quiet realization begins to appear.
 
-FULL SPREAD COMPOSITION: [CHILD_NAME] stands in the LEFT PORTION of the spread holding her basket, in front of a large ornate white decorative mirror standing in the RIGHT PORTION. Her reflection in the mirror must match her exactly — same ivory dress, same blush sash, same hair, same basket — mirrored pose.
+Emotion: wonder, admiration, confidence beginning to bloom, surprise, quiet pride.
 
-BACKGROUND: plain lavender-cream (soft purple-white tone) throughout. Behind [CHILD_NAME]: very softly faded bedroom elements, almost transparent. Ornate white mirror frame with decorative molding. Floating soft 3D flower shapes, 3D sparkle stars, and 3D blush petals around both [CHILD_NAME] and the mirror.
+Background: elegant bedroom, ornate mirror, floating sparkles, petals, soft dreamy glow.
 
-CHARACTER: [CHILD_NAME] LEFT HALF (clear of spine). Mirror reflection RIGHT HALF (clear of spine). Both in flower girl dress. Wide eyes, sweet amazed smile.
+Character on LEFT side, ornate mirror on RIGHT side. Reflection of character visible inside mirror.
 
-TEXT — render at BOTTOM of spread — BOLD ROUNDED VERY DARK NAVY font, no outline:
-BOTTOM-LEFT area, centered there:
-  When [CHILD_NAME] looked in the mirror,
-  she almost didn't recognize
-  the person looking back.
+TEXT — two captions at the bottom of the spread:
+BOTTOM-LEFT beneath the character: When [CHILD_NAME] looked in the mirror, she almost didn't recognize the person looking back.
+BOTTOM-RIGHT beneath the mirror reflection: Today, she looked like someone with a very important job to do.`,
 
-BOTTOM-RIGHT area, centered there:
-  Today, she looked like someone
-  with a very important job to do.`,
-
-      // PAGE 5 — VENUE ARRIVAL (Pages 8–9)
+      // PAGE 5 — JOURNEY
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image walks toward the wedding venue holding the basket while looking back over the shoulder with quiet excitement and curiosity. Flower petals trail through the air. Character seen from behind or three-quarter-back view.
 
-CHARACTER AND BACKGROUND — RIGHT HALF: [CHILD_NAME] in her ivory flower girl dress and blush sash, holding her small woven petal basket, standing with calm dreamy wide eyes as she takes in the beautiful wedding venue for the first time. Expression: calm, dreamy, and gently excited. She may be looking slightly to one side as if seeing the venue. Full body visible.
+Emotion: eager, curious, hopeful, adventurous.
 
-BACKGROUND behind her: plain pale sage green background with a softly faded garden wedding scene — a visible soft floral arch with pale cream roses and greenery in the upper background, pale ribbons draping softly, blurry lush greenery, soft string lights as warm bokeh points, cream flowers in the distance. Scene is soft and painterly but VISIBLE. Floating small soft 3D daisy flower shapes in white and coral, and soft 3D blush petals, drift around [CHILD_NAME].
+Background: soft green garden, wedding arch in distance, floral decorations, gentle bokeh, airy pastel landscape.
 
-LEFT HALF: Plain pale sage-cream. No scenery.
+Character on the RIGHT side looking back. LEFT side clear for text.
 
-CHARACTER: Full body RIGHT HALF. Holding basket. Clear of spine zone.
+TEXT to render on the LEFT side, centered vertically — two paragraphs with a gap between them:
+The car wound through town, past fields and ribbons and signs pointing the way.
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  The car wound through town, past
-  fields and ribbons and signs
-  pointing the way.
+When they arrived, the whole place smelled like flowers and felt like magic already.`,
 
-  When they arrived, the whole place
-  smelled like flowers and felt
-  like magic already.`,
-
-      // PAGE 6 — MEETING THE BRIDE (Pages 10–11)
+      // PAGE 6 — GREETING THE BRIDE
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image lovingly hugs the bride. The bride kneels slightly to welcome the child warmly. Emotional reunion filled with affection. The bride's face is intentionally FEATURELESS — smooth and blank with no facial features, for universal gifting design.
 
-CHARACTER AND BACKGROUND — LEFT HALF: [CHILD_NAME] and the bride together. The bride ([SENDER_NAME]) wears an elegant white bridal gown with a long flowing veil. She kneels or bends warmly down to [CHILD_NAME]'s level, perhaps with one arm gently around [CHILD_NAME] or pulling her close in a soft embrace. The bride's face has no distinct features — softly glowing radiant presence, face angled away or blurred. [CHILD_NAME] holds her petal basket and looks up at the bride with a shy, happy, and importantly chosen expression.
+Emotion — Child: comfort, happiness, loved, safe. Bride: warmth, gratitude, tenderness.
 
-BACKGROUND behind them: plain warm ivory background with softly faded wedding garden — soft floral shapes, a faint arch outline, gentle cream fabric, warm golden light. Very blurred and pastel. Floating soft 3D blush flower shapes and soft 3D petals around the two figures.
+Background: wedding arch, cream floral arrangements, floating roses, golden sunlight, soft dreamy blur.
 
-RIGHT HALF: Plain soft warm ivory-cream. No scenery.
+Characters together on the LEFT side. RIGHT side clear for text.
 
-CHARACTER: Both [CHILD_NAME] and bride LEFT HALF. Clear of spine zone.
+TEXT to render on the RIGHT side, centered:
+[SENDER_NAME] was already there, glowing in a way [CHILD_NAME] had never seen before.
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  [SENDER_NAME] was already there,
-  glowing in a way [CHILD_NAME]
-  had never seen before.
+"[CHILD_NAME]!" she said, kneeling down. "You came. I was hoping you would."`,
 
-  "[CHILD_NAME]!" she said, kneeling down.
-  "You came. I was hoping you would."`,
-
-      // PAGE 7 — BRIDE'S WORDS (Pages 12–13)
+      // PAGE 7 — THE CHOSEN ONE
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. Close-up emotional scene — [SENDER_NAME] holds [CHILD_NAME]'s hands.
+Close emotional moment where the bride gently holds the character's hands while speaking sincerely. The character from the reference image gazes upward with admiration and emotional connection. The bride's face is intentionally FEATURELESS — smooth and blank with no facial features, for universal gifting design.
 
-COMPOSITION: The bride ([SENDER_NAME], in white bridal gown) is seen from her side/back on the LEFT side of the spread — her face turned away with no distinct features, her veil visible. She extends both hands toward [CHILD_NAME], gently holding [CHILD_NAME]'s hands. [CHILD_NAME] stands on the RIGHT portion of the spread, close-up, looking up at the bride with a soft emotional smile, feeling loved and chosen. Their hands meet near the center of the image. Upper bodies and faces of both are visible.
+Emotion — Child: honored, emotional, attentive, proud, deeply touched. Bride: gentle, affectionate, sincere.
 
-BACKGROUND: plain creamy champagne background. Minimal faded soft floral shapes. Gentle golden glow. Soft 3D blush flower shapes and soft 3D pale petals scattered. A few soft 3D sparkle shapes. Simple — the emotional moment is the focus.
+Background: golden sunlight, dreamlike bokeh, floating petals, warm glowing atmosphere.
 
-CHARACTER: [CHILD_NAME] RIGHT HALF, looking up. Bride LEFT HALF, facing away. Hands near center. Clear of spine zone.
+Character close-up on the RIGHT side, bride's hands and partial figure on the LEFT. LEFT side clear for text.
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  [SENDER_NAME] could have chosen
-  anyone for this. She thought
-  about it for a long time.
+TEXT to render on the LEFT side, centered vertically — three paragraphs:
+[SENDER_NAME] could have chosen anyone for this. She thought about it for a long time.
 
-  And every time, she thought of
-  [CHILD_NAME] — your laugh, your brave
-  heart, the way you make a room
-  feel warmer just by walking in.
+And every time, she thought of [CHILD_NAME]—your laugh, your brave heart, the way you make a room feel warmer just by walking in.
 
-  That's not something you can practise.
-  You either have it, or you don't.`,
+That's not something you can practise. You either have it, or you don't.`,
 
-      // PAGE 8 — THE BASKET (Pages 14–15)
+      // PAGE 8 — BASKET
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. An extreme close-up focused on [CHILD_NAME]'s little hands holding the petal basket.
+Close-up composition. The character from the reference image hugs a basket overflowing with flower petals, eyes wide with excitement and slight nervousness. Basket dominates the foreground.
 
-CHARACTER AND BACKGROUND — RIGHT HALF: Very close-up view. The woven petal basket is LARGE in the frame, filling most of the right side. [CHILD_NAME]'s small hands grip the basket. The basket overflows with soft blush pink rose petals. The woven texture, ribbon details, and [CHILD_NAME]'s ivory dress fabric are clearly visible. [CHILD_NAME]'s face peeks above the basket rim with only her eyes, forehead, and the top of her head visible — wide-eyed and nervous but excited expression, looking upward over the basket.
+Emotion: excited, nervous, determined, amazed.
 
-BACKGROUND: plain blush-peach / salmon-pink background. Very soft blurred shapes of dresses and fabric in the far distance — very low contrast. Floating soft 3D curved petals and soft 3D flower shapes throughout.
+Background: peach gradient, soft floating petals, minimal distractions, gentle magical glow.
 
-LEFT HALF: Plain blush-peach-cream. No scenery.
+Basket large in the foreground/center, character's face and hands visible behind and above the basket on the RIGHT. LEFT side clear for text.
 
-CHARACTER: [CHILD_NAME] close-up RIGHT HALF — large basket dominant in foreground, face peeking over rim. Clear of spine zone.
+TEXT to render on the LEFT side, centered — three stacked lines:
+Someone placed a small basket of petals carefully into [CHILD_NAME]'s hands.
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  Someone placed a small basket
-  of petals carefully into
-  [CHILD_NAME]'s hands.
+"You know what to do," they whispered.
 
-  "You know what to do,"
-  they whispered.
+[CHILD_NAME] nodded, even though her tummy had gone all fluttery, like a hundred tiny wings.`,
 
-  [CHILD_NAME] nodded, even though
-  her tummy had gone all fluttery,
-  like a hundred tiny wings.`,
-
-      // PAGE 9 — BEFORE THE DOORS (Pages 16–17)
+      // PAGE 9 — WAITING
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image waits outside large ceremonial doors holding the basket carefully. Looking worried while listening to distant music.
 
-CHARACTER AND BACKGROUND — LEFT HALF: [CHILD_NAME] stands quietly in front of large, tall, closed ceremony doors. She holds her petal basket with both hands, close to her body. Her small figure against the grand doors makes her look small but brave and determined. Expression: nervous but brave and ready — a little pouty-brave face.
+Emotion: nervous, anxious, uncertain, patient, quietly brave.
 
-BACKGROUND behind her: plain pale champagne background with large ceremony doors taking up the background — warm brown wood with ornate carved panel details, softly rendered. Warm golden light glows softly from beneath the door gap, as if ceremony light seeps through. Soft 3D flower shapes, 3D petals, and subtle 3D sparkle shapes around her. Doors soft and dreamlike.
+Background: large elegant doors, warm golden light beneath the doors, floating petals, tiny magical sparkles.
 
-RIGHT HALF: Plain pale champagne-cream. No scenery.
+Character on the LEFT side, full body, holding basket. RIGHT side clear for text.
 
-CHARACTER: [CHILD_NAME] full body LEFT HALF, facing the doors. Flower girl dress. Small brave figure. Clear of spine zone.
+TEXT to render on the RIGHT side, centered vertically:
+Then came the waiting. Behind the big doors, [CHILD_NAME] could hear the music start, soft and far away, like the whole world was holding its breath.`,
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  Then came the waiting.
-
-  Behind the big doors,
-  [CHILD_NAME] could hear the music start,
-  soft and far away, like the whole
-  world was holding its breath.`,
-
-      // PAGE 10 — BRAVE BREATH (Pages 18–19)
+      // PAGE 10 — DEEP BREATH
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. A tender close-up — [CHILD_NAME] takes a brave breath.
+Close-up portrait. The character from the reference image has eyes closed while taking a calming breath. A comforting adult hand rests gently on the shoulder.
 
-CHARACTER AND BACKGROUND — LEFT HALF: Close-up portrait of [CHILD_NAME]. Her eyes are gently closed. Cheeks softly rosy. Expression: nervous but brave, gathering quiet courage. A warm reassuring adult hand rests softly on her shoulder or back — only the hand and part of the arm visible. [CHILD_NAME]'s flower girl dress is visible at her shoulders and chest. The basket hangs from one hand below frame or is partially visible.
+Emotion: calming down, courage, reassurance, peaceful focus, determination.
 
-BACKGROUND: plain soft cream. Only tiny floating soft 3D petals, small soft 3D flower shapes, and a few soft 3D sparkle shapes. No full scene — simple, calm, emotionally focused.
+Background: soft cream backdrop, tiny sparkles, minimal decorative flowers, bright gentle lighting.
 
-RIGHT HALF: Plain soft cream. No scenery.
+Character close-up filling the LEFT side, eyes closed. RIGHT side clear for text.
 
-CHARACTER: [CHILD_NAME] close-up portrait LEFT HALF, eyes gently closed. Clear of spine zone.
+TEXT to render on the RIGHT side, centered:
+"It's all right to feel that flutter," someone whispered. "Even the bravest people do."
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  "It's all right to feel that flutter,"
-  someone whispered.
-  "Even the bravest people do."
+[CHILD_NAME] took a deep breath. She could do brave things. She had practised.`,
 
-  [CHILD_NAME] took a deep breath.
-  She could do brave things.
-  She had practised.`,
-
-      // PAGE 11 — DOORS OPEN (Pages 20–21)
+      // PAGE 11 — DOORS OPEN
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. The ceremony doors burst open — warm golden light floods in.
+Large wooden doors swing open revealing a bright ceremony aisle. The character from the reference image is seen from behind, pausing before entering. Warm light floods inward.
 
-CHARACTER AND BACKGROUND — CENTER-RIGHT: Large ornate ceremony doors swing wide open, one panel to the left side of the right half and one panel to the right edge — creating a warm golden doorway frame. The doors are warm brown wood with beautiful ornate carved panel details. [CHILD_NAME] stands centered in the open doorway, seen entirely from BEHIND — back of her ivory flower girl dress clearly visible, blush sash bow at her back, natural hair, small basket in hand. She is backlit by spectacular warm golden ceremony light from beyond. Through the open doorway: a softly faded wedding aisle stretches ahead — dreamy blurred rows of guests on both sides, cream flowers, flowing white fabric draping, warm golden light filling the space. Keep the aisle vision dreamy and low contrast.
+Emotion: awe, anticipation, courage, determination, nervous excitement.
 
-BACKGROUND: plain warm golden-cream throughout. Soft 3D petals and 3D sparkle shapes drift in the golden doorway light.
+Background: bright glowing aisle stretching into the distance, wedding guests softly blurred on both sides, floral arch, golden lighting, falling petals.
 
-LEFT HALF: Plain warm golden-cream. No scenery.
+Character from behind, small in scale, centered in the open doorway on the RIGHT side. LEFT side clear for text.
 
-CHARACTER: [CHILD_NAME] from BEHIND, standing centered in the open doorway, positioned center-right. Clear of spine zone. Not extending into left half.
+TEXT to render on the LEFT side, centered vertically:
+Then the doors opened. Light flooded in. And there was the aisle, stretching out long and golden, with every single face turned to see [CHILD_NAME].`,
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  Then the doors opened.
-  Light flooded in.
-  And there was the aisle,
-  stretching out long and golden,
-  with every single face turned
-  to see [CHILD_NAME].`,
-
-      // PAGE 12 — WALKING DOWN THE AISLE (Pages 22–23)
+      // PAGE 12 — WALKING THE AISLE
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image happily walks down the aisle waving while flower petals fall around. Guests smile in the softly blurred background.
 
-CHARACTER AND BACKGROUND — LEFT HALF: [CHILD_NAME] walking joyfully mid-stride down the aisle. She has ONE ARM RAISED HIGH in the air — hand up with pure joy and excitement, as if waving or celebrating freely. Her other arm holds the basket at her side. Blush pink petals drift through the air around her. Expression: big open joyful smile, proud and brave and thrilled. Her ivory flower girl dress and blush sash sway as she walks. Full body visible from head to toe.
+Emotion: joyful, confident, brave, excited, proud.
 
-BACKGROUND behind her: plain ivory-pink / soft blush background with a softly faded aisle scene — gentle rows of blurred chairs, blurred warm cheering guests far back, soft cream flowers and sage greenery, pale aisle runner. Dreamy memory-like quality. Floating soft 3D petals around [CHILD_NAME].
+Background: ceremony aisle, blurred smiling guests on both sides, white flowers, soft warm light, falling petals.
 
-RIGHT HALF: Plain soft ivory-cream. No scenery.
+Character on the LEFT side, mid-stride, one arm raised in a joyful wave, basket in other hand. RIGHT side clear for text.
 
-CHARACTER: Full body LEFT HALF, mid-stride, ONE ARM RAISED HIGH. Clear of spine zone.
+TEXT to render on the RIGHT side, centered:
+So [CHILD_NAME] walked. Petals drifted down with every step, soft and pink against the stone path. And though her heart went pitter-pat, her feet knew exactly where to go.`,
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  So [CHILD_NAME] walked.
-  Petals drifted down with every step,
-  soft and pink against the stone path.
-  And though her heart went pitter-pat,
-  her feet knew exactly where to go.`,
-
-      // PAGE 13 — END OF AISLE (Pages 24–25)
+      // PAGE 13 — ARRIVAL
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image reaches the bride smiling proudly after completing the walk. Flower petals scattered across the floor.
 
-CHARACTER AND BACKGROUND — RIGHT HALF: [CHILD_NAME] stands proudly at the end of the aisle, looking up with a proud, gentle, happy expression. A trail of scattered blush petals lies behind her on the ground. The bride [SENDER_NAME] stands on the FAR RIGHT of the image — only her lower white bridal gown and one hand or arm visible, with her head completely NOT in the frame. [CHILD_NAME] holds her now-lighter basket and looks up toward where the bride's face would be.
+Emotion: relief, pride, accomplishment, happiness, admiration.
 
-BACKGROUND: plain champagne background with a softly faded floral arch above and behind them. Cream flowers, blush petal accents, soft pale gold glow. Soft 3D flower shapes near edges. Soft 3D blush petals on the ground.
+Background: bright ceremony, warm sunlight, soft floral décor, petals covering the aisle floor, dreamlike glow.
 
-LEFT HALF: Plain champagne-cream. No scenery.
+Character on the LEFT/CENTER area, full body, looking up proudly. Bride's white dress visible at far right edge only (no face). LEFT side clear for text.
 
-CHARACTER: [CHILD_NAME] full body RIGHT HALF, proud and happy. Bride's lower gown far right only. Clear of spine zone.
+TEXT to render on the LEFT side, centered vertically:
+Everyone smiled as [CHILD_NAME] reached the end of the aisle. The petals were scattered behind her like a little trail of sunshine and roses.
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  Everyone smiled as [CHILD_NAME]
-  reached the end of the aisle.
-  The petals were scattered behind her
-  like a little trail of sunshine and roses.
-  And there, waiting with the softest smile,
-  was [SENDER_NAME].`,
+And there, waiting with the softest smile, was [SENDER_NAME].`,
 
-      // PAGE 14 — DANCING AT RECEPTION (Pages 26–27)
+      // PAGE 14 — CELEBRATION
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+The character from the reference image joyfully twirls while dancing during the reception. Dress flows naturally and flares from the spin. Hearts, sparkles and petals float throughout the scene.
 
-CHARACTER AND BACKGROUND — LEFT HALF: [CHILD_NAME] dances and twirls with pure joy at the wedding reception. Her ivory flower girl dress and blush sash swirl and fly outward as she spins. Her natural hair moves softly with the motion. Expression: pure blissful joy — big laughing smile, eyes closed or sparkling, completely free and happy.
+Emotion: pure happiness, carefree, playful, triumphant, free.
 
-BACKGROUND behind her: plain soft peach-lavender background (warm pink-purple pastel tone) with a softly faded reception scene — glowing string lights as warm bokeh points, blurred flowers, faint table shapes far away, gentle guest silhouettes in the distance. Floating soft 3D flower shapes, soft 3D petals, soft 3D sparkles, and tiny soft 3D heart shapes scattered around [CHILD_NAME] — this page has the most decorative elements.
+Background: reception hall, warm fairy lights overhead, blurred tables and guests in background, soft pink lighting, floating hearts, sparkles.
 
-RIGHT HALF: Plain matching peach-lavender-cream. No scenery.
+Character twirling on the LEFT side, dress skirt flaring outward. RIGHT side clear for text.
 
-CHARACTER: Full body LEFT HALF, twirling pose. Dress flying outward. Joyful. Clear of spine zone.
+TEXT to render on the RIGHT side, centered:
+Later, when the music played and everyone began to dance, [CHILD_NAME] felt light as a ribbon in the wind. She had done her special job. And all around her, the whole day seemed to sparkle.`,
 
-TEXT — render on RIGHT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  Later, when the music played and
-  everyone began to dance,
-  [CHILD_NAME] felt light as a ribbon
-  in the wind.
-  She had done her special job.
-  And all around her, the whole day
-  seemed to sparkle.`,
-
-      // PAGE 15 — BEDTIME (Pages 28–29)
+      // PAGE 15 — BEDTIME REFLECTION
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape.
+Nighttime bedroom. The character from the reference image lies in bed smiling softly while remembering the magical day. Tiny glowing stars drift through moonlight. Character wears soft children's pajamas — NOT the flower girl dress.
 
-CHARACTER AND BACKGROUND — RIGHT HALF: [CHILD_NAME] is tucked snugly in bed at night. OUTFIT: soft children's pajamas or cozy nightgown — NOT the flower girl dress. Happy-tired dreamy expression — a small content smile as she thinks about the beautiful day.
+Emotion: peaceful, grateful, dreamy, content, reflective.
 
-BACKGROUND behind the character: plain soft blue-gray background with a softly faded nighttime bedroom — a pale moonlit window with silver-blue light, soft pillow and blanket shapes, warm bedside lamp glow. CRITICAL DETAIL: the flower girl dress hangs visibly on a hanger on the LEFT SIDE of the background — this must be visible. The petal basket rests on the nightstand with a few petals. Everything faded and dreamy. Floating soft 3D flower shapes and soft 3D star shapes around the spread.
+Background: moonlit bedroom, blue-gray night palette, flower girl dress hanging nearby on a hook or hanger, basket on bedside table, glowing stars, gentle moon rays through window.
 
-LEFT HALF: Plain soft blue-gray-cream. No scenery.
+Character on the RIGHT side lying in bed. LEFT side clear for text.
 
-CHARACTER: [CHILD_NAME] in bed RIGHT HALF, in pajamas only. Happy-tired. Dress hanging in background on left side. Clear of spine zone.
+TEXT to render on the LEFT side, centered vertically — use light text color (#E8ECF5) for legibility against the dark background:
+That night, after the music had stopped and the cake had been cut and the dancing had worn everyone out, [CHILD_NAME] lay in bed thinking about the whole beautiful day.`,
 
-TEXT — render on LEFT HALF, vertically centered — BOLD ROUNDED VERY DARK NAVY font, no outline, centered:
-  That night, after the music had stopped
-  and the cake had been cut
-  and the dancing had worn everyone out,
-  [CHILD_NAME] lay in bed thinking about
-  the whole beautiful day.`,
-
-      // PAGE 16 — FINAL THANK YOU
+      // PAGE 16 — FINAL PAGE
       `${GLOBAL_STYLE_FLOWER_GIRL_V1}
-SCENE: 2:1 landscape. Strict left-right split.
+Minimal closing page featuring only the flower basket filled with petals. Soft petals scattered around the basket. Calm ending with generous empty space for breathing room. No character present.
 
-LEFT HALF — DECORATIVE SCENE: A beautiful large woven wicker basket centered in this half, generously filled with soft blush pink rose petals, adorned with a blush satin ribbon bow tied at the front. Soft 3D blush petals scattered gracefully around the basket on a clean warm cream surface. Small soft 3D flower shapes and decorative dot shapes around the scene. Gentle warm soft top-down lighting. The basket is the hero of this half.
+Mood: peaceful, thankful, complete, sentimental.
 
-RIGHT HALF: Plain clean white or very soft ivory. Completely empty.
+Background: warm ivory with soft vignette, tiny floating petals, minimal floral decorations. Plenty of white space on the RIGHT side.
 
-NO CHARACTER anywhere on this page.
+Basket centered on the LEFT half. RIGHT half is pure white, empty.
 
-TEXT — render on LEFT HALF only, UPPER PORTION above the basket — BOLD ROUNDED VERY DARK NAVY font, centered:
-  Thank you for saying yes, [CHILD_NAME].
-  With love, [SENDER_NAME]`,
+TEXT to render top-center above the basket — two lines:
+Thank you for saying yes, [CHILD_NAME].
+With love, [SENDER_NAME].`,
     ],
   },
 
