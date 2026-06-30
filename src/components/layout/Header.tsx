@@ -45,7 +45,7 @@ export default function Header() {
           <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
             {[
               { href: '/collections', label: 'Collections' },
-              { href: '/collections/by-occasions', label: 'By Occasion' },
+              { href: '/collections/by-occasions', label: 'By Milestones' },
               { href: '/collections/by-recipients', label: 'By Recipient' },
             ].map(l => (
               <Link key={l.href} href={l.href}
