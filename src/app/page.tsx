@@ -30,13 +30,13 @@ const IMAGES = {
 
   // FILE: public/images/step-1.jpg — 640 × 360 px (16:9)
   // Ideal: someone uploading a child's photo on their phone/laptop
-  step1: '/images/step-1.jpg',
+  step1: '/images/step-1.png',
 
-  // FILE: public/images/step - 2.jpg — 640 × 360 px (16:9)
-  step2: '/images/step - 2.jpg',
+  // FILE: public/images/step - 2.png — 640 × 360 px (16:9)
+  step2: '/images/step - 2.png',
 
-  // FILE: public/images/step - 3.jpg — 640 × 360 px (16:9)
-  step3: '/images/step - 3.jpg',
+  // FILE: public/images/step - 3.png — 640 × 360 px (16:9)
+  step3: '/images/step - 3.png',
 
   // FILE: public/images/cta-banner.png — 960 × 540 px (16:9)
   ctaBanner: '/images/cta-banner.png',
