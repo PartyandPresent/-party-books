@@ -31,15 +31,33 @@ export function getBookBySlug(slug: string): Book | undefined {
 
 export const FLOWER_GIRL_CHARACTER_PROMPT = `Use the uploaded child's photo as the main character reference.
 
-Transform the child from the photo into a full-body soft 3D children's storybook flower girl character. Keep the child recognizable by preserving the child's face shape, skin tone, hair color, hairstyle, eye shape, age, expression, and overall likeness from the uploaded photo.
+Transform the child from the photo into a full-body Pixar/Disney 3D animated feature film quality flower girl character. Keep the child fully recognizable by preserving their exact face shape, skin tone, hair color, hair texture, hairstyle, eye shape, age, and overall likeness from the photo.
 
-Show the child standing full body in a gentle 3/4 pose, with a sweet innocent smile, big expressive eyes, soft rounded cheeks, and a warm childlike expression.
+COPY EXACTLY FROM THE PHOTO:
+- FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
+- SKIN TONE: copy the exact skin tone — do not lighten, darken, or alter in any way
+- HAIR: copy exact hair color, length, texture, and hairstyle as shown — curly, straight, coils, braids, whatever the child has
+- GENDER: match exactly
+- FRECKLES or MARKS: include any visible facial features
 
-Dress the child as an elegant flower girl wearing an ivory or cream flower girl dress with soft tulle, delicate floral details, short flutter sleeves, and a blush pink ribbon sash or bow. Add simple child-appropriate wedding shoes. The child is holding a small woven petal basket filled with blush pink flower petals.
+POSE: Show the child standing full body in a gentle 3/4 pose, with a sweet innocent smile, big highly-detailed expressive 3D eyes with visible iris detail and soft natural catchlights, soft rounded rosy cheeks, and a warm childlike expression.
 
-Create the artwork in a soft 3D pastel children's storybook style, with rounded childlike features, smooth painterly shading, gentle warm lighting, soft fabric texture, detailed but soft hair, rosy cheeks, and a polished premium personalized-book look.
+OUTFIT: Ivory or cream flower girl dress with soft tulle skirt, delicate floral embroidery details, short flutter sleeves, and a blush pink ribbon sash or bow tied at the waist. Simple white child-appropriate mary jane wedding shoes. The child holds a small woven wicker petal basket filled with blush pink flower petals in one hand.
 
-Use a plain warm cream or blush pastel background with tiny floating flower clip-arts, soft petals, small pastel sparkles, tiny hearts, and clean open space. Keep the child as the main focus. Full body must be visible.`
+ART STYLE: Pixar/Disney 3D animated feature film quality — this is the most important requirement. The character must look like she belongs in a Pixar or Disney animated movie. Fully rendered 3D with:
+- Smooth warm cinematic shading and soft subsurface skin glow
+- A warm soft key light from slightly above and to one side creating gentle natural shadows
+- Soft rim lighting on the hair and shoulders for depth
+- Rosy warm skin tones with natural 3D depth — not flat, not painted
+- Detailed 3D hair with natural texture, volume, and individual strand quality
+- Big rounded 3D eyes with detailed iris, natural highlights, and soft lashes
+- Premium polished cinematic quality throughout
+
+This must NOT be a flat 2D illustration, NOT a sticker, NOT a cartoon, NOT a clip-art style. It must be fully 3D with real cinematic depth and Pixar/Disney movie quality.
+
+BACKGROUND: Plain clean warm cream or very soft blush. No scenery, no props except the basket, no text, no extra decorations, no clip-art elements.
+
+FORMAT: Full body visible from head to toe. Character centered with clear space on all sides.`
 
 const FLOWER_GIRL_CONSISTENCY_NOTE = `CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the flower girl character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone. Unless this page prompt explicitly says the character is in pajamas or sleeping clothes, always show her in the identical ivory cream flower girl dress with blush pink sash and small wedding shoes. If the page specifies pajamas or sleeping clothes, change the outfit accordingly while keeping her face, hair, and skin tone perfectly identical to the reference. Do not substitute a generic character. Do not alter their appearance in any way.`
 
