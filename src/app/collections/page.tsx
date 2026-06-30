@@ -21,15 +21,15 @@ const COLLECTIONS = [
   { href: '/collections/birthday', icon: '🎂', label: 'Birthday Gifts', desc: 'Make their big day unforgettable' },
   { href: '/collections/baby-newborn', icon: '🐣', label: 'Baby & Newborn', desc: 'The sweetest welcome for a new arrival' },
   { href: '/collections/christmas', icon: '🎄', label: 'Christmas Gifts', desc: 'A gift they\'ll keep long after the tree comes down' },
-  { href: '/milestones/easter', icon: '🐰', label: 'Easter Gifts', desc: 'More meaningful than a chocolate egg' },
+  { href: '/milestones/easter', icon: '👔', label: "Dad's Day", desc: 'A gift that tells him exactly how you feel' },
 ]
 
 const MILESTONES = [
   { href: '/milestones/birthday', icon: '🎂', label: 'Birthday Books' },
-  { href: '/milestones/baptism', icon: '✝️', label: 'Baptism & Christening' },
+  { href: '/milestones/baptism', icon: '🕊️', label: 'Faith & Baptism' },
   { href: '/milestones/new-baby', icon: '🐣', label: 'New Baby' },
-  { href: '/milestones/christmas', icon: '🎄', label: 'Christmas Magic' },
-  { href: '/milestones/easter', icon: '🐰', label: 'Easter Gifts' },
+  { href: '/milestones/christmas', icon: '💍', label: 'Wedding Invites' },
+  { href: '/milestones/easter', icon: '👔', label: "Dad's Day" },
   { href: '/milestones/just-because', icon: '💝', label: 'Just Because' },
 ]
 

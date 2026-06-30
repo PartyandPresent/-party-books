@@ -23,7 +23,7 @@ export default function ByOccasionsPage() {
         { href: '/collections/baptism', label: 'Baptism Gifts' },
         { href: '/collections/birthday', label: 'Birthday Gifts' },
         { href: '/collections/christmas', label: 'Christmas Gifts' },
-        { href: '/milestones/easter', label: 'Easter Gifts' },
+        { href: '/milestones/easter', label: "Dad's Day" },
         { href: '/milestones/just-because', label: 'Just Because' },
       ]}
     />

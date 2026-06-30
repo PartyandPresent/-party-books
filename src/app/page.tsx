@@ -57,10 +57,10 @@ const IMAGES = {
 
 const MILESTONES = [
   { icon: '🎂', label: 'Birthday\nBooks',       href: '/milestones/birthday'     },
-  { icon: '✝️', label: 'Baptism &\nChristening', href: '/milestones/baptism'      },
+  { icon: '🕊️', label: 'Faith &\nBaptism',        href: '/milestones/baptism'      },
   { icon: '🐣', label: 'New\nBaby',              href: '/milestones/new-baby'     },
-  { icon: '🎄', label: 'Christmas\nMagic',       href: '/milestones/christmas'    },
-  { icon: '🐰', label: 'Easter\nGifts',          href: '/milestones/easter'       },
+  { icon: '💍', label: 'Wedding\nInvites',       href: '/milestones/christmas'    },
+  { icon: '👔', label: "Dad's\nDay",             href: '/milestones/easter'       },
   { icon: '💝', label: 'Just\nBecause',          href: '/milestones/just-because' },
 ]
 
