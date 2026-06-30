@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import SparkleField from '@/components/ui/SparkleField'
 import { BOOKS, REVIEWS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
@@ -146,28 +147,45 @@ export default function HomePage() {
               Personalized books celebrating the moments that shape their childhood and stay in your heart forever.
             </p>
             <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12 }}>
-              <Link href="/books" style={{
+              <Link href="/books" className="btn-shine" style={{
                 background: GREEN, color: '#fff',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
                 padding: '14px 30px', borderRadius: 50, textDecoration: 'none',
                 display: 'inline-block', textAlign: 'center',
-              }}>Create Your Book →</Link>
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              }}
+                onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(45,74,62,0.25)' }}
+                onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}>
+                Create Your Book ✦
+              </Link>
               <Link href="#collections" style={{
                 background: 'transparent', color: GREEN,
                 fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15,
                 padding: '14px 30px', borderRadius: 50, textDecoration: 'none',
                 border: `2px solid ${GREEN}`, display: 'inline-block', textAlign: 'center',
-              }}>Explore Collections</Link>
+                transition: 'all 0.2s ease',
+              }}
+                onMouseOver={e => { e.currentTarget.style.background = GREEN; e.currentTarget.style.color = '#fff' }}
+                onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = GREEN }}>
+                Explore Collections
+              </Link>
             </div>
           </div>
         </div>
 
+        {/* Ambient sparkle stars over the right/photo side */}
+        {!isMobile && (
+          <SparkleField
+            count={16}
+            color="rgba(232,184,75,0.75)"
+            size={15}
+            style={{ left: '45%', right: 0, top: 70, bottom: 0 }}
+          />
+        )}
+
         {/* Decorative elements over the photo (right side) */}
         {!isMobile && (
           <>
-            <span style={{ position: 'absolute', top: 88, right: '30%', fontSize: 26, color: GOLD, zIndex: 3, pointerEvents: 'none' }}>✦</span>
-            <span style={{ position: 'absolute', top: 148, right: '12%', fontSize: 18, color: GOLD, zIndex: 3, pointerEvents: 'none' }}>✦</span>
-            <span style={{ position: 'absolute', top: 80, right: '16%', fontSize: 20, color: GOLD, opacity: 0.5, zIndex: 3, pointerEvents: 'none' }}>✦</span>
             <div style={{ position: 'absolute', top: 76, right: 20, fontSize: 52, zIndex: 3, pointerEvents: 'none', lineHeight: 1 }}>🎈</div>
             <div style={{
               position: 'absolute', bottom: 40, right: '26%', zIndex: 3,
@@ -213,23 +231,21 @@ export default function HomePage() {
       {/* ── SHOP BY MILESTONE ────────────────────────────── */}
       <section style={{ background: BEIGE, padding: isMobile ? '48px 20px' : '64px 24px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: 0 }}>
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 40 }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 12px' }}>
               Shop by Milestone ✦
             </h2>
+            <div className="line-draw" style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
             {MILESTONES.map((m, i) => (
-              <Link key={i} href={m.href} style={{ textDecoration: 'none' }}>
-                <div style={{
+              <Link key={i} href={m.href} className={`reveal delay-${i + 1}`} style={{ textDecoration: 'none' }}>
+                <div className="milestone-card" style={{
                   background: '#fff', borderRadius: 16, padding: '20px 8px',
                   textAlign: 'center', cursor: 'pointer',
                   boxShadow: '0 2px 8px rgba(45,74,62,0.06)',
                   border: '1.5px solid #EDE8DF',
-                  transition: 'all 0.2s',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(45,74,62,0.12)'; e.currentTarget.style.borderColor = CORAL }}
-                  onMouseOut={e => { e.currentTarget.style.boxShadow = '0 2px 8px rgba(45,74,62,0.06)'; e.currentTarget.style.borderColor = '#EDE8DF' }}>
+                }}>
                   <div style={{ fontSize: isMobile ? 28 : 36, marginBottom: 10 }}>{m.icon}</div>
                   <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 12, color: GREEN, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{m.label}</div>
                 </div>
@@ -242,14 +258,15 @@ export default function HomePage() {
       {/* ── HOW IT WORKS ─────────────────────────────────── */}
       <section style={{ background: '#fff', padding: isMobile ? '48px 20px' : '80px 24px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: 0 }}>
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 56 }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 12px' }}>
               How It Works ✦
             </h2>
+            <div className="line-draw" style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 40 : 32, alignItems: 'start' }}>
             {STEPS.map((s, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
+              <div key={i} className={`reveal delay-${i + 1}`} style={{ textAlign: 'center' }}>
                 {/* Step number */}
                 <div style={{
                   width: 44, height: 44, borderRadius: '50%',
@@ -273,7 +290,7 @@ export default function HomePage() {
       {/* ── FEATURED COLLECTIONS ─────────────────────────── */}
       <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 20px' : '72px 24px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 40 }}>
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 8px' }}>
               Featured Collections
             </h2>

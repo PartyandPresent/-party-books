@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ScrollRevealInit from '@/components/ui/ScrollRevealInit'
 
 export const metadata: Metadata = {
   title: 'Personalized Books | party & presents',
@@ -27,7 +28,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ScrollRevealInit />
+        {children}
+      </body>
     </html>
   )
 }

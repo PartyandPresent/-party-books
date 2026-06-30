@@ -10,26 +10,15 @@ const BODY = '#4A5568'
 
 export default function BookCard({ book }: { book: Book }) {
   return (
-    <div style={{
+    <div className="card-hover" style={{
       background: '#fff',
       borderRadius: 20,
       overflow: 'hidden',
       boxShadow: '0 4px 24px rgba(232,131,106,0.08)',
       border: `1px solid ${BEIGE}`,
-      transition: 'all 0.3s ease',
       display: 'flex',
       flexDirection: 'column',
-    }}
-      onMouseOver={e => {
-        const el = e.currentTarget
-        el.style.transform = 'translateY(-8px)'
-        el.style.boxShadow = '0 20px 48px rgba(232,131,106,0.16)'
-      }}
-      onMouseOut={e => {
-        const el = e.currentTarget
-        el.style.transform = 'translateY(0)'
-        el.style.boxShadow = '0 4px 24px rgba(232,131,106,0.08)'
-      }}>
+    }}>
 
       {/* Cover Image */}
       <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: BEIGE }}>
@@ -103,16 +92,17 @@ export default function BookCard({ book }: { book: Book }) {
               ${book.price.toFixed(2)}
             </span>
           </div>
-          <Link href={`/books/${book.slug}`} style={{
+          <Link href={`/books/${book.slug}`} className="btn-shine" style={{
             background: CORAL, color: '#fff',
             fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13,
             padding: '10px 20px', borderRadius: 50, textDecoration: 'none',
-            transition: 'all 0.2s', boxShadow: '0 4px 14px rgba(232,131,106,0.3)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            boxShadow: '0 4px 14px rgba(232,131,106,0.3)',
             whiteSpace: 'nowrap',
           }}
-            onMouseOver={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseOut={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}>
-            ✨ Personalize
+            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(232,131,106,0.4)' }}
+            onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(232,131,106,0.3)' }}>
+            ✦ Personalize
           </Link>
         </div>
       </div>

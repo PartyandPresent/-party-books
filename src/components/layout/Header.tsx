@@ -7,6 +7,40 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
 
+const NAV = [
+  {
+    label: 'Collections',
+    href: '/collections',
+    items: [
+      { icon: '📚', label: 'All Books',       href: '/books' },
+      { icon: '✝️', label: 'Baptism Gifts',   href: '/collections/baptism' },
+      { icon: '🎂', label: 'Birthday Gifts',  href: '/collections/birthday' },
+      { icon: '🐣', label: 'Baby & Newborn',  href: '/collections/baby-newborn' },
+    ],
+  },
+  {
+    label: 'By Milestones',
+    href: '/collections/by-occasions',
+    items: [
+      { icon: '🎂', label: 'Birthday Books',  href: '/milestones/birthday' },
+      { icon: '🕊️', label: 'Faith & Baptism', href: '/milestones/baptism' },
+      { icon: '🐣', label: 'New Baby',         href: '/milestones/new-baby' },
+      { icon: '💍', label: 'Wedding Invites',  href: '/milestones/christmas' },
+      { icon: '👔', label: "Dad's Day",        href: '/milestones/easter' },
+      { icon: '💝', label: 'Just Because',     href: '/milestones/just-because' },
+    ],
+  },
+  {
+    label: 'By Recipient',
+    href: '/collections/by-recipients',
+    items: [
+      { icon: '👶', label: 'For Babies',    href: '/collections/by-recipients' },
+      { icon: '🧒', label: 'For Toddlers',  href: '/collections/by-recipients' },
+      { icon: '👦', label: 'For Children',  href: '/collections/by-recipients' },
+    ],
+  },
+]
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -43,32 +77,88 @@ export default function Header() {
         {/* Desktop Nav */}
         {!isMobile && (
           <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            {[
-              { href: '/collections', label: 'Collections' },
-              { href: '/collections/by-occasions', label: 'By Milestones' },
-              { href: '/collections/by-recipients', label: 'By Recipient' },
-            ].map(l => (
-              <Link key={l.href} href={l.href}
-                style={{ color: '#555555', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}
-                onMouseOver={e => (e.currentTarget.style.color = GREEN)}
-                onMouseOut={e => (e.currentTarget.style.color = '#555555')}>
-                {l.label}
-              </Link>
+
+            {NAV.map(item => (
+              <div key={item.href} className="nav-group" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                {/* Nav label */}
+                <Link
+                  href={item.href}
+                  className="nav-ul"
+                  style={{
+                    color: '#555555',
+                    fontFamily: 'Nunito, sans-serif',
+                    fontWeight: 600,
+                    fontSize: 15,
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: '8px 0',
+                  }}
+                  onMouseOver={e => (e.currentTarget.style.color = GREEN)}
+                  onMouseOut={e => (e.currentTarget.style.color = '#555555')}
+                >
+                  {item.label}
+                  <span style={{ fontSize: 9, opacity: 0.5, marginTop: 1 }}>▾</span>
+                </Link>
+
+                {/* Dropdown panel */}
+                <div className="nav-dropdown" style={{
+                  background: '#fff',
+                  borderRadius: 14,
+                  boxShadow: '0 8px 40px rgba(45,74,62,0.13)',
+                  border: '1px solid #EDE8DF',
+                  borderTop: `2px solid ${CORAL}`,
+                  padding: '8px',
+                  minWidth: 210,
+                }}>
+                  {/* Small triangle pointer */}
+                  <div style={{
+                    position: 'absolute',
+                    top: -7,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 12,
+                    height: 7,
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      width: 10,
+                      height: 10,
+                      background: CORAL,
+                      transform: 'rotate(45deg)',
+                      margin: '3px auto 0',
+                    }} />
+                  </div>
+
+                  {item.items.map(sub => (
+                    <Link key={sub.href} href={sub.href} className="nav-dropdown-link">
+                      <span style={{ fontSize: 15 }}>{sub.icon}</span>
+                      <span style={{ flex: 1 }}>{sub.label}</span>
+                      <span className="dd-arrow" style={{ color: CORAL }}>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
+
             <a href="https://partyandpresents.com" target="_blank" rel="noopener noreferrer"
               style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: 13, textDecoration: 'none' }}>
               ← Main Store
             </a>
-            <Link href="/books" style={{
+
+            <Link href="/books" className="btn-shine" style={{
               background: CORAL, color: '#fff',
               fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14,
               padding: '10px 22px', borderRadius: 50, textDecoration: 'none',
               boxShadow: '0 4px 14px rgba(232,131,106,0.3)',
               transition: 'all 0.2s',
+              display: 'inline-flex', alignItems: 'center', gap: 6,
             }}
-              onMouseOver={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-              onMouseOut={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}>
-              Create a Book ✦
+              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(232,131,106,0.4)' }}
+              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(232,131,106,0.3)' }}>
+              Create a Book
+              <span style={{ fontSize: 13 }}>✦</span>
             </Link>
           </nav>
         )}
@@ -76,7 +166,7 @@ export default function Header() {
         {/* Mobile: CTA + Hamburger */}
         {isMobile && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Link href="/books" style={{
+            <Link href="/books" className="btn-shine" style={{
               background: CORAL, color: '#fff',
               fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13,
               padding: '8px 16px', borderRadius: 50, textDecoration: 'none',
@@ -97,28 +187,36 @@ export default function Header() {
       {isMobile && menuOpen && (
         <div style={{
           background: '#fff', borderTop: '1px solid #EDE8DF',
-          padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16,
+          padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 4,
         }}>
-          {[
-            { href: '/books', label: 'All Books' },
-            { href: '/books?filter=baptism', label: 'By Occasion' },
-            { href: '/books?filter=baby', label: 'By Recipient' },
-          ].map(link => (
-            <Link key={link.href} href={link.href}
-              onClick={() => setMenuOpen(false)}
-              style={{ color: GREEN, fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>
-              {link.label}
-            </Link>
+          {NAV.map(item => (
+            <div key={item.href}>
+              <Link href={item.href}
+                onClick={() => setMenuOpen(false)}
+                style={{ color: GREEN, fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 16, textDecoration: 'none', display: 'block', padding: '10px 0', borderBottom: '1px solid #f0ece4' }}>
+                {item.label}
+              </Link>
+              <div style={{ paddingLeft: 16, paddingBottom: 8 }}>
+                {item.items.map(sub => (
+                  <Link key={sub.href} href={sub.href}
+                    onClick={() => setMenuOpen(false)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#666', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 14, textDecoration: 'none', padding: '7px 0' }}>
+                    <span>{sub.icon}</span>
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
           <a href="https://partyandpresents.com" target="_blank" rel="noopener noreferrer"
-            style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none' }}>
+            style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none', padding: '10px 0' }}>
             ← Main Store
           </a>
           <Link href="/books" onClick={() => setMenuOpen(false)}
             style={{
               background: CORAL, color: '#fff', textAlign: 'center',
               fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15,
-              padding: '12px 24px', borderRadius: 50, textDecoration: 'none',
+              padding: '12px 24px', borderRadius: 50, textDecoration: 'none', marginTop: 8,
             }}>
             Create a Book ✦
           </Link>
