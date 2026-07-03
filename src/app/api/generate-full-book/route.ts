@@ -100,13 +100,25 @@ async function callGemini(promptParts: any[]): Promise<string> {
   throw new Error('Max retries exceeded')
 }
 
+function getBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  return 'http://localhost:3000'
+}
+
+async function fetchPublicFile(assetPath: string): Promise<Buffer> {
+  const urlPath = assetPath.replace(/^public\//, '/')
+  const res = await fetch(`${getBaseUrl()}${urlPath}`)
+  if (!res.ok) throw new Error(`Failed to fetch ${urlPath}: ${res.status}`)
+  return Buffer.from(await res.arrayBuffer())
+}
+
 async function generateCompositedPage(
   page: BookPage,
   characterBase64: string,
   customer: { childName: string; senderName: string; dedication?: string },
 ): Promise<string> {
-  const bgPath   = path.join(process.cwd(), page.backgroundAsset)
-  const bgBuffer = fs.readFileSync(bgPath)
+  const bgBuffer = await fetchPublicFile(page.backgroundAsset)
 
   const replacements: TextReplacements = {
     CHILD_NAME:       customer.childName,
@@ -128,7 +140,7 @@ async function generateCompositedPage(
   // Skip pose reference for cover (page 0) to prevent Gemini copying baked-in text
   const useRef = page.pageIndex !== 0
   const refBase64 = useRef
-    ? fs.readFileSync(path.join(process.cwd(), page.poseReference)).toString('base64')
+    ? (await fetchPublicFile(page.poseReference)).toString('base64')
     : null
 
   const imageRoles = useRef
