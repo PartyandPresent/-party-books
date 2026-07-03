@@ -23,7 +23,7 @@ export default function BookCard({ book }: { book: Book }) {
       {/* Cover Image */}
       <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: BEIGE }}>
         <Image
-          src={book.coverImage}
+          src={book.cardImage ?? book.coverImage}
           alt={book.title}
           fill
           style={{ objectFit: 'cover', transition: 'transform 0.4s ease' }}

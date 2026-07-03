@@ -185,7 +185,7 @@ export default function CollectionPageLayout({
                   {/* Square cover image */}
                   <div style={{ position: 'relative', aspectRatio: '1/1' }}>
                     <Image
-                      src={book.coverImage}
+                      src={book.cardImage ?? book.coverImage}
                       alt={book.title}
                       fill
                       sizes="(max-width: 768px) 50vw, 33vw"

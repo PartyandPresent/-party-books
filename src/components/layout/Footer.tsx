@@ -240,8 +240,7 @@ export default function Footer() {
             <h4 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Our Books</h4>
             {[
               { href: '/books/gods-promises-for-you', label: "God's Promises For You" },
-              { href: '/books/before-you-were-born', label: 'Before You Were Born' },
-              { href: '/books/you-are-brave', label: 'You Are Brave' },
+              { href: '/books/before-the-music-plays', label: 'Before the Music Plays' },
             ].map(l => (
               <Link key={l.href} href={l.href}
                 style={{ display: 'block', color: DIM, fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none', marginBottom: 10 }}

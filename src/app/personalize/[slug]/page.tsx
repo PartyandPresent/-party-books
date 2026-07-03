@@ -132,7 +132,7 @@ export default function PersonalizePage() {
           marginBottom: 32, flexWrap: 'nowrap', overflow: 'hidden',
         }}>
           <Image
-            src={book.coverImage}
+            src={book.cardImage ?? book.coverImage}
             alt={book.title}
             width={48}
             height={48}
@@ -441,7 +441,7 @@ export default function PersonalizePage() {
                 padding: '16px 20px', borderBottom: '1.5px solid #E8E8E8',
               }}>
                 <Image
-                  src={book.coverImage}
+                  src={book.cardImage ?? book.coverImage}
                   alt={book.title}
                   width={56}
                   height={56}

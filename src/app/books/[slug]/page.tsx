@@ -35,7 +35,11 @@ export default function BookDetailPage() {
     )
   }
 
-  const allImages = [book.coverImage, ...book.previewImages]
+  // Books with the 10-slot listingImages standard use those in order.
+  // Legacy books (God's Promises) fall back to coverImage + previewImages.
+  const allImages = book.listingImages
+    ? Object.values(book.listingImages) as string[]
+    : [book.coverImage, ...book.previewImages]
 
   return (
     <div style={{ fontFamily: 'Nunito, sans-serif', background: '#fff' }}>
@@ -272,12 +276,12 @@ export default function BookDetailPage() {
                 {book.description}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
+                {(book.highlights ?? [
                   "Personalized with your child's name and details",
                   'Featuring uplifting Bible promises',
                   'Encourages faith, hope, and a sense of belonging',
                   'Perfect gift for birthdays, baptisms, and special moments',
-                ].map(point => (
+                ]).map(point => (
                   <div key={point} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <span style={{ color: CORAL, fontSize: 16, marginTop: 1, flexShrink: 0 }}>✦</span>
                     <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: BODY, lineHeight: 1.6 }}>{point}</span>
@@ -371,7 +375,7 @@ export default function BookDetailPage() {
                     onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(45,74,62,0.16)' }}
                     onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(45,74,62,0.08)' }}>
                     <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                      <Image src={b.coverImage} alt={b.title} fill style={{ objectFit: 'cover', objectPosition: 'right center' }} />
+                      <Image src={b.cardImage ?? b.coverImage} alt={b.title} fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
                     </div>
                     <div style={{ padding: '12px 16px', background: '#fff' }}>
                       <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13, color: GREEN, marginBottom: 4, lineHeight: 1.3 }}>{b.title}</div>

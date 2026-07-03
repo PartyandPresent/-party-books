@@ -12,7 +12,6 @@ const GREEN  = '#2D4A3E'
 const CORAL  = '#E8836A'
 const CREAM  = '#FAFAF5'
 const BEIGE  = '#F5F0E8'
-const LAVEN  = '#EDEAF5'
 const BODY   = '#4A5568'
 const MUTED  = '#888888'
 const GOLD   = '#E8B84B'
@@ -91,9 +90,6 @@ export default function HomePage() {
   const isMobile = useIsMobile()
   const collectionsRef = useRef<HTMLDivElement>(null)
 
-  const scroll = (dir: 'left' | 'right') => {
-    collectionsRef.current?.scrollBy({ left: dir === 'left' ? -300 : 300, behavior: 'smooth' })
-  }
 
   return (
     <div style={{ fontFamily: 'Nunito, sans-serif', background: CREAM, color: GREEN }}>
@@ -312,7 +308,7 @@ export default function HomePage() {
                     onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(45,74,62,0.16)' }}
                     onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(45,74,62,0.10)' }}>
                     <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                      <Image src={book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
+                      <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
                       {book.badge && (
                         <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
                           {book.badge}

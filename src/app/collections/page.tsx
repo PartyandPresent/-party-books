@@ -113,7 +113,7 @@ export default function CollectionsPage() {
                 onMouseOut={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = 'translateY(0)'; el.style.boxShadow = '0 2px 16px rgba(45,74,62,0.08)' }}
               >
                 <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                  <Image src={book.coverImage} alt={book.title} fill sizes="(max-width: 768px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
+                  <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill sizes="(max-width: 768px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
                   {book.badge && (
                     <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
                       {book.badge}

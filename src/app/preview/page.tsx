@@ -147,7 +147,7 @@ export default function PreviewPage() {
   if (status === 'error') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>😔</div>
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
           Something went wrong
@@ -171,7 +171,7 @@ export default function PreviewPage() {
   if (status === 'loading-character') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
 
         {/* Animated portrait placeholder */}
         <div style={{
@@ -221,7 +221,7 @@ export default function PreviewPage() {
   if (status === 'character-ready') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 640, margin: '0 auto', padding: '60px 24px 80px' }}>
+      <main style={{ maxWidth: 640, margin: '0 auto', padding: '100px 24px 80px' }}>
 
         {/* Heading */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
@@ -335,7 +335,7 @@ export default function PreviewPage() {
   if (status === 'loading-pages') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 600, margin: '0 auto', padding: '60px 24px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 600, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
 
         {/* Approved character thumbnail */}
         {characterBase64 && (
@@ -422,7 +422,7 @@ export default function PreviewPage() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px 80px' }}>
+      <main style={{ maxWidth: 900, margin: '0 auto', padding: '100px 24px 80px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 36, paddingTop: 12 }}>
           <div style={{ fontSize: 40, marginBottom: 10 }}>🎉</div>

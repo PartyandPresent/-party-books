@@ -12,6 +12,7 @@
     "@stripe/stripe-js": "^9.7.0",
     "@types/sharp": "^0.31.1",
     "clsx": "^2.1.1",
+    "fontkit": "^2.0.4",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.17.0",
     "next": "16.2.6",
