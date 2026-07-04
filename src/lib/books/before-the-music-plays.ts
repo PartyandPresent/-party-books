@@ -50,6 +50,7 @@ export interface BookPage {
   characterActionPrompt: string     // pose/action only; scene = backgroundAsset
   includesSenderCharacter: boolean  // true = sender baked into bg; cleanup removed child only
   characterPlacement?: BookPageCharacterPlacement  // undefined on no-character pages (1, 16)
+  skipTextCollision?: boolean       // true = text/character overlap is intentional; skip auto-shift
   textBlocks: BookPageTextBlock[]
 }
 
@@ -74,6 +75,8 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
       // max width 22% of canvas (~390 px), ankle crop at bottom edge. DO NOT adjust
       // without re-measuring against the reference image.
       characterPlacement: { x: 1165, y: 213, width: 355, height: 674 },
+      // Title/subtitle intentionally sit at the same y as the character's head — skip auto-shift.
+      skipTextCollision: true,
       textBlocks: [
         {
           // center-x = 1104 + 466/2 = 1337  (measured from page-00.png: title cx=1337)
@@ -152,7 +155,7 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
       textBlocks: [
         {
           id: 'body',
-          template: 'There was a special dress laid out — just for today. She tried it on slowly, like it might be magic.',
+          template: 'There was a special dress laid out - just for today. She tried it on slowly, like it might be magic.',
           x: 1222, y: 391, maxWidth: 446,
           fontFamily: BODY_FONT, fontSize: 33.3,
           color: '#292929', align: 'center', lineHeight: 1.4,
@@ -237,7 +240,7 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
       textBlocks: [
         {
           id: 'body',
-          template: "[SENDER_NAME] could have chosen anyone for this. She thought about it for a long time.\n\nAnd every time, she thought of [CHILD_NAME]—your laugh, your brave heart, the way you make a room feel warmer just by walking in.\n\nThat's not something you can practise. You either have it, or you don't.",
+          template: "[SENDER_NAME] could have chosen anyone for this. She thought about it for a long time.\n\nAnd every time, she thought of [CHILD_NAME], your laugh, your brave heart, the way you make a room feel warmer just by walking in.\n\nThat's not something you can practise. You either have it, or you don't.",
           x: 157, y: 229, maxWidth: 602,
           fontFamily: BODY_FONT, fontSize: 33.3,
           color: '#292929', align: 'center', lineHeight: 1.5,

@@ -259,6 +259,131 @@ function buildSVG(
   )
 }
 
+// ─── Collision detection ─────────────────────────────────────────────────────
+//
+// After Gemini generates the scene, the character's actual silhouette may extend
+// further than characterPlacement predicts (different hair volume, pose angle, etc).
+// These helpers detect the real character bounds from the Step 1 reference image
+// (white background, so non-white pixels = character) and shift any overlapping
+// text blocks just far enough to clear the character by COLLISION_GAP pixels.
+
+const COLLISION_GAP = 30       // minimum clear pixels between text rect and character
+const WHITE_LEVEL   = 200      // pixels where all channels ≥ this are considered bg
+
+export interface CharacterBounds {
+  left: number; top: number; right: number; bottom: number
+}
+
+/**
+ * Find the actual pixel bounds of the character in a Step-1 reference image.
+ * The reference is on a plain white background, so any pixel below WHITE_LEVEL
+ * on any channel is part of the character (hair, skin, clothing, shadow).
+ *
+ * The bounds are returned in canvas coordinates by offsetting with `placement`.
+ */
+export async function detectCharacterBounds(
+  characterBase64: string,
+  placement: { x: number; y: number; width: number; height: number },
+): Promise<CharacterBounds> {
+  const charBuffer = Buffer.from(characterBase64, 'base64')
+
+  const { data, info } = await sharp(charBuffer)
+    .resize(placement.width, placement.height, {
+      fit: 'contain',
+      background: { r: 255, g: 255, b: 255, alpha: 1 },
+    })
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+
+  let minY = info.height, maxY = -1, minX = info.width, maxX = -1
+
+  for (let y = 0; y < info.height; y++) {
+    for (let x = 0; x < info.width; x++) {
+      const i = (y * info.width + x) * 3
+      if (data[i] < WHITE_LEVEL || data[i + 1] < WHITE_LEVEL || data[i + 2] < WHITE_LEVEL) {
+        if (y < minY) minY = y
+        if (y > maxY) maxY = y
+        if (x < minX) minX = x
+        if (x > maxX) maxX = x
+      }
+    }
+  }
+
+  // Fall back to full placement box if no character pixels found
+  if (maxY === -1) {
+    return { left: placement.x, top: placement.y, right: placement.x + placement.width, bottom: placement.y + placement.height }
+  }
+
+  return {
+    left:   placement.x + minX,
+    top:    placement.y + minY,
+    right:  placement.x + maxX,
+    bottom: placement.y + maxY,
+  }
+}
+
+/**
+ * For each text block, check whether it intersects with `charBounds` (expanded by
+ * COLLISION_GAP). If it does, shift the block away from the character center:
+ *   - Prefer a horizontal shift (text slides left or right to clear the character)
+ *   - Fall back to a downward shift if horizontal would push the block off-canvas
+ * Blocks that can't be resolved without going off-canvas are returned unchanged
+ * with a console warning so the page designer can adjust the layout manually.
+ */
+export function resolveTextCollisions(
+  textBlocks: BookPageTextBlock[],
+  charBounds: CharacterBounds,
+  canvasW: number,
+  canvasH: number,
+): BookPageTextBlock[] {
+  const charCenterX = (charBounds.left + charBounds.right) / 2
+
+  return textBlocks.map(block => {
+    // Generous height estimate: 8 lines at the block's line height
+    const lineH    = block.fontSize * (block.lineHeight ?? 1.4)
+    const textH    = lineH * 8
+
+    const tL = block.x
+    const tT = block.y
+    const tR = block.x + block.maxWidth
+    const tB = block.y + textH
+
+    const horizOverlap = tL < charBounds.right  + COLLISION_GAP && tR > charBounds.left   - COLLISION_GAP
+    const vertOverlap  = tT < charBounds.bottom + COLLISION_GAP && tB > charBounds.top    - COLLISION_GAP
+
+    if (!horizOverlap || !vertOverlap) return block
+
+    const textCenterX = block.x + block.maxWidth / 2
+
+    if (textCenterX >= charCenterX) {
+      // Text is right of character — push right
+      const newX = Math.round(charBounds.right + COLLISION_GAP)
+      if (newX + block.maxWidth <= canvasW) {
+        console.log(`[collision] block "${block.id}" shifted right x=${block.x}→${newX}`)
+        return { ...block, x: newX }
+      }
+    } else {
+      // Text is left of character — push left
+      const newX = Math.round(charBounds.left - COLLISION_GAP - block.maxWidth)
+      if (newX >= 0) {
+        console.log(`[collision] block "${block.id}" shifted left x=${block.x}→${newX}`)
+        return { ...block, x: newX }
+      }
+    }
+
+    // Horizontal shift not viable — push text below character
+    const newY = Math.round(charBounds.bottom + COLLISION_GAP)
+    if (newY + textH <= canvasH) {
+      console.log(`[collision] block "${block.id}" shifted down y=${block.y}→${newY}`)
+      return { ...block, y: newY }
+    }
+
+    console.warn(`[collision] block "${block.id}" cannot be resolved — returning original`)
+    return block
+  })
+}
+
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 export interface TextReplacements {

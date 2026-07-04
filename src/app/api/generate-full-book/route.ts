@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
 import { beforeTheMusicPlays, type BookPage } from '@/lib/books/before-the-music-plays'
-import { compositeTextBlocks, type TextReplacements } from '@/lib/compositeText'
+import { compositeTextBlocks, detectCharacterBounds, resolveTextCollisions, type TextReplacements } from '@/lib/compositeText'
 import crypto from 'crypto'
 import { Resend } from 'resend'
 import sharp from 'sharp'
@@ -184,8 +184,14 @@ RULES:
     composite = Buffer.from(withLogo, 'base64')
   }
 
+  let textBlocks = page.textBlocks
+  if (!page.skipTextCollision) {
+    const charBounds = await detectCharacterBounds(characterBase64, page.characterPlacement!)
+    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, CANVAS_W, CANVAS_H)
+  }
+
   const withText = await compositeTextBlocks(
-    composite, page.textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+    composite, textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
   )
   return withText.toString('base64')
 }

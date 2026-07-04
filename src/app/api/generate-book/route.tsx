@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
 import { beforeTheMusicPlays, type BookPage } from '@/lib/books/before-the-music-plays'
-import { compositeTextBlocks, type TextReplacements } from '@/lib/compositeText'
+import { compositeTextBlocks, detectCharacterBounds, resolveTextCollisions, type TextReplacements } from '@/lib/compositeText'
 import sharp from 'sharp'
 import path from 'path'
 import fs from 'fs'
@@ -265,9 +265,17 @@ RULES:
     composite = Buffer.from(withLogo, 'base64')
   }
 
+  // Collision detection: shift text blocks that overlap the character's actual silhouette.
+  // Skip pages where text/character overlap is intentional (skipTextCollision: true).
+  let textBlocks = page.textBlocks
+  if (!page.skipTextCollision) {
+    const charBounds = await detectCharacterBounds(characterBase64, page.characterPlacement!)
+    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, CANVAS_W, CANVAS_H)
+  }
+
   // Real text — resolved in Node, never in a Gemini prompt
   const withText = await compositeTextBlocks(
-    composite, page.textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+    composite, textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
   )
   return withText.toString('base64')
 }
