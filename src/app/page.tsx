@@ -125,7 +125,7 @@ export default function HomePage() {
         <div style={{
           position: 'relative', zIndex: 2,
           maxWidth: 1200, margin: '0 auto',
-          padding: isMobile ? '52px 24px 64px' : '0 24px',
+          padding: isMobile ? '52px 20px 64px' : '0 24px',
           display: 'flex', alignItems: 'center',
           minHeight: isMobile ? 'auto' : 640,
         }}>

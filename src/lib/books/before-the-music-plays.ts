@@ -51,6 +51,11 @@ export interface BookPage {
   includesSenderCharacter: boolean  // true = sender baked into bg; cleanup removed child only
   characterPlacement?: BookPageCharacterPlacement  // undefined on no-character pages (1, 16)
   skipTextCollision?: boolean       // true = text/character overlap is intentional; skip auto-shift
+  isMirrorPage?: boolean            // true = generate character once, flip horizontally for reflection
+  // Regions to restore from the original background AFTER Gemini renders the scene.
+  // Use for pages where Gemini would overwrite a semi-transparent box or other background
+  // element that must appear on top of (or free from) the character illustration.
+  protectedBackgroundAreas?: Array<{ x: number; y: number; width: number; height: number }>
   textBlocks: BookPageTextBlock[]
 }
 

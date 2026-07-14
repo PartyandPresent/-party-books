@@ -141,7 +141,30 @@ export default function CollectionPageLayout({
 
       {/* ── Book Grid ── */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '40px 20px 56px' : '56px 24px 72px' }}>
-        {filtered.length === 0 ? (
+        {books.length === 0 ? (
+          /* Collection is genuinely empty — Coming Soon state */
+          <div style={{ textAlign: 'center', padding: isMobile ? '64px 0' : '96px 0' }}>
+            <div style={{ fontSize: 56, marginBottom: 20 }}>✨</div>
+            <h2 style={{
+              fontFamily: 'Playfair Display, serif', fontWeight: 900,
+              fontSize: isMobile ? 26 : 34, color: GREEN, margin: '0 0 12px',
+            }}>
+              New books coming soon
+            </h2>
+            <p style={{ fontSize: 15, color: BODY, margin: '0 auto 32px', maxWidth: 440, lineHeight: 1.7 }}>
+              We're working on something beautiful for this collection. Check back soon — or browse all our books in the meantime.
+            </p>
+            <Link href="/collections" style={{
+              background: CORAL, color: '#fff',
+              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
+              padding: '13px 32px', borderRadius: 50, textDecoration: 'none',
+              display: 'inline-block',
+            }}>
+              Browse All Collections →
+            </Link>
+          </div>
+        ) : filtered.length === 0 ? (
+          /* Books exist but none match the current age filter */
           <div style={{ textAlign: 'center', padding: '80px 0' }}>
             <div style={{ fontSize: 52, marginBottom: 16 }}>🔍</div>
             <p style={{ fontSize: 18, fontWeight: 800, color: GREEN, margin: '0 0 8px', fontFamily: 'Playfair Display, serif' }}>

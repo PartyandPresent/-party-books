@@ -4,12 +4,12 @@ import sharp from 'sharp'
 
 export const dynamic = 'force-dynamic'
 
-const CLOUD = 'dft0hfbee'
-const TOTAL_PAGES = 17
+const CLOUD = process.env.CLOUDINARY_CLOUD_NAME || 'dft0hfbee'
+const MAX_PAGES = 30
 
 function cloudinaryUrl(orderId: string, index: number) {
   const publicId = `page_${String(index).padStart(2, '0')}`
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/party-books/orders/${orderId}/${publicId}.png`
+  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto/party-books/orders/${orderId}/${publicId}`
 }
 
 // Fold-shadow SVG: dark gradient lines at center spine
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   try {
     const pdfDoc = await PDFDocument.create()
 
-    for (let i = 0; i < TOTAL_PAGES; i++) {
+    for (let i = 0; i < MAX_PAGES; i++) {
       const url = cloudinaryUrl(orderId, i)
 
       let imgBuffer: Buffer

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
-import { beforeTheMusicPlays, type BookPage } from '@/lib/books/before-the-music-plays'
+import { getBookRenderConfig, type BookRenderConfig } from '@/lib/bookRenderConfig'
+import { type BookPage } from '@/lib/books/before-the-music-plays'
 import { compositeTextBlocks, detectCharacterBounds, resolveTextCollisions, type TextReplacements } from '@/lib/compositeText'
 import sharp from 'sharp'
 import path from 'path'
@@ -11,10 +12,6 @@ export const dynamic = 'force-dynamic'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const MODEL = 'gemini-3.1-flash-image'
-
-// Canvas dimensions for "Before the Music Plays" (confirmed from background assets)
-const CANVAS_W = 1774
-const CANVAS_H = 887
 
 // ─── Existing helpers (unchanged) ────────────────────────────────────────────
 
@@ -121,7 +118,7 @@ async function callGemini(promptParts: any[], expectImage = true): Promise<strin
       if (!res.ok) {
         const e = await res.json().catch(() => ({}))
         const msg = e?.error?.message || `Gemini error ${res.status}`
-        if ((msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded')) && attempt < delays.length) {
+        if ((msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded') || msg.toLowerCase().includes('internal error')) && attempt < delays.length) {
           await sleep(delays[attempt]); continue
         }
         throw new Error(msg)
@@ -192,6 +189,7 @@ async function generateCompositedPage(
   page: BookPage,
   characterBase64: string,
   customer: { childName: string; senderName: string; dedication?: string },
+  config: BookRenderConfig,
 ): Promise<string> {
   const bgBuffer = await fetchPublicFile(page.backgroundAsset)
 
@@ -203,10 +201,10 @@ async function generateCompositedPage(
     DEDICATION:       customer.dedication || `A special book made with love just for ${customer.childName}.`,
   }
 
-  // Pages 1 and 16 have no character — background + text only
+  // Pages without a character — background + text only
   if (!page.characterPlacement) {
     const withText = await compositeTextBlocks(
-      bgBuffer, page.textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+      bgBuffer, page.textBlocks, replacements, config.canvasW, config.canvasH, config.bookSlug,
     )
     return withText.toString('base64')
   }
@@ -214,9 +212,7 @@ async function generateCompositedPage(
   const bgBase64 = bgBuffer.toString('base64')
 
   // The cover reference (page 0) has large text baked in that Gemini copies into
-  // the output even when told not to. Skip Image 3 for the cover — the two-image
-  // approach (background + character) is enough since the cover composition is
-  // straightforward. Use Image 3 on all other pages to guide character positioning.
+  // the output even when told not to. Skip Image 3 for the cover.
   const useRef = page.pageIndex !== 0
   const refBase64 = useRef
     ? (await fetchPublicFile(page.poseReference)).toString('base64')
@@ -225,11 +221,11 @@ async function generateCompositedPage(
   const imageRoles = useRef
     ? `IMAGE ROLES:
 - IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy her face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.
+- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.
 - IMAGE 3 is the LAYOUT REFERENCE. Use it ONLY to determine the character's position, scale, and pose within the frame — nothing else. Do NOT copy the character's appearance, hair, face, or skin from Image 3 (the child shown there is a placeholder with different features). Do NOT reproduce any text, words, or labels visible in Image 3 — all text is added in post-production.`
     : `IMAGE ROLES:
 - IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy her face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.`
+- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.`
 
   const scenePrompt =
     `${page.characterActionPrompt}
@@ -239,7 +235,7 @@ ${imageRoles}
 RULES:
 - CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. If Image 3 shows a child with different hair (e.g. curly when Image 2 has straight, or a different colour) — ignore Image 3's hair completely and use Image 2's hair.
 - HAIR: Do NOT add headdress, hat, crown, tiara, feathers, or any accessories not visible in Image 2.
-- COSTUME: Unless the scene description above explicitly specifies a different outfit (e.g. pajamas, nightwear), use a white or ivory flower girl dress with a satin sash and white dress shoes.
+- COSTUME: Unless the scene description above explicitly specifies a different outfit, ${config.costumeRule}
 - TEXT: Do NOT reproduce any text, words, names, or labels from Image 3. The text area must be left completely blank — text is composited separately after generation.
 - GROUNDING: Add a subtle, soft contact shadow beneath the character's feet consistent with the lighting direction already present in Image 1.
 - OUTPUT: The complete scene. Same 2:1 landscape ratio as Image 1. No added text, watermarks, or labels of any kind.`
@@ -255,27 +251,55 @@ RULES:
 
   // Resize to exact canvas dimensions — Gemini may return a different resolution
   let composite = await sharp(Buffer.from(sceneBase64, 'base64'))
-    .resize(CANVAS_W, CANVAS_H, { fit: 'cover', position: 'center' })
+    .resize(config.canvasW, config.canvasH, { fit: 'cover', position: 'center' })
     .png()
     .toBuffer()
 
-  // Real logo on cover (page 0)
-  if (page.pageIndex === 0) {
+  // Mirror page: extract primary character region, flip horizontally, composite as reflection.
+  // The primary character is already placed by Gemini; this adds the mirror-glass copy.
+  if (page.isMirrorPage && page.characterPlacement) {
+    const cp = page.characterPlacement
+    const cropH   = Math.min(cp.height, config.canvasH - cp.y)
+    const mirrorX = Math.max(0, config.canvasW - cp.x - cp.width)
+    const mirrorW = Math.min(cp.width, config.canvasW - mirrorX)
+
+    const { data, info } = await sharp(composite)
+      .extract({ left: cp.x, top: cp.y, width: mirrorW, height: cropH })
+      .flop()
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true })
+
+    for (let i = 3; i < data.length; i += 4) {
+      data[i] = Math.round(data[i] * 0.78)  // 78% opacity — subtle mirror-glass fade
+    }
+
+    const reflectionBuf = await sharp(Buffer.from(data), {
+      raw: { width: info.width, height: info.height, channels: 4 },
+    }).png().toBuffer()
+
+    composite = await sharp(composite)
+      .composite([{ input: reflectionBuf, left: mirrorX, top: cp.y }])
+      .png()
+      .toBuffer()
+  }
+
+  // Real logo on cover (page 0) — skipped when showLogoOnCover is explicitly false
+  if (page.pageIndex === 0 && config.showLogoOnCover !== false) {
     const withLogo = await compositeLogoOnCover(composite.toString('base64'), 'white')
     composite = Buffer.from(withLogo, 'base64')
   }
 
   // Collision detection: shift text blocks that overlap the character's actual silhouette.
-  // Skip pages where text/character overlap is intentional (skipTextCollision: true).
   let textBlocks = page.textBlocks
   if (!page.skipTextCollision) {
     const charBounds = await detectCharacterBounds(characterBase64, page.characterPlacement!)
-    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, CANVAS_W, CANVAS_H)
+    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, config.canvasW, config.canvasH)
   }
 
   // Real text — resolved in Node, never in a Gemini prompt
   const withText = await compositeTextBlocks(
-    composite, textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+    composite, textBlocks, replacements, config.canvasW, config.canvasH, config.bookSlug,
   )
   return withText.toString('base64')
 }
@@ -315,12 +339,11 @@ export async function POST(req: NextRequest) {
       rateLimitMap.set(ip, Date.now())
     }
 
-    // For legacy books, validate up front — before any expensive Gemini calls.
-    // The compositing pipeline slug ('before-the-music-plays') is NOT in books.ts,
-    // so getBookBySlug would return undefined for it; skip that check for this slug.
-    const isCompositingBook = bookSlug === 'before-the-music-plays'
+    // Resolve book config. Compositing-pipeline books are identified by getBookRenderConfig;
+    // legacy books (pagePrompts-based) are looked up in books.ts instead.
+    const bookConfig = getBookRenderConfig(bookSlug)
     let legacyBook: ReturnType<typeof getBookBySlug> | null = null
-    if (!isCompositingBook) {
+    if (!bookConfig) {
       legacyBook = getBookBySlug(bookSlug)
       if (!legacyBook || !legacyBook.pagePrompts || legacyBook.pagePrompts.length === 0) {
         return NextResponse.json({ error: 'Book not found or prompts missing' }, { status: 404 })
@@ -331,7 +354,7 @@ export async function POST(req: NextRequest) {
     let characterBase64 = preGeneratedCharacter
 
     if (!characterBase64) {
-      const characterPrompt = legacyBook?.characterPrompt || DEFAULT_CHARACTER_PROMPT
+      const characterPrompt = bookConfig?.characterPrompt || legacyBook?.characterPrompt || DEFAULT_CHARACTER_PROMPT
       characterBase64 = await callGemini([
         { inlineData: { mimeType, data: photoBase64 } },
         { text: characterPrompt },
@@ -340,11 +363,12 @@ export async function POST(req: NextRequest) {
 
     // ─── Step 2 — Generate pages ──────────────────────────────────────────────
 
-    // New compositing pipeline (before-the-music-plays only for this release)
-    if (isCompositingBook) {
-      const pages = beforeTheMusicPlays.pages
-      const indicesToGenerate: number[] = previewIndices
-        || Array.from({ length: pages.length }, (_, i) => i)
+    // New compositing pipeline
+    if (bookConfig) {
+      const { pages } = bookConfig
+      const indicesToGenerate: number[] = (previewIndices
+        || Array.from({ length: pages.length }, (_, i) => i))
+        .map((i: number) => Math.min(i, pages.length - 1))
       const generatedPages: string[] = []
 
       for (const pageIndex of indicesToGenerate) {
@@ -352,6 +376,7 @@ export async function POST(req: NextRequest) {
           pages[pageIndex],
           characterBase64,
           { childName, senderName, dedication },
+          bookConfig,
         )
         generatedPages.push(pageBase64)
       }
@@ -360,8 +385,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Legacy pipeline — unchanged for all other books
-    // legacyBook and pagePrompts are guaranteed non-null here (early return above),
-    // but TypeScript can't narrow through the isCompositingBook branch, so we extract.
+    // legacyBook and pagePrompts are guaranteed non-null here (early return above).
     const book = legacyBook!
     const prompts = book.pagePrompts!
     const indicesToGenerate: number[] = previewIndices ||

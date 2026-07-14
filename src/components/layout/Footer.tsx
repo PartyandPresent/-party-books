@@ -1,5 +1,7 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -119,6 +121,7 @@ const Vine = () => (
 )
 
 export default function Footer() {
+  const isMobile = useIsMobile()
   return (
     <footer style={{ background: GREEN, color: '#fff', paddingTop: 60, paddingBottom: 32, position: 'relative', overflow: 'hidden' }}>
 
@@ -193,10 +196,10 @@ export default function Footer() {
       </div>
 
       {/* ── Main footer content (above doodles) ───────────────────── */}
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 20px' : '0 24px', position: 'relative', zIndex: 1 }}>
 
         {/* Top Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40, marginBottom: 48 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: isMobile ? 32 : 40, marginBottom: 48 }}>
 
           {/* Brand */}
           <div>

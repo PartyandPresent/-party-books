@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState, useCallback } from 'react'
+import { use, useState, useCallback, useEffect } from 'react'
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME_ORDERS || 'dft0hfbee'
 
@@ -14,14 +14,21 @@ const BODY  = '#4A5568'
 function cloudinaryUrl(orderId: string, index: number, version?: number) {
   const publicId = `page_${String(index).padStart(2, '0')}`
   const versionPart = version ? `v${version}/` : ''
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/${versionPart}party-books/orders/${orderId}/${publicId}.png`
+  // f_auto first (transformation), then optional version, then public ID path
+  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto/${versionPart}party-books/orders/${orderId}/${publicId}`
 }
 
-const PAGE_LABELS = [
-  'Cover', 'Dedication', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6',
-  'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13',
-  'Page 14', 'Page 15', 'Page 16', 'Final',
-]
+function pageLabel(index: number, pageCount: number): string {
+  if (index === 0) return 'Cover'
+  if (index === pageCount - 1) return 'Final'
+  return `Page ${index}`
+}
+
+function pageChipLabel(index: number, pageCount: number): string {
+  if (index === 0) return 'COVER'
+  if (index === pageCount - 1) return 'FINAL'
+  return `PAGE ${index}`
+}
 
 export default function StaffOrderPage({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = use(params)
@@ -35,10 +42,20 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
   const [regenErrors, setRegenErrors]     = useState<Record<number, string>>({})
   const [imageVersions, setImageVersions] = useState<Record<number, number>>({})
   const [staffNotes, setStaffNotes]       = useState<Record<number, string>>({})
+  const [pageCount, setPageCount]         = useState(17)
+  const [metaLoaded, setMetaLoaded]       = useState(false)
 
-  const pages = Array.from({ length: 17 }, (_, i) => ({
+  useEffect(() => {
+    fetch(`/api/staff/order-info?orderId=${orderId}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.pageCount) setPageCount(data.pageCount) })
+      .catch(() => {})
+      .finally(() => setMetaLoaded(true))
+  }, [orderId])
+
+  const pages = Array.from({ length: pageCount }, (_, i) => ({
     index: i,
-    label: PAGE_LABELS[i] || `Page ${i}`,
+    label: pageLabel(i, pageCount),
     url: cloudinaryUrl(orderId, i, imageVersions[i]),
   }))
 
@@ -130,7 +147,8 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
           fontSize: 13, color: BODY, margin: '24px 0 0',
           borderLeft: `4px solid ${CORAL}`,
         }}>
-          <strong style={{ color: GREEN }}>Quality check:</strong> Review all 17 pages below. Click <strong>Regenerate</strong> on any page that needs to be redrawn. Once approved, click <strong>Download Spread PDF</strong>.
+          <strong style={{ color: GREEN }}>Quality check:</strong>{' '}
+          Review all {metaLoaded ? pageCount : '…'} pages below. Click <strong>Regenerate</strong> on any page that needs to be redrawn. Once approved, click <strong>Download Spread PDF</strong>.
         </div>
 
         {/* Pages */}
@@ -142,12 +160,12 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{
-                    background: index === 0 || index === 16 ? CORAL : '#E2EBE7',
-                    color: index === 0 || index === 16 ? '#fff' : GREEN,
+                    background: index === 0 || index === pageCount - 1 ? CORAL : '#E2EBE7',
+                    color: index === 0 || index === pageCount - 1 ? '#fff' : GREEN,
                     fontSize: 11, fontWeight: 800,
                     padding: '3px 12px', borderRadius: 50, letterSpacing: 0.5,
                   }}>
-                    {index === 0 ? 'COVER' : index === 16 ? 'FINAL' : `PAGE ${index}`}
+                    {pageChipLabel(index, pageCount)}
                   </span>
                   <span style={{ fontSize: 13, color: MUTED, fontWeight: 600 }}>{label}</span>
                   {regenerating[index] && (

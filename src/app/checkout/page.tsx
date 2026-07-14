@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -30,6 +31,7 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isProcessing, setIsProcessing] = useState(false)
   const [step, setStep] = useState<'details' | 'payment'>('details')
+  const isMobile = useIsMobile()
 
   const shipping = 9.99
   const total = selectedPrice + shipping
@@ -135,15 +137,15 @@ export default function CheckoutPage() {
     fontWeight: 700, color: GREEN, marginBottom: 20,
   }
   const row2: React.CSSProperties = {
-    display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 18,
+    display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16, marginBottom: 18,
   }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 1000, margin: '0 auto', padding: '70px 24px 80px' }}>
+      <main style={{ maxWidth: 1000, margin: '0 auto', padding: isMobile ? '70px 16px 80px' : '70px 24px 80px' }}>
 
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 8 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: isMobile ? 24 : 30, fontWeight: 700, color: GREEN, marginBottom: 8 }}>
           Checkout
         </h1>
         <p style={{ fontSize: 15, color: BODY, marginBottom: 36 }}>
@@ -167,19 +169,19 @@ export default function CheckoutPage() {
                   }}>
                     {done ? '✓' : num}
                   </div>
-                  <span style={{ fontSize: 14, fontWeight: active ? 800 : 600, color: active || done ? CORAL : MUTED }}>
+                  <span style={{ fontSize: isMobile ? 12 : 14, fontWeight: active ? 800 : 600, color: active || done ? CORAL : MUTED }}>
                     {label}
                   </span>
                 </div>
                 {i === 0 && (
-                  <div style={{ width: 40, height: 2, backgroundColor: done ? CORAL : '#E0E0E0', margin: '0 12px' }} />
+                  <div style={{ width: isMobile ? 24 : 40, height: 2, backgroundColor: done ? CORAL : '#E0E0E0', margin: '0 12px' }} />
                 )}
               </div>
             )
           })}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 24, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 380px', gap: 24, alignItems: 'start' }}>
 
           {/* LEFT — Form */}
           <div>
@@ -218,7 +220,7 @@ export default function CheckoutPage() {
                   {errors.street && <p style={errorText}>{errors.street}</p>}
                 </div>
 
-                <div style={{ ...row2, gridTemplateColumns: '1fr 1fr 1fr' }}>
+                <div style={{ ...row2, gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr' }}>
                   <div>
                     <label style={labelStyle}>City <span style={{ color: CORAL }}>*</span></label>
                     <input style={inputStyle(!!errors.city)} value={form.city} onChange={e => update('city', e.target.value)} placeholder="Manila" />
@@ -271,7 +273,7 @@ export default function CheckoutPage() {
               <div>
                 {/* Shipping summary */}
                 <div style={{ ...cardStyle, marginBottom: 16 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 12 : 0 }}>
                     <div>
                       <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>SHIPPING TO</p>
                       <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: GREEN }}>
@@ -357,7 +359,7 @@ export default function CheckoutPage() {
 
           {/* RIGHT — Order Summary */}
           <div>
-            <div style={{ ...cardStyle, position: 'sticky', top: 100 }}>
+            <div style={{ ...cardStyle, position: isMobile ? 'static' : 'sticky', top: 100 }}>
               <h2 style={{ ...sectionTitle, marginBottom: 16 }}>Order Summary</h2>
 
               {/* Book */}

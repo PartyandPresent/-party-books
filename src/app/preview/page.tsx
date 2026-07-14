@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -28,6 +29,7 @@ export default function PreviewPage() {
     setGeneratedPages, setCharacter,
   } = useOrderStore()
 
+  const isMobile = useIsMobile()
   const [status, setStatus] = useState<Status>('loading-character')
   const [errorPhase, setErrorPhase] = useState<ErrorPhase>('character')
   const [errorMsg, setErrorMsg] = useState('')
@@ -147,7 +149,7 @@ export default function PreviewPage() {
   if (status === 'error') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>😔</div>
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
           Something went wrong
@@ -171,7 +173,7 @@ export default function PreviewPage() {
   if (status === 'loading-character') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
 
         {/* Animated portrait placeholder */}
         <div style={{
@@ -221,7 +223,7 @@ export default function PreviewPage() {
   if (status === 'character-ready') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 640, margin: '0 auto', padding: '100px 24px 80px' }}>
+      <main style={{ maxWidth: 640, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px' }}>
 
         {/* Heading */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
@@ -335,7 +337,7 @@ export default function PreviewPage() {
   if (status === 'loading-pages') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 600, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 600, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
 
         {/* Approved character thumbnail */}
         {characterBase64 && (
@@ -422,7 +424,7 @@ export default function PreviewPage() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 900, margin: '0 auto', padding: '100px 24px 80px' }}>
+      <main style={{ maxWidth: 900, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 36, paddingTop: 12 }}>
           <div style={{ fontSize: 40, marginBottom: 10 }}>🎉</div>
@@ -526,7 +528,7 @@ export default function PreviewPage() {
 
         {/* Order CTA */}
         <div style={{
-          backgroundColor: '#fff', borderRadius: 20, padding: '28px 32px',
+          backgroundColor: '#fff', borderRadius: 20, padding: isMobile ? '20px 16px' : '28px 32px',
           boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           flexWrap: 'wrap', gap: 20,
@@ -537,13 +539,14 @@ export default function PreviewPage() {
               Personalised for {childName} · 17 pages · Hardcover
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', width: isMobile ? '100%' : 'auto' }}>
             <button
               onClick={generatePages}
               style={{
                 backgroundColor: 'transparent', border: `2px solid ${CORAL}`,
                 color: CORAL, borderRadius: 50, padding: '12px 24px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, cursor: 'pointer',
+                width: isMobile ? '100%' : 'auto',
               }}
             >
               🔄 Regenerate pages
@@ -554,6 +557,7 @@ export default function PreviewPage() {
                 backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '14px 32px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17, cursor: 'pointer',
                 boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
+                width: isMobile ? '100%' : 'auto',
               }}
             >
               Order This Book — ${selectedPrice.toFixed(2)}

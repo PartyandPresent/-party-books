@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
-import { beforeTheMusicPlays, type BookPage } from '@/lib/books/before-the-music-plays'
+import { getBookRenderConfig, type BookRenderConfig } from '@/lib/bookRenderConfig'
+import type { BookPage } from '@/lib/books/before-the-music-plays'
 import { compositeTextBlocks, detectCharacterBounds, resolveTextCollisions, type TextReplacements } from '@/lib/compositeText'
 import crypto from 'crypto'
 import { Resend } from 'resend'
@@ -14,8 +15,6 @@ export const dynamic = 'force-dynamic'
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const MODEL = 'gemini-3.1-flash-image'
 
-const CANVAS_W = 1774
-const CANVAS_H = 887
 
 async function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
@@ -116,7 +115,8 @@ async function fetchPublicFile(assetPath: string): Promise<Buffer> {
 async function generateCompositedPage(
   page: BookPage,
   characterBase64: string,
-  customer: { childName: string; senderName: string; dedication?: string },
+  customer: { childName: string; senderName: string; dedication?: string; siblingName?: string; lastName?: string; birthDate?: string; gifterNames?: string },
+  config: BookRenderConfig,
 ): Promise<string> {
   const bgBuffer = await fetchPublicFile(page.backgroundAsset)
 
@@ -125,19 +125,21 @@ async function generateCompositedPage(
     SENDER_NAME:      customer.senderName,
     CHILD_NAME_UPPER: customer.childName.toUpperCase(),
     DEDICATION:       customer.dedication || `A special book made with love just for ${customer.childName}.`,
+    SIBLING_NAME:     customer.siblingName  || '',
+    LAST_NAME:        customer.lastName     || '',
+    BIRTH_DATE:       customer.birthDate    || '',
+    GIFTER_NAMES:     customer.gifterNames  || '',
   }
 
-  // Pages with no character (1, 16) — background + text only
   if (!page.characterPlacement) {
     const withText = await compositeTextBlocks(
-      bgBuffer, page.textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+      bgBuffer, page.textBlocks, replacements, config.canvasW, config.canvasH, config.bookSlug,
     )
     return withText.toString('base64')
   }
 
   const bgBase64 = bgBuffer.toString('base64')
 
-  // Skip pose reference for cover (page 0) to prevent Gemini copying baked-in text
   const useRef = page.pageIndex !== 0
   const refBase64 = useRef
     ? (await fetchPublicFile(page.poseReference)).toString('base64')
@@ -146,11 +148,11 @@ async function generateCompositedPage(
   const imageRoles = useRef
     ? `IMAGE ROLES:
 - IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy her face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.
+- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.
 - IMAGE 3 is the LAYOUT REFERENCE. Use it ONLY to determine the character's position, scale, and pose within the frame — nothing else. Do NOT copy the character's appearance, hair, face, or skin from Image 3 (the child shown there is a placeholder with different features). Do NOT reproduce any text, words, or labels visible in Image 3 — all text is added in post-production.`
     : `IMAGE ROLES:
 - IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy her face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.`
+- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.`
 
   const scenePrompt =
     `${page.characterActionPrompt}
@@ -160,7 +162,7 @@ ${imageRoles}
 RULES:
 - CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. If Image 3 shows a child with different hair (e.g. curly when Image 2 has straight, or a different colour) — ignore Image 3's hair completely and use Image 2's hair.
 - HAIR: Do NOT add headdress, hat, crown, tiara, feathers, or any accessories not visible in Image 2.
-- COSTUME: Unless the scene description above explicitly specifies a different outfit (e.g. pajamas, nightwear), use a white or ivory flower girl dress with a satin sash and white dress shoes.
+- COSTUME: Unless the scene description above explicitly specifies a different outfit, ${config.costumeRule}
 - TEXT: Do NOT reproduce any text, words, names, or labels from Image 3. The text area must be left completely blank — text is composited separately after generation.
 - GROUNDING: Add a subtle, soft contact shadow beneath the character's feet consistent with the lighting direction already present in Image 1.
 - OUTPUT: The complete scene. Same 2:1 landscape ratio as Image 1. No added text, watermarks, or labels of any kind.`
@@ -175,23 +177,76 @@ RULES:
   const sceneBase64 = await callGemini(geminiParts)
 
   let composite = await sharp(Buffer.from(sceneBase64, 'base64'))
-    .resize(CANVAS_W, CANVAS_H, { fit: 'cover', position: 'center' })
+    .resize(config.canvasW, config.canvasH, { fit: 'cover', position: 'center' })
     .png()
     .toBuffer()
 
-  if (page.pageIndex === 0) {
+  if (page.isMirrorPage && page.characterPlacement) {
+    const cp = page.characterPlacement
+    const cropH   = Math.min(cp.height, config.canvasH - cp.y)
+    const mirrorX = Math.max(0, config.canvasW - cp.x - cp.width)
+    const mirrorW = Math.min(cp.width, config.canvasW - mirrorX)
+
+    const { data, info } = await sharp(composite)
+      .extract({ left: cp.x, top: cp.y, width: mirrorW, height: cropH })
+      .flop()
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true })
+
+    for (let i = 3; i < data.length; i += 4) {
+      data[i] = Math.round(data[i] * 0.78)
+    }
+
+    const reflectionBuf = await sharp(Buffer.from(data), {
+      raw: { width: info.width, height: info.height, channels: 4 },
+    }).png().toBuffer()
+
+    composite = await sharp(composite)
+      .composite([{ input: reflectionBuf, left: mirrorX, top: cp.y }])
+      .png()
+      .toBuffer()
+  }
+
+  if (page.pageIndex === 0 && config.showLogoOnCover !== false) {
     const withLogo = await compositeLogoOnCover(composite.toString('base64'))
     composite = Buffer.from(withLogo, 'base64')
+  }
+
+  // Restore protected areas from the original background on top of the Gemini scene.
+  // Fixes z-order: Gemini overwrites any background box/ornament in the character area;
+  // pasting the background back on top restores the box so it appears over the character.
+  if (page.protectedBackgroundAreas?.length) {
+    const bgResized = await sharp(bgBuffer)
+      .resize(config.canvasW, config.canvasH, { fit: 'fill' })
+      .png()
+      .toBuffer()
+    const restorations = await Promise.all(
+      page.protectedBackgroundAreas.map(async area => ({
+        input: await sharp(bgResized)
+          .extract({
+            left:   area.x,
+            top:    area.y,
+            width:  Math.min(area.width,  config.canvasW - area.x),
+            height: Math.min(area.height, config.canvasH - area.y),
+          })
+          .png()
+          .toBuffer(),
+        left: area.x,
+        top:  area.y,
+      }))
+    )
+    composite = await sharp(composite).composite(restorations).png().toBuffer()
   }
 
   let textBlocks = page.textBlocks
   if (!page.skipTextCollision) {
     const charBounds = await detectCharacterBounds(characterBase64, page.characterPlacement!)
-    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, CANVAS_W, CANVAS_H)
+    textBlocks = resolveTextCollisions(page.textBlocks, charBounds, config.canvasW, config.canvasH)
   }
 
   const withText = await compositeTextBlocks(
-    composite, textBlocks, replacements, CANVAS_W, CANVAS_H, 'before-the-music-plays',
+    composite, textBlocks, replacements, config.canvasW, config.canvasH, config.bookSlug,
   )
   return withText.toString('base64')
 }
@@ -201,12 +256,16 @@ async function uploadToCloudinary(base64: string, folder: string, publicId: stri
   const apiKey    = process.env.CLOUDINARY_API_KEY!
   const apiSecret = process.env.CLOUDINARY_API_SECRET!
 
+  // Compress to JPEG to stay under Cloudinary's 10 MB per-file limit
+  const jpeg = await sharp(Buffer.from(base64, 'base64')).jpeg({ quality: 90 }).toBuffer()
+  const jpegBase64 = jpeg.toString('base64')
+
   const timestamp = Math.round(Date.now() / 1000)
   const paramStr  = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}`
   const signature = crypto.createHash('sha1').update(paramStr + apiSecret).digest('hex')
 
   const form = new FormData()
-  form.append('file', `data:image/png;base64,${base64}`)
+  form.append('file', `data:image/jpeg;base64,${jpegBase64}`)
   form.append('api_key', apiKey)
   form.append('timestamp', String(timestamp))
   form.append('signature', signature)
@@ -250,6 +309,10 @@ export async function POST(req: NextRequest) {
       childName,
       senderName,
       dedication,
+      siblingName,
+      lastName,
+      birthDate,
+      gifterNames,
       customerEmail,
       customerName,
       orderId,
@@ -272,8 +335,12 @@ export async function POST(req: NextRequest) {
     if (cloudinaryReady) {
       saveOrderMeta(folder, {
         childName,
-        senderName: senderName || '',
-        dedication: dedication || '',
+        senderName:   senderName   || '',
+        dedication:   dedication   || '',
+        siblingName:  siblingName  || '',
+        lastName:     lastName     || '',
+        birthDate:    birthDate    || '',
+        gifterNames:  gifterNames  || '',
         bookSlug,
       }).catch(() => {})
 
@@ -281,16 +348,17 @@ export async function POST(req: NextRequest) {
       uploadToCloudinary(characterBase64, folder, 'character').catch(() => {})
     }
 
-    if (bookSlug === 'before-the-music-plays') {
-      // New 3-image scene generation pipeline
-      const pages = beforeTheMusicPlays.pages
-      bookTitle   = beforeTheMusicPlays.title
+    const bookConfig = getBookRenderConfig(bookSlug)
+    if (bookConfig) {
+      const { pages } = bookConfig
+      bookTitle = bookConfig.title
 
       for (const page of pages) {
         const pageBase64 = await generateCompositedPage(
           page,
           characterBase64,
-          { childName, senderName: senderName || '', dedication },
+          { childName, senderName: senderName || '', dedication, siblingName, lastName, birthDate, gifterNames },
+          bookConfig,
         )
 
         let pageUrl = ''

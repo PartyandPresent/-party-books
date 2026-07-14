@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -19,6 +20,7 @@ export default function OrderSuccessContent() {
   const sessionId = searchParams.get('session_id')
   const { childName, senderName, selectedTitle, selectedPrice, reset } = useOrderStore()
 
+  const isMobile = useIsMobile()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [orderDetails, setOrderDetails] = useState<any>(null)
 
@@ -87,7 +89,7 @@ export default function OrderSuccessContent() {
   if (status === 'loading') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '80px 20px' : '80px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>⏳</div>
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN }}>
           Confirming your order...
@@ -100,7 +102,7 @@ export default function OrderSuccessContent() {
   if (status === 'error') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '80px 20px' : '80px 24px', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 24 }}>😔</div>
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
           Something went wrong
@@ -122,7 +124,7 @@ export default function OrderSuccessContent() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 640, margin: '0 auto', padding: '70px 24px 80px' }}>
+      <main style={{ maxWidth: 640, margin: '0 auto', padding: isMobile ? '70px 16px 80px' : '70px 24px 80px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={{ fontSize: 80, marginBottom: 20 }}>🎉</div>
@@ -167,9 +169,9 @@ export default function OrderSuccessContent() {
                 {icon}
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 4 : 0, marginBottom: 4 }}>
                   <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: GREEN }}>{title}</p>
-                  <span style={{ fontSize: 12, color: CORAL, fontWeight: 700, backgroundColor: BEIGE, padding: '3px 10px', borderRadius: 50 }}>{time}</span>
+                  <span style={{ fontSize: 12, color: CORAL, fontWeight: 700, backgroundColor: BEIGE, padding: '3px 10px', borderRadius: 50, alignSelf: 'flex-start' }}>{time}</span>
                 </div>
                 <p style={{ margin: 0, fontSize: 14, color: BODY, lineHeight: 1.5 }}>{desc}</p>
               </div>
@@ -187,7 +189,7 @@ export default function OrderSuccessContent() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 14 }}>
           <button
             onClick={() => router.push('/')}
             style={{ flex: 1, padding: '16px 24px', backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, cursor: 'pointer', boxShadow: '0 4px 20px rgba(232,131,106,0.4)' }}

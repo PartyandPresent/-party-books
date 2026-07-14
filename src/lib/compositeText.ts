@@ -31,6 +31,7 @@
 import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
+import os from 'os'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const fontkit = require('fontkit') as typeof import('fontkit')
 import type { BookPageTextBlock } from './books/before-the-music-plays'
@@ -74,8 +75,11 @@ function fontFormat(fileName: string): string {
 // Map filename → CSS font-family name.
 // The internal family name inside the font file may differ from the filename stem.
 const FONT_FAMILY_OVERRIDES: Record<string, string> = {
-  'MoreSugar-Regular.otf': 'MoreSugar',
-  'MoreSugar-Regular.ttf': 'MoreSugar',
+  'MoreSugar-Regular.otf':             'MoreSugar',
+  'MoreSugar-Regular.ttf':             'MoreSugar',
+  'BodoniFLF-Roman.ttf':               'Bodoni FLF',
+  'BestSwashed_PERSONAL_USE_ONLY.otf': 'Best Swashed PERSONAL USE',
+  'Lora-Bold.otf':                     'Lora',
 }
 
 function fontFamilyName(fileName: string): string {
@@ -91,7 +95,8 @@ let fontconfigInitialised = false
 function ensureFontsRegistered(bookSlugs: string[]): void {
   if (fontconfigInitialised) return
   try {
-    const tmpDir = path.join('/tmp', 'book-fonts')
+    const tmp    = os.tmpdir()
+    const tmpDir = path.join(tmp, 'book-fonts')
     fs.mkdirSync(tmpDir, { recursive: true })
     for (const slug of bookSlugs) {
       const fontsDir = path.join(process.cwd(), 'public', 'books', slug, 'fonts')
@@ -102,17 +107,18 @@ function ensureFontsRegistered(bookSlugs: string[]): void {
         if (!fs.existsSync(dest)) fs.copyFileSync(path.join(fontsDir, f), dest)
       }
     }
-    const confPath = path.join('/tmp', 'book-fonts.conf')
+    const cacheDir = path.join(tmp, 'fontconfig-cache')
+    const confPath = path.join(tmp, 'book-fonts.conf')
     fs.writeFileSync(confPath, `<?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
-  <dir>${path.join('/tmp', 'book-fonts')}</dir>
-  <cachedir>/tmp/fontconfig-cache</cachedir>
+  <dir>${tmpDir}</dir>
+  <cachedir>${cacheDir}</cachedir>
 </fontconfig>`)
     process.env.FONTCONFIG_FILE = confPath
     fontconfigInitialised = true
-  } catch {
-    // On Windows dev — fonts must be installed to C:\Windows\Fonts.
+  } catch (err) {
+    console.error('[compositeText] ensureFontsRegistered failed:', err)
     fontconfigInitialised = true
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
+import { getBookRenderConfig } from '@/lib/bookRenderConfig'
 
 export const maxDuration = 120
 export const dynamic = 'force-dynamic'
@@ -86,13 +87,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Use book-specific character prompt if available, otherwise use default
+    // Use book-specific character prompt if available, otherwise use default.
+    // BookRenderConfig takes priority (compositing-pipeline books store it there).
     let characterPrompt = DEFAULT_CHARACTER_PROMPT
     if (bookSlug) {
-      const book = getBookBySlug(bookSlug)
-      if (book?.characterPrompt) {
-        characterPrompt = book.characterPrompt
-      }
+      const bookConfig = getBookRenderConfig(bookSlug)
+      const legacyBook = getBookBySlug(bookSlug)
+      characterPrompt = bookConfig?.characterPrompt || legacyBook?.characterPrompt || DEFAULT_CHARACTER_PROMPT
     }
 
     const characterBase64 = await callGemini([

@@ -1,0 +1,62 @@
+// src/lib/bookRenderConfig.ts
+//
+// Per-book render settings used by all three generate routes.
+// Centralised here so canvas sizes, costume rules, and page arrays
+// stay consistent across generate-book, generate-full-book, and regenerate-page.
+
+import { beforeTheMusicPlays } from './books/before-the-music-plays'
+import type { BookPage } from './books/before-the-music-plays'
+import { youWereHereFirst, YOU_WERE_HERE_FIRST_CHARACTER_PROMPT } from './books/you-were-here-first'
+// import { canYouBeMyRingBearer, RING_BEARER_CHARACTER_PROMPT } from './books/can-you-be-my-ring-bearer'  // ARCHIVED
+
+export interface BookRenderConfig {
+  canvasW: number
+  canvasH: number
+  bookSlug: string
+  costumeRule: string        // replaces the per-book COSTUME line in the Gemini RULES block
+  pages: BookPage[]
+  title: string
+  characterPrompt?: string   // overrides DEFAULT_CHARACTER_PROMPT for character generation (Step 1)
+  showLogoOnCover?: boolean  // set false to skip logo composite on pageIndex 0 (default: true)
+}
+
+const CONFIGS: BookRenderConfig[] = [
+  {
+    canvasW:     1774,
+    canvasH:     887,
+    bookSlug:    'before-the-music-plays',
+    costumeRule: 'use a white or ivory flower girl dress with a satin sash and white dress shoes.',
+    pages:       beforeTheMusicPlays.pages,
+    title:       beforeTheMusicPlays.title,
+  },
+  {
+    canvasW:         2000,
+    canvasH:         1000,
+    bookSlug:        'you-were-here-first',
+    costumeRule:     'the character wears a white short-sleeve polo shirt, khaki cotton shorts, and brown shoes.',
+    pages:           youWereHereFirst.pages,
+    title:           youWereHereFirst.title,
+    characterPrompt: YOU_WERE_HERE_FIRST_CHARACTER_PROMPT,
+    showLogoOnCover: false,
+  },
+
+  // ARCHIVED — can-you-be-my-ring-bearer (re-enable when ready to relaunch)
+  // {
+  //   canvasW:          4000,
+  //   canvasH:          2000,
+  //   bookSlug:         'can-you-be-my-ring-bearer',
+  //   costumeRule:      'the character wears a cream beige suit, a powder-blue bow tie, a boutonniere, and brown shoes, holding a white lace ring pillow with blue ribbon and gold rings.',
+  //   pages:            canYouBeMyRingBearer.pages,
+  //   title:            canYouBeMyRingBearer.title,
+  //   characterPrompt:  RING_BEARER_CHARACTER_PROMPT,
+  //   showLogoOnCover:  false,
+  // },
+]
+
+export function getBookRenderConfig(slug: string): BookRenderConfig | null {
+  return CONFIGS.find(c => c.bookSlug === slug) ?? null
+}
+
+export function isCompositingSlug(slug: string): boolean {
+  return CONFIGS.some(c => c.bookSlug === slug)
+}

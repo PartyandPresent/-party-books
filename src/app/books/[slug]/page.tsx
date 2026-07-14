@@ -48,7 +48,7 @@ export default function BookDetailPage() {
       <div style={{ paddingTop: 80 }}>
 
         {/* Breadcrumb */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 24px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: MUTED }}>
             <Link href="/" style={{ color: MUTED, textDecoration: 'none' }}
               onMouseOver={e => (e.currentTarget.style.color = CORAL)}

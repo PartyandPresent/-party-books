@@ -535,6 +535,54 @@ STYLE: Pixar/Disney 3D animated. Glorious sunrise left half. Soft blush right ha
     characterPrompt: FLOWER_GIRL_CHARACTER_PROMPT,
     characterConsistencyNote: FLOWER_GIRL_CONSISTENCY_NOTE,
   },
+
+
+  // ARCHIVED — Can You Be My Ring Bearer? (re-enable when ready to relaunch)
+
+  // ARCHIVED — You Were Here First (re-enable when ready to relaunch)
+  // Pipeline config (bookRenderConfig.ts + you-were-here-first.ts) remains active
+  // so that any existing orders can still be generated via the staff pipeline.
+
+  // {
+  //   slug: 'you-were-here-first',
+  //   title: 'You Were Here First',
+  //   subtitle: 'A big-sibling story — personalized with their face',
+  //   price: 23.98,
+  //   coverImage: '/books/you-were-here-first/card-cover.png',
+  //   cardImage:  '/books/you-were-here-first/card-cover.png',
+  //   previewImages: [],
+  //   listingImages: {
+  //     heroLifestyle:           '/books/you-were-here-first/listings/01.png',
+  //     secondaryLifestyle:      '/books/you-were-here-first/listings/02.png',
+  //     calloutPersonalization:  '/books/you-were-here-first/listings/03.png',
+  //     occasionFraming:         '/books/you-were-here-first/listings/04.png',
+  //     calloutDedication:       '/books/you-were-here-first/listings/05.png',
+  //     themeFraming:            '/books/you-were-here-first/listings/06.png',
+  //     interiorSpread:          '/books/you-were-here-first/listings/07.png',
+  //     formatOptions:           '/books/you-were-here-first/listings/08.png',
+  //     sizeRuler:               '/books/you-were-here-first/listings/09.png',
+  //     sizeInHand:              '/books/you-were-here-first/listings/10.png',
+  //   },
+  //   totalPages: 12,
+  //   tags: ['new'],
+  //   recipient: ['toddler', 'child'],
+  //   occasion: ['baby-shower', 'any'],
+  //   description: "A gentle, personalized picture book for a soon-to-be big sibling, reassuring the child that they were loved first and will always be loved just as much once the new baby arrives.",
+  //   shortDesc: 'For the big sibling — personalized with their face, their name, and their baby\'s arrival.',
+  //   badge: 'New',
+  //   badgeColor: '#E8836A',
+  //   rating: 5.0,
+  //   reviews: 0,
+  //   featured: true,
+  //   highlights: [
+  //     "Personalized with your child's name and their face on every page",
+  //     'Gently reassures the big sibling that they were loved first — and always will be',
+  //     'Closes with a keepsake page: sibling name, baby name, and birth date',
+  //     'The perfect gift before or after the new baby arrives',
+  //   ],
+  //   coverLogoStyle: 'white',
+  // },
+
 ]
 export const RECIPIENTS = [
   { label: 'Baby / Newborn', value: 'baby' },

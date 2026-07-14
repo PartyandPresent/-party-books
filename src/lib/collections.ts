@@ -79,7 +79,7 @@ export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
       "Read it every Christmas Eve — a tradition that gets more precious each year",
     ],
     relatedLinks: [
-      { href: '/milestones/christmas', label: 'Wedding Invites' },
+      { href: '/milestones/christmas', label: 'Wedding' },
       { href: '/collections/birthday', label: 'Birthday Gifts' },
       { href: '/collections/baptism', label: 'Baptism Gifts' },
     ],
@@ -142,7 +142,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
     ],
   },
   christmas: {
-    title: 'Wedding Invites',
+    title: 'Wedding',
     subtitle: 'Celebrate love with a personalised keepsake',
     description: "Mark their special wedding day with a beautiful personalised book — a gift as unique as the love story it celebrates.",
     icon: '💍',
@@ -160,7 +160,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
     ],
   },
   easter: {
-    title: "Dad's Day",
+    title: "Father's Day",
     subtitle: "A gift that tells him exactly how you feel",
     description: "Show Dad how much he means with a personalised book that puts him at the heart of the story — a gift he'll never forget.",
     icon: '👔',
@@ -172,7 +172,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
       "A keepsake he'll proudly display and return to again and again",
     ],
     relatedLinks: [
-      { href: '/milestones/christmas', label: 'Wedding Invites' },
+      { href: '/milestones/christmas', label: 'Wedding' },
       { href: '/milestones/baptism', label: 'Faith & Baptism' },
       { href: '/milestones/just-because', label: 'Just Because Gifts' },
     ],
@@ -191,7 +191,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
     ],
     relatedLinks: [
       { href: '/milestones/birthday', label: 'Birthday Books' },
-      { href: '/milestones/easter', label: "Dad's Day" },
+      { href: '/milestones/easter', label: "Father's Day" },
       { href: '/collections/birthday', label: 'Birthday Gifts' },
     ],
   },

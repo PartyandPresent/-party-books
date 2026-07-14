@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { BOOKS } from '@/lib/books'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -33,6 +34,7 @@ export default function PersonalizePage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { setBook, setPhoto, setPersonalization } = useOrderStore()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     if (book) setBook(book.slug, book.title, book.price, book.coverImage)
@@ -88,7 +90,7 @@ export default function PersonalizePage() {
   // ── Shared styles ──────────────────────────────────────────────
   const cardStyle: React.CSSProperties = {
     backgroundColor: '#fff', borderRadius: 20,
-    padding: '36px 32px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+    padding: isMobile ? '28px 20px' : '36px 32px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
   }
   const headingStyle: React.CSSProperties = {
     fontFamily: 'Playfair Display, serif', fontSize: 26,
@@ -123,7 +125,7 @@ export default function PersonalizePage() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 680, margin: '0 auto', padding: '90px 24px 80px' }}>
+      <main style={{ maxWidth: 680, margin: '0 auto', padding: isMobile ? '90px 16px 80px' : '90px 24px 80px' }}>
 
         {/* Book strip */}
         <div style={{
@@ -174,17 +176,19 @@ export default function PersonalizePage() {
                     {done ? '✓' : num}
                   </div>
                   <span style={{
-                    fontSize: 12, fontWeight: active ? 800 : 600,
-                    color: active || done ? CORAL : MUTED, whiteSpace: 'nowrap',
+                    fontSize: isMobile ? 10 : 12, fontWeight: active ? 800 : 600,
+                    color: active || done ? CORAL : MUTED,
+                    whiteSpace: isMobile ? 'normal' : 'nowrap',
+                    textAlign: 'center', maxWidth: isMobile ? 52 : 'none',
                   }}>
                     {label}
                   </span>
                 </div>
                 {i < 2 && (
                   <div style={{
-                    width: 60, height: 2,
+                    width: isMobile ? 24 : 60, height: 2,
                     backgroundColor: done ? CORAL : '#E0E0E0',
-                    margin: '0 8px', marginBottom: 20, flexShrink: 0,
+                    margin: isMobile ? '0 4px' : '0 8px', marginBottom: 20, flexShrink: 0,
                   }} />
                 )}
               </div>
