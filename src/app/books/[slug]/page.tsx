@@ -42,14 +42,14 @@ export default function BookDetailPage() {
     : [book.coverImage, ...book.previewImages]
 
   return (
-    <div style={{ fontFamily: 'Nunito, sans-serif', background: '#fff' }}>
+    <div style={{ fontFamily: 'Nunito, sans-serif', background: '#fff', overflowX: 'hidden', maxWidth: '100vw' }}>
       <Header />
 
       <div style={{ paddingTop: 80 }}>
 
         {/* Breadcrumb */}
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: MUTED }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: MUTED, flexWrap: 'wrap', overflow: 'hidden' }}>
             <Link href="/" style={{ color: MUTED, textDecoration: 'none' }}
               onMouseOver={e => (e.currentTarget.style.color = CORAL)}
               onMouseOut={e => (e.currentTarget.style.color = MUTED)}>Home</Link>
@@ -173,14 +173,16 @@ export default function BookDetailPage() {
               {/* Title */}
               <h1 style={{
                 fontFamily: 'Playfair Display, serif', fontWeight: 900,
-                fontSize: isMobile ? 30 : 38, color: GREEN,
+                fontSize: isMobile ? 28 : 38, color: GREEN,
                 lineHeight: 1.15, marginBottom: 10, margin: '0 0 10px',
+                wordBreak: 'break-word', overflowWrap: 'break-word',
               }}>{book.title}</h1>
 
               {/* Subtitle */}
               <p style={{
                 fontFamily: 'Nunito, sans-serif', fontSize: 15, color: BODY,
                 lineHeight: 1.6, marginBottom: 16,
+                wordBreak: 'break-word', overflowWrap: 'break-word',
               }}>{book.subtitle}</p>
 
               {/* Stars */}
@@ -208,7 +210,7 @@ export default function BookDetailPage() {
               {/* Personalize CTA */}
               <Link href={`/personalize/${book.slug}`}
                 style={{
-                  display: 'block', textAlign: 'center',
+                  display: 'block', textAlign: 'center', width: '100%', boxSizing: 'border-box',
                   background: CORAL, color: '#fff',
                   fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17,
                   padding: '17px 32px', borderRadius: 50,
@@ -244,7 +246,7 @@ export default function BookDetailPage() {
         </section>
 
         {/* ── FEATURE ICONS ── */}
-        <section style={{ background: CREAM, borderTop: '1px solid #EDEAE0', borderBottom: '1px solid #EDEAE0', padding: '40px 24px' }}>
+        <section style={{ background: CREAM, borderTop: '1px solid #EDEAE0', borderBottom: '1px solid #EDEAE0', padding: isMobile ? '40px 16px' : '40px 24px' }}>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 28 : 40 }}>
               {[
