@@ -30,7 +30,11 @@ export default function PersonalizePage() {
   const [childName, setChildName] = useState('')
   const [senderName, setSenderName] = useState('')
   const [dedication, setDedication] = useState('')
+  const [siblingFullName, setSiblingFullName] = useState('')
+  const [siblingBirthDate, setSiblingBirthDate] = useState('')
   const [fieldErrors, setFieldErrors] = useState<{ childName?: string; senderName?: string }>({})
+
+  const isYwfCf = slug === 'you-were-here-first-child-focus'
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { setBook, setPhoto, setPersonalization } = useOrderStore()
@@ -77,7 +81,7 @@ export default function PersonalizePage() {
 
   const handleGenerate = () => {
     setPhoto(photoPreview!, photoMime)
-    setPersonalization(childName.trim(), senderName.trim(), dedication.trim())
+    setPersonalization(childName.trim(), senderName.trim(), dedication.trim(), siblingFullName.trim(), siblingBirthDate)
     router.push('/preview')
   }
 
@@ -356,6 +360,44 @@ export default function PersonalizePage() {
               </div>
             </div>
 
+            {isYwfCf && (
+              <>
+                <div style={{ marginBottom: 24 }}>
+                  <label style={labelStyle}>
+                    New baby's full name{' '}
+                    <span style={{ color: MUTED, fontWeight: 600 }}>(optional)</span>
+                  </label>
+                  <input
+                    style={inputStyle()}
+                    type="text"
+                    placeholder="e.g. Emma Rose"
+                    maxLength={40}
+                    value={siblingFullName}
+                    onChange={(e) => setSiblingFullName(e.target.value)}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 6 }}>
+                    <span style={{ fontSize: 12, color: MUTED }}>{siblingFullName.length}/40</span>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 24 }}>
+                  <label style={labelStyle}>
+                    Baby's date of birth{' '}
+                    <span style={{ color: MUTED, fontWeight: 600 }}>(optional)</span>
+                  </label>
+                  <input
+                    style={inputStyle()}
+                    type="date"
+                    value={siblingBirthDate}
+                    onChange={(e) => setSiblingBirthDate(e.target.value)}
+                  />
+                  <p style={{ fontSize: 12, color: MUTED, marginTop: 6 }}>
+                    Leave blank if the baby hasn't arrived yet — you can personalise this page later.
+                  </p>
+                </div>
+              </>
+            )}
+
             <div>
               <label style={labelStyle}>
                 Dedication message{' '}
@@ -418,6 +460,26 @@ export default function PersonalizePage() {
                     {senderName}
                   </p>
                 </div>
+                {isYwfCf && siblingFullName && (
+                  <div style={{ marginTop: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>
+                      NEW BABY'S NAME
+                    </span>
+                    <p style={{ margin: '2px 0 0', fontWeight: 700, fontSize: 15, color: BODY }}>
+                      {siblingFullName}
+                    </p>
+                  </div>
+                )}
+                {isYwfCf && siblingBirthDate && (
+                  <div style={{ marginTop: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>
+                      DATE OF BIRTH
+                    </span>
+                    <p style={{ margin: '2px 0 0', fontWeight: 700, fontSize: 15, color: BODY }}>
+                      {new Date(siblingBirthDate + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

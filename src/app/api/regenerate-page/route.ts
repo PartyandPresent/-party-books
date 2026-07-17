@@ -314,30 +314,14 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: `Invalid pageIndex ${idx}` }, { status: 400 })
       }
 
-      // Load the saved character reference from Cloudinary.
-      // Falls back to an existing spread page for orders generated before character saving was added.
-      let characterBase64 = ''
+      // Load the approved character saved during full-book generation.
+      // Never fall back to a scene page — that causes character drift across pages.
       const charUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/character.png`
       const charRes = await fetch(charUrl)
-      if (charRes.ok) {
-        characterBase64 = Buffer.from(await charRes.arrayBuffer()).toString('base64')
-      } else {
-        const refCandidates = [2, 3, 4, 6, 7, 0].filter(i => i !== idx)
-        for (const refIdx of refCandidates) {
-          const refId  = `page_${String(refIdx).padStart(2, '0')}`
-          const refUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/${refId}.png`
-          try {
-            const refRes = await fetch(refUrl)
-            if (refRes.ok) {
-              characterBase64 = Buffer.from(await refRes.arrayBuffer()).toString('base64')
-              break
-            }
-          } catch { continue }
-        }
+      if (!charRes.ok) {
+        return NextResponse.json({ error: 'Approved character not found. Re-run full book generation to lock the character in.' }, { status: 404 })
       }
-      if (!characterBase64) {
-        return NextResponse.json({ error: 'No character reference found. Make sure the full book was generated first.' }, { status: 404 })
-      }
+      const characterBase64 = Buffer.from(await charRes.arrayBuffer()).toString('base64')
 
       const pageBase64 = await generateCompositedPage(
         pages[idx],
@@ -360,29 +344,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Invalid pageIndex ${idx}` }, { status: 400 })
     }
 
-    // Load character from saved reference or fallback to an existing page
-    let characterBase64 = ''
+    // Load the approved character saved during full-book generation.
     const charUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/character.png`
     const charRes = await fetch(charUrl)
-    if (charRes.ok) {
-      characterBase64 = Buffer.from(await charRes.arrayBuffer()).toString('base64')
-    } else {
-      const refCandidates = [1, 2, 3, 4, 0].filter(i => i !== idx)
-      for (const refIdx of refCandidates) {
-        const refId  = `page_${String(refIdx).padStart(2, '0')}`
-        const refUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/${refId}.png`
-        try {
-          const refRes = await fetch(refUrl)
-          if (refRes.ok) {
-            characterBase64 = Buffer.from(await refRes.arrayBuffer()).toString('base64')
-            break
-          }
-        } catch { continue }
-      }
+    if (!charRes.ok) {
+      return NextResponse.json({ error: 'Approved character not found. Re-run full book generation to lock the character in.' }, { status: 404 })
     }
-    if (!characterBase64) {
-      return NextResponse.json({ error: 'No character reference found for this order.' }, { status: 404 })
-    }
+    const characterBase64 = Buffer.from(await charRes.arrayBuffer()).toString('base64')
 
     const pagePrompt = book.pagePrompts[idx]
       .replace(/\[CHILD_NAME\]/g, childName)

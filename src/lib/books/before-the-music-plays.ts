@@ -32,8 +32,10 @@ export interface BookPageTextBlock {
   color: string
   align: 'left' | 'center' | 'right'
   lineHeight?: number
+  fontWeight?: number
   strokeColor?: string
   strokeWidth?: number
+  filterUrl?: string
 }
 
 export interface BookPageCharacterPlacement {
@@ -56,6 +58,9 @@ export interface BookPage {
   // Use for pages where Gemini would overwrite a semi-transparent box or other background
   // element that must appear on top of (or free from) the character illustration.
   protectedBackgroundAreas?: Array<{ x: number; y: number; width: number; height: number }>
+  // Raw SVG element string(s) injected into the text overlay SVG before text elements.
+  // Rendered below text — use for gradient overlays, decorative shapes, etc.
+  svgOverlay?: string
   textBlocks: BookPageTextBlock[]
 }
 

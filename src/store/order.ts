@@ -8,6 +8,8 @@ interface OrderState {
   childName: string
   senderName: string
   dedication: string
+  siblingFullName: string
+  siblingBirthDate: string
   photoDataUrl: string
   photoMimeType: string
   characterDataUrl: string
@@ -24,7 +26,7 @@ interface OrderState {
   }
   orderId: string
   setBook: (slug: string, title: string, price: number, cover: string) => void
-  setPersonalization: (childName: string, senderName: string, dedication: string) => void
+  setPersonalization: (childName: string, senderName: string, dedication: string, siblingFullName?: string, siblingBirthDate?: string) => void
   setPhoto: (dataUrl: string, mimeType: string) => void
   setCharacter: (dataUrl: string) => void
   setGeneratedPages: (pages: string[]) => void
@@ -41,6 +43,8 @@ const defaultState = {
   childName: '',
   senderName: '',
   dedication: '',
+  siblingFullName: '',
+  siblingBirthDate: '',
   photoDataUrl: '',
   photoMimeType: '',
   characterDataUrl: '',
@@ -56,8 +60,8 @@ export const useOrderStore = create<OrderState>((set) => ({
   ...defaultState,
   setBook: (slug, title, price, cover) =>
     set({ selectedSlug: slug, selectedTitle: title, selectedPrice: price, selectedCover: cover }),
-  setPersonalization: (childName, senderName, dedication) =>
-    set({ childName, senderName, dedication }),
+  setPersonalization: (childName, senderName, dedication, siblingFullName = '', siblingBirthDate = '') =>
+    set({ childName, senderName, dedication, siblingFullName, siblingBirthDate }),
   setPhoto: (dataUrl, mimeType) =>
     set({ photoDataUrl: dataUrl, photoMimeType: mimeType }),
   setCharacter: (dataUrl) => set({ characterDataUrl: dataUrl }),

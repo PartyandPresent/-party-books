@@ -80,6 +80,8 @@ const FONT_FAMILY_OVERRIDES: Record<string, string> = {
   'BodoniFLF-Roman.ttf':               'Bodoni FLF',
   'BestSwashed_PERSONAL_USE_ONLY.otf': 'Best Swashed PERSONAL USE',
   'Lora-Bold.otf':                     'Lora',
+  'Lora-Variable.ttf':                 'Lora',
+  'Mabook.otf':                        'Mabook',
 }
 
 function fontFamilyName(fileName: string): string {
@@ -92,14 +94,18 @@ function fontFamilyName(fileName: string): string {
 // install the fonts into the system Fonts folder so Pango finds them by name.
 let fontconfigInitialised = false
 
-function ensureFontsRegistered(bookSlugs: string[]): void {
+function ensureFontsRegistered(_bookSlugs: string[]): void {
   if (fontconfigInitialised) return
   try {
     const tmp    = os.tmpdir()
     const tmpDir = path.join(tmp, 'book-fonts')
     fs.mkdirSync(tmpDir, { recursive: true })
-    for (const slug of bookSlugs) {
-      const fontsDir = path.join(process.cwd(), 'public', 'books', slug, 'fonts')
+    // Register fonts from ALL book slugs so a cold-start on any book doesn't miss
+    // fonts from other slugs (the fontconfigInitialised flag is set once globally).
+    const booksRoot = path.join(process.cwd(), 'public', 'books')
+    const allSlugs  = fs.existsSync(booksRoot) ? fs.readdirSync(booksRoot) : []
+    for (const slug of allSlugs) {
+      const fontsDir = path.join(booksRoot, slug, 'fonts')
       if (!fs.existsSync(fontsDir)) continue
       for (const f of fs.readdirSync(fontsDir)) {
         if (!/\.(ttf|otf)$/i.test(f)) continue
@@ -205,6 +211,7 @@ function buildSVG(
   canvasWidth: number,
   canvasHeight: number,
   bookSlug: string,
+  svgOverlay?: string,
 ): string {
   ensureFontsRegistered([bookSlug])
 
@@ -250,16 +257,19 @@ function buildSVG(
       : ''
 
     // No dominant-baseline attr — SVG default is "alphabetic", which is what we want.
+    const weightAttr  = block.fontWeight  ? ` font-weight="${block.fontWeight}"`   : ''
+    const filterAttr  = block.filterUrl   ? ` filter="${block.filterUrl}"`          : ''
     return (
       `<text x="${tspanX}" y="${svgY.toFixed(2)}"` +
-      ` text-anchor="${anchor}" font-family="${family}" font-size="${block.fontSize}"` +
-      ` fill="${block.color}"${strokeAttrs}>${tspans}</text>`
+      ` text-anchor="${anchor}" font-family="${family}" font-size="${block.fontSize}"${weightAttr}` +
+      ` fill="${block.color}"${strokeAttrs}${filterAttr}>${tspans}</text>`
     )
   }).join('')
 
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${canvasWidth}" height="${canvasHeight}">` +
     `<defs><style>${fontFaceRules}</style></defs>` +
+    (svgOverlay ?? '') +
     textElements +
     `</svg>`
   )
@@ -417,8 +427,9 @@ export async function compositeTextBlocks(
   canvasWidth: number,
   canvasHeight: number,
   bookSlug: string,
+  svgOverlay?: string,
 ): Promise<Buffer> {
-  if (textBlocks.length === 0) return imageBuffer
+  if (textBlocks.length === 0 && !svgOverlay) return imageBuffer
 
   // Resolve [PLACEHOLDER] tokens. Customer text is substituted here in Node.js;
   // it is never sent to Gemini.
@@ -433,7 +444,7 @@ export async function compositeTextBlocks(
     resolvedTemplates.set(block.id, resolved)
   }
 
-  const svg       = buildSVG(textBlocks, resolvedTemplates, canvasWidth, canvasHeight, bookSlug)
+  const svg       = buildSVG(textBlocks, resolvedTemplates, canvasWidth, canvasHeight, bookSlug, svgOverlay)
   const svgBuffer = Buffer.from(svg, 'utf-8')
 
   return sharp(imageBuffer)

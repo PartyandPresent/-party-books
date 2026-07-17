@@ -7,6 +7,7 @@
 import { beforeTheMusicPlays } from './books/before-the-music-plays'
 import type { BookPage } from './books/before-the-music-plays'
 import { youWereHereFirst, YOU_WERE_HERE_FIRST_CHARACTER_PROMPT } from './books/you-were-here-first'
+import { youWereHereFirstChildFocus, YOU_WERE_HERE_FIRST_CF_CHARACTER_PROMPT } from './books/you-were-here-first-child-focus'
 // import { canYouBeMyRingBearer, RING_BEARER_CHARACTER_PROMPT } from './books/can-you-be-my-ring-bearer'  // ARCHIVED
 
 export interface BookRenderConfig {
@@ -37,6 +38,17 @@ const CONFIGS: BookRenderConfig[] = [
     pages:           youWereHereFirst.pages,
     title:           youWereHereFirst.title,
     characterPrompt: YOU_WERE_HERE_FIRST_CHARACTER_PROMPT,
+    showLogoOnCover: false,
+  },
+
+  {
+    canvasW:         2000,
+    canvasH:         1000,
+    bookSlug:        'you-were-here-first-child-focus',
+    costumeRule:     'the character wears casual, age-appropriate everyday clothing suited to each scene setting.',
+    pages:           youWereHereFirstChildFocus.pages,
+    title:           youWereHereFirstChildFocus.title,
+    characterPrompt: YOU_WERE_HERE_FIRST_CF_CHARACTER_PROMPT,
     showLogoOnCover: false,
   },
 

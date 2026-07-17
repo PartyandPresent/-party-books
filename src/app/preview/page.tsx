@@ -23,7 +23,7 @@ type ErrorPhase = 'character' | 'pages'
 export default function PreviewPage() {
   const router = useRouter()
   const {
-    childName, senderName, dedication,
+    childName, senderName, dedication, siblingFullName, siblingBirthDate,
     photoDataUrl, photoMimeType,
     selectedSlug, selectedTitle, selectedPrice,
     setGeneratedPages, setCharacter,
@@ -100,6 +100,8 @@ export default function PreviewPage() {
           childName,
           senderName,
           dedication,
+          siblingFullName,
+          siblingBirthDate,
           characterBase64,
           previewIndices: PREVIEW_INDICES,
         }),

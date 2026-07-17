@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const {
     selectedTitle, selectedPrice, selectedCover,
-    childName, senderName, dedication,
+    childName, senderName, dedication, siblingFullName, siblingBirthDate,
     photoDataUrl, selectedSlug, characterDataUrl,
     setShippingDetails, setOrderId,
   } = useOrderStore()
@@ -101,6 +101,8 @@ export default function CheckoutPage() {
           childName,
           senderName,
           dedication,
+          siblingFullName,
+          siblingBirthDate,
           characterBase64: characterDataUrl,
         }))
         window.location.href = data.url
