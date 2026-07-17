@@ -49,7 +49,7 @@ export default function BookDetailPage() {
 
         {/* Breadcrumb */}
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: MUTED, flexWrap: 'wrap', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: MUTED, flexWrap: 'wrap' }}>
             <Link href="/" style={{ color: MUTED, textDecoration: 'none' }}
               onMouseOver={e => (e.currentTarget.style.color = CORAL)}
               onMouseOut={e => (e.currentTarget.style.color = MUTED)}>Home</Link>
@@ -297,7 +297,7 @@ export default function BookDetailPage() {
               position: 'relative', aspectRatio: '1/1',
               borderRadius: 20, overflow: 'hidden',
               boxShadow: '0 20px 60px rgba(45,74,62,0.14)',
-              flexShrink: 0, width: isMobile ? '100%' : 420,
+              width: '100%',
             }}>
               <Image src={book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
             </div>
@@ -403,7 +403,10 @@ export default function BookDetailPage() {
             </div>
             <Link href={`/personalize/${book.slug}`}
               style={{
-                display: 'inline-block', whiteSpace: 'nowrap',
+                display: isMobile ? 'block' : 'inline-block',
+                textAlign: 'center',
+                width: isMobile ? '100%' : 'auto',
+                boxSizing: 'border-box',
                 background: CORAL, color: '#fff',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16,
                 padding: '16px 36px', borderRadius: 50, textDecoration: 'none',
