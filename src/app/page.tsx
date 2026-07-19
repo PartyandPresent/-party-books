@@ -1,5 +1,4 @@
 'use client'
-import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
@@ -88,7 +87,6 @@ const STEPS = [
 
 export default function HomePage() {
   const isMobile = useIsMobile()
-  const collectionsRef = useRef<HTMLDivElement>(null)
 
 
   return (
@@ -294,40 +292,40 @@ export default function HomePage() {
               View all collections →
             </Link>
           </div>
-          {(() => {
-            const book = BOOKS.find(b => b.slug === 'gods-promises-for-you')
-            if (!book) return null
-            return (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Link href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
-                  <div style={{
-                    width: isMobile ? 260 : 320, background: '#fff', borderRadius: 20, overflow: 'hidden',
-                    border: '1.5px solid #EDE8DF', boxShadow: '0 4px 24px rgba(45,74,62,0.10)',
-                    transition: 'all 0.2s',
-                  }}
-                    onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(45,74,62,0.16)' }}
-                    onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(45,74,62,0.10)' }}>
-                    <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                      <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
-                      {book.badge && (
-                        <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
-                          {book.badge}
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ padding: '16px 18px 20px' }}>
-                      <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 16, color: GREEN, marginBottom: 6 }}>{book.title}</div>
-                      <div style={{ fontSize: 13, color: BODY, marginBottom: 14, lineHeight: 1.5 }}>{book.shortDesc}</div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 17, color: GREEN }}>${book.price.toFixed(2)}</span>
-                        <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, padding: '7px 14px', borderRadius: 50 }}>Personalise →</span>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${Math.min(BOOKS.length, 4)}, 1fr)`,
+            gap: isMobile ? 16 : 24,
+          }}>
+            {BOOKS.map(book => (
+              <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#fff', borderRadius: 20, overflow: 'hidden',
+                  border: '1.5px solid #EDE8DF', boxShadow: '0 4px 24px rgba(45,74,62,0.10)',
+                  transition: 'all 0.2s', height: '100%',
+                }}
+                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(45,74,62,0.16)' }}
+                  onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(45,74,62,0.10)' }}>
+                  <div style={{ position: 'relative', aspectRatio: '1/1' }}>
+                    <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
+                    {book.badge && (
+                      <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
+                        {book.badge}
                       </div>
+                    )}
+                  </div>
+                  <div style={{ padding: '16px 18px 20px' }}>
+                    <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 14 : 16, color: GREEN, marginBottom: 6, lineHeight: 1.3 }}>{book.title}</div>
+                    <div style={{ fontSize: 13, color: BODY, marginBottom: 14, lineHeight: 1.5 }}>{book.shortDesc}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                      <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: isMobile ? 15 : 17, color: GREEN }}>${book.price.toFixed(2)}</span>
+                      <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, padding: '7px 14px', borderRadius: 50 }}>Personalise →</span>
                     </div>
                   </div>
-                </Link>
-              </div>
-            )
-          })()}
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
