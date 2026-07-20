@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
@@ -84,6 +85,95 @@ const STEPS = [
   },
 ]
 
+
+type FeaturedTab = 'Bestsellers' | 'New Arrivals'
+const TAB_TAG: Record<FeaturedTab, string> = {
+  'Bestsellers':  'bestseller',
+  'New Arrivals': 'new',
+}
+
+function FindYourStory({ isMobile }: { isMobile: boolean }) {
+  const [activeTab, setActiveTab] = useState<FeaturedTab>('Bestsellers')
+  const filtered = BOOKS.filter(b => b.tags.includes(TAB_TAG[activeTab]))
+
+  return (
+    <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 20px' : '72px 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+
+        {/* Heading */}
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 32 }}>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: 0 }}>
+            Find Your Story
+          </h2>
+        </div>
+
+        {/* Filter tabs */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 40, borderBottom: `2px solid #EDE8DF` }}>
+          {(['Bestsellers', 'New Arrivals'] as FeaturedTab[]).map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontFamily: 'Nunito, sans-serif', fontWeight: 800,
+                fontSize: isMobile ? 14 : 16, color: activeTab === tab ? GREEN : MUTED,
+                padding: '10px 24px',
+                borderBottom: activeTab === tab ? `3px solid ${CORAL}` : '3px solid transparent',
+                marginBottom: -2,
+                transition: 'all 0.18s',
+              }}
+            >{tab}</button>
+          ))}
+        </div>
+
+        {/* Grid or empty state */}
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>📚</div>
+            <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 16, color: MUTED, fontWeight: 600 }}>
+              More stories coming soon
+            </p>
+          </div>
+        ) : (
+          <>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+              gap: isMobile ? 16 : 24,
+            }}>
+              {filtered.map(book => (
+                <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
+                  <div
+                    style={{ borderRadius: 16, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                    onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(45,74,62,0.14)' }}
+                    onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
+                  >
+                    <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', background: '#F0EDE6' }}>
+                      <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
+                    </div>
+                    <div style={{ paddingTop: 12 }}>
+                      <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 13 : 15, color: GREEN, lineHeight: 1.3, marginBottom: 4 }}>
+                        {book.title}
+                      </div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: isMobile ? 13 : 14, color: CORAL }}>
+                        ${book.price.toFixed(2)} CAD
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            {filtered.length < 4 && (
+              <p style={{ textAlign: 'center', fontFamily: 'Nunito, sans-serif', fontSize: 14, color: MUTED, fontWeight: 600, marginTop: 32 }}>
+                More stories coming soon
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  )
+}
 
 export default function HomePage() {
   const isMobile = useIsMobile()
@@ -281,53 +371,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURED COLLECTIONS ─────────────────────────── */}
-      <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 20px' : '72px 24px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div className="reveal" style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 8px' }}>
-              Featured Collections
-            </h2>
-            <Link href="/collections" style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: CORAL, fontWeight: 700, textDecoration: 'none' }}>
-              View all collections →
-            </Link>
-          </div>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${Math.min(BOOKS.length, 4)}, 1fr)`,
-            gap: isMobile ? 16 : 24,
-          }}>
-            {BOOKS.map(book => (
-              <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
-                <div style={{
-                  background: '#fff', borderRadius: 20, overflow: 'hidden',
-                  border: '1.5px solid #EDE8DF', boxShadow: '0 4px 24px rgba(45,74,62,0.10)',
-                  transition: 'all 0.2s', height: '100%',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(45,74,62,0.16)' }}
-                  onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(45,74,62,0.10)' }}>
-                  <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                    <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
-                    {book.badge && (
-                      <div style={{ position: 'absolute', top: 12, left: 12, background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 50 }}>
-                        {book.badge}
-                      </div>
-                    )}
-                  </div>
-                  <div style={{ padding: '16px 18px 20px' }}>
-                    <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 14 : 16, color: GREEN, marginBottom: 6, lineHeight: 1.3 }}>{book.title}</div>
-                    <div style={{ fontSize: 13, color: BODY, marginBottom: 14, lineHeight: 1.5 }}>{book.shortDesc}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-                      <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: isMobile ? 15 : 17, color: GREEN }}>${book.price.toFixed(2)}</span>
-                      <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, padding: '7px 14px', borderRadius: 50 }}>Personalise →</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── FIND YOUR STORY ──────────────────────────────── */}
+      <FindYourStory isMobile={isMobile} />
 
       {/* ── PREVIEW YOUR BOOK ────────────────────────────── */}
       <section style={{ background: BEIGE, padding: isMobile ? '48px 20px' : '80px 24px' }}>
