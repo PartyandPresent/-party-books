@@ -144,14 +144,14 @@ function FindYourStory({ isMobile }: { isMobile: boolean }) {
               {filtered.map(book => (
                 <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
                   <div
-                    style={{ borderRadius: 16, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                    style={{ borderRadius: 16, cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
                     onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(45,74,62,0.14)' }}
                     onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
                   >
                     <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', background: '#F0EDE6' }}>
                       <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
                     </div>
-                    <div style={{ paddingTop: 12 }}>
+                    <div style={{ padding: '12px 0 14px' }}>
                       <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 13 : 15, color: GREEN, lineHeight: 1.3, marginBottom: 4 }}>
                         {book.title}
                       </div>
