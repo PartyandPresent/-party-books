@@ -21,6 +21,7 @@ export default function BookDetailPage() {
   const slug = params.slug as string
   const book = BOOKS.find(b => b.slug === slug)
   const [activeImage, setActiveImage] = useState(0)
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null)
   const isMobile = useIsMobile()
 
   if (!book) {
@@ -160,54 +161,77 @@ export default function BookDetailPage() {
 
             {/* RIGHT: Product Info */}
             <div>
-              {/* Bestseller badge */}
-              {book.badge && (
-                <div style={{
-                  display: 'inline-block',
-                  background: '#FFF3ED', color: CORAL,
-                  fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
-                  padding: '4px 14px', borderRadius: 50, marginBottom: 16, letterSpacing: '0.05em',
-                }}>{book.badge}</div>
-              )}
+
+              {/* Stars + review count — always at top */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 2 }}>
+                  {[1,2,3,4,5].map(i => (
+                    <span key={i} style={{ fontSize: 17, color: i <= Math.round(book.rating) ? GOLD : '#E5E2DA' }}>★</span>
+                  ))}
+                </div>
+                <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, fontWeight: 600 }}>
+                  {book.rating.toFixed(1)} · {book.reviews} reviews
+                </span>
+              </div>
 
               {/* Title */}
               <h1 style={{
                 fontFamily: 'Playfair Display, serif', fontWeight: 900,
                 fontSize: isMobile ? 28 : 38, color: GREEN,
-                lineHeight: 1.15, marginBottom: 10, margin: '0 0 10px',
+                lineHeight: 1.15, margin: '0 0 10px',
                 wordBreak: 'break-word', overflowWrap: 'break-word',
               }}>{book.title}</h1>
 
-              {/* Subtitle */}
+              {/* Tagline */}
               <p style={{
                 fontFamily: 'Nunito, sans-serif', fontSize: 15, color: BODY,
-                lineHeight: 1.6, marginBottom: 16,
+                lineHeight: 1.6, marginBottom: 0,
                 wordBreak: 'break-word', overflowWrap: 'break-word',
               }}>{book.subtitle}</p>
 
-              {/* Stars */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
-                <div style={{ display: 'flex', gap: 2 }}>
-                  {[1,2,3,4,5].map(i => (
-                    <span key={i} style={{ fontSize: 18, color: i <= Math.round(book.rating) ? GOLD : '#ddd' }}>★</span>
-                  ))}
-                </div>
-                <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, fontWeight: 600 }}>
-                  {book.rating} ({book.reviews} reviews)
-                </span>
-              </div>
+              {/* Description paragraph */}
+              <p style={{
+                fontFamily: 'Nunito, sans-serif', fontSize: 14, color: BODY,
+                lineHeight: 1.8, margin: '16px 0 20px',
+                borderTop: '1px solid #EDEAE0', paddingTop: 16,
+              }}>{book.description}</p>
 
               {/* Price */}
-              <div style={{ marginBottom: 6 }}>
+              <div style={{ marginBottom: 4 }}>
                 <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: 34, color: GREEN }}>
                   ${book.price.toFixed(2)} CAD
                 </span>
               </div>
-              <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, marginBottom: 28 }}>
+              <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, marginBottom: 20 }}>
                 or 4 interest-free payments of <strong style={{ color: GREEN }}>${(book.price / 4).toFixed(2)}</strong> with Afterpay
               </p>
 
-              {/* Personalize CTA */}
+              {/* Feature icon row — 3 items with borderLeft dividers */}
+              <div style={{
+                display: 'flex', alignItems: 'center',
+                borderTop: '1px solid #EDEAE0', borderBottom: '1px solid #EDEAE0',
+                padding: '14px 0', marginBottom: 20,
+              }}>
+                {([
+                  { icon: '👁', label: 'Preview the\nentire story' },
+                  { icon: '📷', label: 'Upload your\nown photo' },
+                  { icon: '📦', label: 'Prints & ships\nin 3–5 days' },
+                ] as const).map((feat, i) => (
+                  <div key={feat.label} style={{
+                    flex: 1, textAlign: 'center', padding: '0 4px',
+                    borderLeft: i > 0 ? '1px solid #EDEAE0' : 'none',
+                  }}>
+                    <div style={{ fontSize: 20, marginBottom: 5 }}>{feat.icon}</div>
+                    <div style={{
+                      fontFamily: 'Nunito, sans-serif', fontWeight: 700,
+                      fontSize: isMobile ? 10 : 11, color: GREEN,
+                      lineHeight: 1.4, whiteSpace: 'pre-line',
+                    }}>{feat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
               <Link href={`/personalize/${book.slug}`}
                 style={{
                   display: 'block', textAlign: 'center', width: '100%', boxSizing: 'border-box',
@@ -216,31 +240,139 @@ export default function BookDetailPage() {
                   padding: '17px 32px', borderRadius: 50,
                   textDecoration: 'none',
                   boxShadow: '0 8px 24px rgba(232,131,106,0.35)',
-                  marginBottom: 20, transition: 'all 0.2s',
+                  marginBottom: 6, transition: 'all 0.2s',
                 }}
                 onMouseOver={e => { e.currentTarget.style.background = '#d4704f'; e.currentTarget.style.transform = 'translateY(-2px)' }}
                 onMouseOut={e => { e.currentTarget.style.background = CORAL; e.currentTarget.style.transform = 'translateY(0)' }}>
                 Personalize Your Book →
               </Link>
+              <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: MUTED, textAlign: 'center', marginBottom: 24 }}>
+                Preview your book free before you buy
+              </p>
 
-              {/* Trust checkmarks */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {[
-                  'Made just for them',
-                  'Ships in 3–5 business days',
-                  'Free shipping on orders over $75',
-                ].map(item => (
-                  <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{
-                      width: 20, height: 20, borderRadius: '50%',
-                      background: GREEN, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                    }}>
-                      <span style={{ color: '#fff', fontSize: 10, fontWeight: 900 }}>✓</span>
-                    </div>
-                    <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: BODY, fontWeight: 600 }}>{item}</span>
+              {/* Accordion: 3 collapsible sections */}
+              <div style={{ borderTop: '1px solid #EDEAE0' }}>
+                {([
+                  {
+                    key: 'about',
+                    icon: '📖',
+                    label: 'About the story',
+                    content: book.accordionContent?.aboutStory
+                      ?? '[TODO: About the story — describe the book\'s theme, the emotional journey, and what makes it special for this title.]',
+                  },
+                  {
+                    key: 'personalized',
+                    icon: '✏️',
+                    label: "How it's personalized",
+                    content: book.accordionContent?.howPersonalized
+                      ?? "[TODO: How it's personalized — what gets customized: child's name, face on every page, dedication message, etc.]",
+                  },
+                  {
+                    key: 'quality',
+                    icon: '📐',
+                    label: 'Size & quality',
+                    content: book.accordionContent?.sizeQuality
+                      ?? '[TODO: Size & quality — dimensions, paper type, cover options (softcover/hardcover), print quality details.]',
+                  },
+                ] as const).map(section => (
+                  <div key={section.key} style={{ borderBottom: '1px solid #EDEAE0' }}>
+                    <button
+                      onClick={() => setOpenAccordion(o => o === section.key ? null : section.key)}
+                      style={{
+                        display: 'flex', alignItems: 'center', width: '100%',
+                        padding: '14px 0', background: 'none', border: 'none',
+                        cursor: 'pointer', gap: 10,
+                      }}
+                    >
+                      <span style={{ fontSize: 15, flexShrink: 0 }}>{section.icon}</span>
+                      <span style={{
+                        fontFamily: 'Nunito, sans-serif', fontWeight: 700,
+                        fontSize: 14, color: GREEN, flex: 1, textAlign: 'left',
+                      }}>{section.label}</span>
+                      <span style={{ fontSize: 22, color: CORAL, fontWeight: 300, lineHeight: 1, flexShrink: 0 }}>
+                        {openAccordion === section.key ? '−' : '+'}
+                      </span>
+                    </button>
+                    {openAccordion === section.key && (
+                      <div style={{
+                        padding: '2px 0 16px 25px',
+                        fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.8,
+                      }}>
+                        {section.content}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
+
+              {/* UGC thumbnail placeholder strip */}
+              <div style={{ marginTop: 24 }}>
+                <div style={{
+                  fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
+                  color: GREEN, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 10,
+                }}>Customer Photos</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {[0,1,2,3,4].map(i => (
+                    <div key={i} style={{
+                      width: 56, height: 56, borderRadius: 10, flexShrink: 0,
+                      border: '1.5px dashed #C8C4BB', background: '#F8F6F1',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <span style={{ fontSize: 18, opacity: 0.22 }}>📷</span>
+                    </div>
+                  ))}
+                </div>
+                <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: MUTED, margin: '8px 0 0' }}>
+                  Customer photos coming soon
+                </p>
+              </div>
+
+              {/* Bundle cross-sell */}
+              {(() => {
+                const bundleBook = BOOKS.find(b => b.slug !== slug)
+                if (!bundleBook) return null
+                return (
+                  <div style={{
+                    marginTop: 20, padding: '14px 16px', borderRadius: 12,
+                    border: '1.5px solid #EDEAE0', background: CREAM,
+                  }}>
+                    <div style={{
+                      fontFamily: 'Nunito, sans-serif', fontWeight: 800,
+                      fontSize: 12, color: CORAL, marginBottom: 12,
+                    }}>
+                      🎁 Buy together — save [TODO: X]% off · Discount % TBD
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <input
+                        type="checkbox"
+                        defaultChecked
+                        readOnly
+                        style={{ width: 16, height: 16, accentColor: GREEN, flexShrink: 0, cursor: 'default' }}
+                      />
+                      <div style={{
+                        position: 'relative', width: 52, height: 52,
+                        borderRadius: 8, overflow: 'hidden', flexShrink: 0,
+                      }}>
+                        <Image
+                          src={bundleBook.cardImage ?? bundleBook.coverImage}
+                          alt={bundleBook.title} fill unoptimized style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{
+                          fontFamily: 'Nunito, sans-serif', fontWeight: 700,
+                          fontSize: 13, color: GREEN, lineHeight: 1.3,
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        }}>{bundleBook.title}</div>
+                        <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: CORAL, fontWeight: 700 }}>
+                          ${bundleBook.price.toFixed(2)} CAD
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
+
             </div>
           </div>
         </section>

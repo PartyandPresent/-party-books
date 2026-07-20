@@ -79,6 +79,11 @@ export type Book = {
   reviews: number
   featured: boolean
   highlights?: string[]           // bullet points shown in "About This Book" section
+  accordionContent?: {            // per-product copy for info-panel accordions; unset → shows TODO placeholders
+    aboutStory: string
+    howPersonalized: string
+    sizeQuality: string
+  }
   pagePrompts?: string[]
   characterPrompt?: string
   characterConsistencyNote?: string
