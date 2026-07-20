@@ -640,7 +640,17 @@ export const OCCASIONS = [
   { label: 'Any Occasion', value: 'any' },
 ]
 
-export const REVIEWS = [
+export type Review = {
+  name: string
+  location: string
+  rating: number
+  text: string
+  book: string
+  avatar: string
+  photo?: string  // path to customer photo (e.g. '/images/reviews/maria-s.jpg'); shows gradient placeholder when absent
+}
+
+export const REVIEWS: Review[] = [
   {
     name: 'Maria S.',
     location: 'Toronto, ON · Canada',
@@ -648,6 +658,7 @@ export const REVIEWS = [
     text: "We ordered this for our daughter's baptism and everyone cried happy tears. Seeing her face on every page was absolutely magical. Worth every penny!",
     book: "God's Promises For You",
     avatar: 'M',
+    // photo: '/images/reviews/maria-s.jpg',
   },
   {
     name: 'James R.',
@@ -656,6 +667,7 @@ export const REVIEWS = [
     text: "Jared absolutely loves seeing himself in the book. He asks us to read it every single night. The quality is stunning — looks just like a real published book.",
     book: "God's Promises For You",
     avatar: 'J',
+    // photo: '/images/reviews/james-r.jpg',
   },
   {
     name: 'Ana D.',
@@ -664,6 +676,7 @@ export const REVIEWS = [
     text: "I gave this as a birthday gift and the mom cried when she opened it. The illustrations are Pixar-level quality. Already ordering another one for Christmas!",
     book: 'Before the Music Plays',
     avatar: 'A',
+    // photo: '/images/reviews/ana-d.jpg',
   },
   {
     name: 'Grace T.',
@@ -672,5 +685,6 @@ export const REVIEWS = [
     text: "The dedication page made my heart melt. Such a thoughtful, beautiful keepsake. My nephew carries it everywhere and shows everyone 'that's me in the book!'",
     book: "God's Promises For You",
     avatar: 'G',
+    // photo: '/images/reviews/grace-t.jpg',
   },
 ]

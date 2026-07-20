@@ -175,6 +175,116 @@ function FindYourStory({ isMobile }: { isMobile: boolean }) {
   )
 }
 
+function ReviewsSection({ isMobile }: { isMobile: boolean }) {
+  const [idx, setIdx] = useState(0)
+  const CARD = isMobile ? 260 : 300
+  const GAP = 20
+  const VISIBLE = isMobile ? 1 : 3
+  const max = Math.max(0, REVIEWS.length - VISIBLE)
+
+  return (
+    <section style={{ background: '#fff', padding: isMobile ? '48px 20px' : '72px 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+        {/* Header row: heading + rating on left, arrows on right */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, gap: 16, flexWrap: 'wrap' }}>
+          <div>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 8px' }}>
+              Loved by Families ✦
+            </h2>
+            <div style={{ display: 'flex', gap: 3, alignItems: 'center', flexWrap: 'wrap' }}>
+              {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 18, color: GOLD }}>★</span>)}
+              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15, color: GREEN, marginLeft: 8 }}>4.9/5</span>
+              <span style={{ fontSize: 13, color: MUTED, marginLeft: 4 }}>from 500+ reviews</span>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, alignSelf: 'center' }}>
+            {([
+              { key: 'prev', label: '←', onClick: () => setIdx(i => Math.max(0, i - 1)), disabled: idx === 0 },
+              { key: 'next', label: '→', onClick: () => setIdx(i => Math.min(max, i + 1)), disabled: idx >= max },
+            ] as const).map(btn => (
+              <button key={btn.key} onClick={btn.onClick} disabled={btn.disabled} style={{
+                width: 40, height: 40, borderRadius: '50%',
+                border: `1.5px solid ${btn.disabled ? '#DDD' : GREEN}`,
+                background: btn.disabled ? '#F5F5F5' : '#fff',
+                color: btn.disabled ? MUTED : GREEN,
+                cursor: btn.disabled ? 'default' : 'pointer',
+                fontSize: 18, fontWeight: 700,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s',
+                flexShrink: 0,
+              }}>{btn.label}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Carousel */}
+        <div style={{ overflow: 'hidden', marginBottom: 48 }}>
+          <div style={{
+            display: 'flex', gap: GAP,
+            transform: `translateX(${-idx * (CARD + GAP)}px)`,
+            transition: 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          }}>
+            {REVIEWS.map((r, i) => (
+              <div key={i} style={{
+                flex: `0 0 ${CARD}px`,
+                borderRadius: 20, overflow: 'hidden',
+                background: CREAM, border: '1.5px solid #EDE8DF',
+                boxShadow: '0 2px 12px rgba(45,74,62,0.07)',
+              }}>
+                {/* Photo / gradient placeholder */}
+                {r.photo ? (
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/5' }}>
+                    <Image src={r.photo} alt={`${r.name} photo`} fill unoptimized style={{ objectFit: 'cover' }} />
+                  </div>
+                ) : (
+                  <div style={{
+                    width: '100%', aspectRatio: '4/5',
+                    background: `linear-gradient(160deg, ${GREEN} 0%, #3D6B5A 50%, ${CORAL} 100%)`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <span style={{ fontFamily: 'Playfair Display, serif', fontSize: 80, fontWeight: 900, color: 'rgba(255,255,255,0.18)', userSelect: 'none' }}>
+                      {r.avatar}
+                    </span>
+                  </div>
+                )}
+                {/* Text below photo */}
+                <div style={{ padding: '16px 20px 20px' }}>
+                  <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
+                    {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 12, color: GOLD }}>★</span>)}
+                  </div>
+                  <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 14, color: GREEN, marginBottom: 6 }}>{r.name}</div>
+                  <p style={{
+                    fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.65,
+                    margin: 0, fontStyle: 'italic',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical' as const,
+                    overflow: 'hidden',
+                  }}>"{r.text}"</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tagline */}
+        <div style={{ textAlign: 'center', paddingTop: 40, borderTop: '1px solid #EDE8DF' }}>
+          <p style={{
+            fontFamily: 'Playfair Display, serif', fontStyle: 'italic',
+            fontWeight: 700, fontSize: isMobile ? 18 : 22,
+            color: GREEN, margin: 0, lineHeight: 1.4,
+          }}>
+            Where Your Child Becomes Part of the{' '}
+            <span style={{ color: CORAL }}>Story</span>
+          </p>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   const isMobile = useIsMobile()
 
@@ -476,55 +586,7 @@ export default function HomePage() {
       </section>
 
       {/* ── REVIEWS ──────────────────────────────────────── */}
-      <section style={{ background: '#fff', padding: isMobile ? '48px 20px' : '72px 24px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 48 }}>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 8px' }}>
-              Loved by Families ✦
-            </h2>
-            <div style={{ display: 'flex', gap: 4, justifyContent: 'center', alignItems: 'center' }}>
-              {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 20, color: GOLD }}>★</span>)}
-              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15, color: GREEN, marginLeft: 8 }}>4.9/5</span>
-              <span style={{ fontSize: 13, color: MUTED, marginLeft: 4 }}>from 500+ reviews</span>
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 20, marginBottom: 56 }}>
-            {REVIEWS.slice(0, 3).map((r, i) => (
-              <div key={i} style={{
-                background: CREAM, borderRadius: 20, padding: '24px',
-                border: '1.5px solid #EDE8DF',
-              }}>
-                <div style={{ display: 'flex', gap: 2, marginBottom: 12 }}>
-                  {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 14, color: GOLD }}>★</span>)}
-                </div>
-                <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: BODY, lineHeight: 1.75, marginBottom: 20, fontStyle: 'italic' }}>
-                  "{r.text}"
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{
-                    width: 40, height: 40, borderRadius: '50%',
-                    background: `linear-gradient(135deg, ${GREEN}, ${CORAL})`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: '#fff', fontWeight: 800, fontSize: 16, flexShrink: 0,
-                  }}>{r.avatar}</div>
-                  <div>
-                    <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>{r.name}</div>
-                    <div style={{ fontSize: 12, color: MUTED }}>{r.location} · {r.book}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Press logos */}
-          <div style={{ borderTop: '1px solid #EDE8DF', paddingTop: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: isMobile ? 24 : 48, flexWrap: 'wrap' }}>
-            {['Today\'s Parent', 'BabyCentre', 'Global', 'CBC', 'Trustpilot'].map(logo => (
-              <div key={logo} style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 13 : 16, color: '#B0A898', letterSpacing: 0.5 }}>{logo}</div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ReviewsSection isMobile={isMobile} />
 
       {/* ── FINAL CTA ────────────────────────────────────── */}
       <section style={{ background: GREEN, padding: isMobile ? '48px 20px' : '72px 24px', position: 'relative', overflow: 'hidden' }}>
