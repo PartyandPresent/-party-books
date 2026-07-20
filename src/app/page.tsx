@@ -439,12 +439,14 @@ export default function HomePage() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
             {MILESTONES.map((m, i) => (
-              <Link key={i} href={m.href} className={`reveal delay-${i + 1}`} style={{ textDecoration: 'none' }}>
+              <Link key={i} href={m.href} className={`reveal delay-${i + 1}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                 <div className="milestone-card" style={{
                   background: '#fff', borderRadius: 16, padding: '20px 8px',
                   textAlign: 'center', cursor: 'pointer',
                   boxShadow: '0 2px 8px rgba(45,74,62,0.06)',
                   border: '1.5px solid #EDE8DF',
+                  height: '100%', boxSizing: 'border-box',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <div style={{ fontSize: isMobile ? 28 : 36, marginBottom: 10 }}>{m.icon}</div>
                   <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 12, color: GREEN, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{m.label}</div>
