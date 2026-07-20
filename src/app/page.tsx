@@ -144,11 +144,17 @@ function FindYourStory({ isMobile }: { isMobile: boolean }) {
               {filtered.map(book => (
                 <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
                   <div
-                    style={{ borderRadius: 16, cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
-                    onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(45,74,62,0.14)' }}
-                    onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
+                    style={{ cursor: 'pointer' }}
+                    onMouseOver={e => {
+                      const img = e.currentTarget.firstElementChild as HTMLElement
+                      if (img) { img.style.transform = 'scale(1.04)'; img.style.boxShadow = '0 10px 28px rgba(45,74,62,0.20)' }
+                    }}
+                    onMouseOut={e => {
+                      const img = e.currentTarget.firstElementChild as HTMLElement
+                      if (img) { img.style.transform = 'scale(1)'; img.style.boxShadow = 'none' }
+                    }}
                   >
-                    <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', background: '#F0EDE6' }}>
+                    <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', background: '#F0EDE6', transition: 'transform 0.22s, box-shadow 0.22s' }}>
                       <Image src={book.cardImage ?? book.coverImage} alt={book.title} fill unoptimized style={{ objectFit: 'cover' }} />
                     </div>
                     <div style={{ padding: '12px 0 14px' }}>
