@@ -80,12 +80,10 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
       characterActionPrompt:
         'POSITION: Place the character in the right half of the image. The image is a 2:1 landscape spread — the left half is the back cover and must remain completely empty.\n\nSCALE: She should be a small figure — occupying no more than 22% of the total canvas width. Do NOT make her large or dominant; she should look petite on the page.\n\nHORIZONTAL — CRITICAL: Her horizontal center must be at exactly 75% from the left edge of the full canvas (three-quarters of the way across). Do NOT place her further right than this — she must NOT be near the right canvas edge.\n\nVERTICAL POSITION — CRITICAL: Her head top must appear at approximately 32% from the top of the canvas (no higher than one-third of the way down). There must be a clear, visible gap between the title text at the top and the first pixel of her hair. She is positioned far enough down that the canvas bottom edge cuts through her at ankle height — her feet and shoes are not fully visible. Do NOT leave empty space below her; her dress hem should reach or slightly pass the bottom edge of the frame.\n\nPOSE: Full-body standing, relaxed, 3/4 angle toward the viewer, looking gently down and to the left, soft closed-mouth smile, both hands holding a wicker flower-girl basket at waist height.',
       includesSenderCharacter: false,
-      // characterPlacement confirmed against ref/page-00.png on 2026-07-04.
-      // Horizontal center 75% from left (x≈1330), head top 32% from top (y≈284),
-      // max width 22% of canvas (~390 px), ankle crop at bottom edge. DO NOT adjust
-      // without re-measuring against the reference image.
-      characterPlacement: { x: 1165, y: 213, width: 355, height: 674 },
-      // Title/subtitle intentionally sit at the same y as the character's head — skip auto-shift.
+      // characterPlacement: y lowered to 256 (2026-07-21) so character head clears
+      // the subtitle. Horizontal center 75% from left (x≈1330), head top ~29% from
+      // top (y=256), max width 22% of canvas (~390 px), ankle/shin crop at bottom edge.
+      characterPlacement: { x: 1165, y: 256, width: 355, height: 674 },
       skipTextCollision: true,
       textBlocks: [
         {
