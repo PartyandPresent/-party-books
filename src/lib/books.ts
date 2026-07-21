@@ -647,49 +647,61 @@ export const OCCASIONS = [
 
 export type Review = {
   name: string
-  location: string
+  location?: string
   rating: number
   text: string
   book: string
   avatar: string
-  photo?: string  // path to customer photo (e.g. '/images/reviews/maria-s.jpg'); shows gradient placeholder when absent
+  photo?: string  // path to listing image used as decorative pairing; swap for a real customer photo when available
 }
 
 export const REVIEWS: Review[] = [
   {
-    name: 'Maria S.',
-    location: 'Toronto, ON · Canada',
+    name: 'Hiten',
     rating: 5,
-    text: "We ordered this for our daughter's baptism and everyone cried happy tears. Seeing her face on every page was absolutely magical. Worth every penny!",
-    book: "God's Promises For You",
-    avatar: 'M',
-    // photo: '/images/reviews/maria-s.jpg',
-  },
-  {
-    name: 'James R.',
-    location: 'Vancouver, BC · Canada',
-    rating: 5,
-    text: "Jared absolutely loves seeing himself in the book. He asks us to read it every single night. The quality is stunning — looks just like a real published book.",
-    book: "God's Promises For You",
-    avatar: 'J',
-    // photo: '/images/reviews/james-r.jpg',
-  },
-  {
-    name: 'Ana D.',
-    location: 'Austin, TX · USA',
-    rating: 5,
-    text: "I gave this as a birthday gift and the mom cried when she opened it. The illustrations are Pixar-level quality. Already ordering another one for Christmas!",
+    text: "Everything about this product is amazing! The cartoon pic, the quality, the finish. Our son absolutely loves it too. We did have some changes we wanted and the customer service was excellent, we were never told no — nothing was too big to update for us…honestly would recommend them without hesitation!",
     book: 'Before the Music Plays',
-    avatar: 'A',
-    // photo: '/images/reviews/ana-d.jpg',
+    avatar: 'H',
+    photo: '/books/before-the-music-plays/listings/01-lifestyle-toddler-holding.png',
   },
   {
-    name: 'Grace T.',
-    location: 'Calgary, AB · Canada',
+    name: 'Darice',
     rating: 5,
-    text: "The dedication page made my heart melt. Such a thoughtful, beautiful keepsake. My nephew carries it everywhere and shows everyone 'that's me in the book!'",
-    book: "God's Promises For You",
+    text: "Love this book! I bought 2 already and looking forward to buy again.",
+    book: 'You Were Here First',
+    avatar: 'D',
+    photo: '/books/you-were-here-first-child-focus/listings/lifestyle-boy-reading.png',
+  },
+  {
+    name: 'Melinda',
+    rating: 5,
+    text: "These folks were very helpful and great to work with! The book is adorable and they personalized it exactly the way I wanted it. The hardbound book is sturdy and well made. The family I gave it too couldn't have loved it any more! It was 10/10. Thank you so much!",
+    book: 'Before the Music Plays',
+    avatar: 'M',
+    photo: '/images/reviews/melinda.png',
+  },
+  {
+    name: 'Gina',
+    rating: 5,
+    text: "The seller went over and above to accommodate my request. Very happy with the purchase!",
+    book: 'You Were Here First',
     avatar: 'G',
-    // photo: '/images/reviews/grace-t.jpg',
+    photo: '/books/you-were-here-first-child-focus/listings/01-lifestyle-hero.png',
+  },
+  {
+    name: 'Cindy',
+    rating: 5,
+    text: "Beautiful book, keepsake. Quality material, from cover to pages, color and design — perfect!",
+    book: 'Before the Music Plays',
+    avatar: 'C',
+    photo: '/books/before-the-music-plays/listings/05-dedication-page-closeup.png',
+  },
+  {
+    name: 'Nichola',
+    rating: 5,
+    text: "This is such a great book. My grandson loved me reading it to him and the fact that he features in it makes it even more special.",
+    book: 'You Were Here First',
+    avatar: 'N',
+    photo: '/images/reviews/nichola.png',
   },
 ]

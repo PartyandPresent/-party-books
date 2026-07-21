@@ -101,8 +101,8 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
           // center-x = 1157 + 362/2 = 1338  (measured: subtitle cx=1338)
           id: 'subtitle',
           template: 'A Story for [CHILD_NAME]',
-          x: 1157, y: 213, maxWidth: 362,
-          fontFamily: BODY_FONT, fontSize: 43.8,
+          x: 1112, y: 213, maxWidth: 450,
+          fontFamily: BODY_FONT, fontSize: 31.5,
           color: '#9778e6', align: 'center',
           strokeColor: '#FFFFFF', strokeWidth: 2,
         },

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import SparkleField from '@/components/ui/SparkleField'
+import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { BOOKS, REVIEWS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
@@ -238,22 +239,7 @@ function ReviewsSection({ isMobile }: { isMobile: boolean }) {
                 background: CREAM, border: '1.5px solid #EDE8DF',
                 boxShadow: '0 2px 12px rgba(45,74,62,0.07)',
               }}>
-                {/* Photo / gradient placeholder */}
-                {r.photo ? (
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/5' }}>
-                    <Image src={r.photo} alt={`${r.name} photo`} fill unoptimized style={{ objectFit: 'cover' }} />
-                  </div>
-                ) : (
-                  <div style={{
-                    width: '100%', aspectRatio: '4/5',
-                    background: `linear-gradient(160deg, ${GREEN} 0%, #3D6B5A 50%, ${CORAL} 100%)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <span style={{ fontFamily: 'Playfair Display, serif', fontSize: 80, fontWeight: 900, color: 'rgba(255,255,255,0.18)', userSelect: 'none' }}>
-                      {r.avatar}
-                    </span>
-                  </div>
-                )}
+                <ReviewPhoto photo={r.photo} avatar={r.avatar} name={r.name} />
                 {/* Text below photo */}
                 <div style={{ padding: '16px 20px 20px' }}>
                   <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>

@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { BOOKS, REVIEWS } from '@/lib/books'
+import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
@@ -461,27 +462,20 @@ export default function BookDetailPage() {
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 20 }}>
                 {REVIEWS.slice(0, 3).map((review, i) => (
                   <div key={i} style={{
-                    background: '#fff', borderRadius: 16, padding: 20,
+                    background: '#fff', borderRadius: 16, overflow: 'hidden',
                     boxShadow: '0 4px 20px rgba(45,74,62,0.07)',
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                      <div style={{
-                        width: 40, height: 40, borderRadius: '50%',
-                        background: BEIGE, flexShrink: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, color: GREEN,
-                      }}>{review.avatar}</div>
-                      <div>
-                        <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>{review.name}</div>
-                        <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: MUTED }}>Verified Buyer</div>
+                    <ReviewPhoto photo={review.photo} avatar={review.avatar} name={review.name} />
+                    <div style={{ padding: '16px 20px 20px' }}>
+                      <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
+                        {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 12, color: GOLD }}>★</span>)}
                       </div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 14, color: GREEN, marginBottom: 2 }}>{review.name}</div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: MUTED, marginBottom: 8 }}>Verified Buyer</div>
+                      <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.7, margin: 0 }}>
+                        {review.text}
+                      </p>
                     </div>
-                    <div style={{ display: 'flex', gap: 2, marginBottom: 10 }}>
-                      {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 14, color: GOLD }}>★</span>)}
-                    </div>
-                    <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.7, margin: 0 }}>
-                      {review.text}
-                    </p>
                   </div>
                 ))}
               </div>
