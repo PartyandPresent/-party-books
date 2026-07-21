@@ -113,7 +113,7 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
           x: 1169, y: 600, maxWidth: 337,
           fontFamily: BODY_FONT, fontSize: 47,
           color: '#f57493', align: 'center',
-          strokeColor: '#FFFFFF', strokeWidth: 2,
+          strokeColor: '#FFFFFF', strokeWidth: 4.7,
         },
       ],
     },
