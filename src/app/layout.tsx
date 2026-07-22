@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import ScrollRevealInit from '@/components/ui/ScrollRevealInit'
+import { PromoBanner } from '@/components/ui/PromoBanner'
 
 export const metadata: Metadata = {
   title: 'Personalized Books | party & presents',
@@ -30,6 +31,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <PromoBanner />
         <ScrollRevealInit />
         {children}
       </body>

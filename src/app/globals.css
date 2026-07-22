@@ -7,6 +7,21 @@ html, body {
   -webkit-text-size-adjust: 100%;
 }
 
+body {
+  padding-top: 36px; /* promo banner height — matches PromoBanner fixed height */
+}
+
+/* ── MARQUEE ────────────────────────────────────────────────────────── */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
 /* ── KEYFRAMES ──────────────────────────────────────────────────────── */
 
 @keyframes fadeInUp {

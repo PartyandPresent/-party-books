@@ -56,7 +56,7 @@ export default function Header() {
 
   return (
     <header style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      position: 'fixed', top: 36, left: 0, right: 0, zIndex: 100,
       background: scrolled ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.95)',
       backdropFilter: 'blur(12px)',
       borderBottom: scrolled ? '1px solid #EDE8DF' : '1px solid transparent',
