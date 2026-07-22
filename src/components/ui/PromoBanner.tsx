@@ -2,11 +2,11 @@
 // Keep in sync with the bundle discount on the product page.
 const BANNER_TEXT = 'BUY ANY BOOK, GET ONE [TODO: X]% OFF'
 
-const LAVENDER = '#EDE4F5'
-const PURPLE   = '#4A1580'
+const GREEN = '#2D4A3E'
+const CORAL = '#E8836A'
 
 function Track() {
-  const sep = <span style={{ margin: '0 32px', opacity: 0.35 }}>✦</span>
+  const sep = <span style={{ margin: '0 32px', color: CORAL }}>✦</span>
   return (
     <>
       <span>{BANNER_TEXT}</span>{sep}
@@ -23,7 +23,7 @@ export function PromoBanner() {
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 101,
-      height: 36, background: LAVENDER, overflow: 'hidden',
+      height: 36, background: GREEN, overflow: 'hidden',
       display: 'flex', alignItems: 'center',
     }}>
       <div
@@ -33,7 +33,7 @@ export function PromoBanner() {
           whiteSpace: 'nowrap',
           fontFamily: 'Nunito, sans-serif',
           fontWeight: 800, fontSize: 12,
-          letterSpacing: '0.10em', color: PURPLE,
+          letterSpacing: '0.10em', color: '#FFFFFF',
           textTransform: 'uppercase',
         }}
       >
