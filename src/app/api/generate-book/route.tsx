@@ -188,7 +188,7 @@ async function fetchPublicFile(assetPath: string): Promise<Buffer> {
 async function generateCompositedPage(
   page: BookPage,
   characterBase64: string,
-  customer: { childName: string; senderName: string; dedication?: string; siblingFullName?: string; siblingBirthDate?: string },
+  customer: { childName: string; senderName: string; dedication?: string; siblingFullName?: string; siblingBirthDate?: string; giftDate?: string },
   config: BookRenderConfig,
 ): Promise<string> {
   const bgBuffer = await fetchPublicFile(page.backgroundAsset)
@@ -202,6 +202,7 @@ async function generateCompositedPage(
     DEDICATION:         customer.dedication || `A special book made with love just for ${customer.childName}.`,
     SIBLING_FULL_NAME:  customer.siblingFullName  || '',
     SIBLING_BIRTH_DATE: customer.siblingBirthDate || '',
+    DATE:               customer.giftDate || '',
   }
 
   // Pages without a character — background + text only
@@ -289,9 +290,25 @@ RULES:
       .toBuffer()
   }
 
+  // For covers where the logo is baked into the original background (showLogoOnCover: false),
+  // Gemini sometimes overwrites the left-side logo when generating the scene. Fix: restore
+  // the left half of the original background pixel-for-pixel on top of Gemini's output.
+  if (page.pageIndex === 0 && config.showLogoOnCover === false) {
+    const leftW = Math.round(config.canvasW / 2)
+    const leftHalf = await sharp(bgBuffer)
+      .resize(config.canvasW, config.canvasH, { fit: 'cover', position: 'center' })
+      .extract({ left: 0, top: 0, width: leftW, height: config.canvasH })
+      .png()
+      .toBuffer()
+    composite = await sharp(composite)
+      .composite([{ input: leftHalf, left: 0, top: 0, blend: 'over' }])
+      .png()
+      .toBuffer()
+  }
+
   // Real logo on cover (page 0) — skipped when showLogoOnCover is explicitly false
   if (page.pageIndex === 0 && config.showLogoOnCover !== false) {
-    const withLogo = await compositeLogoOnCover(composite.toString('base64'), 'white')
+    const withLogo = await compositeLogoOnCover(composite.toString('base64'), config.logoStyle ?? 'white')
     composite = Buffer.from(withLogo, 'base64')
   }
 
@@ -310,6 +327,17 @@ RULES:
   return withText.toString('base64')
 }
 
+// ─── Gender helpers ───────────────────────────────────────────────────────────
+
+function resolveGenderedCostumeRule(rule: string, gender: 'girl' | 'boy'): string {
+  if (gender === 'girl') {
+    const m = rule.match(/Girls? (?:wear|wears?) ([^.]+)\./i)
+    return m ? `The character is a GIRL and wears: ${m[1]}.` : rule
+  }
+  const m = rule.match(/Boys? (?:wear|wears?) ([^.]+)\./i)
+  return m ? `The character is a BOY and wears: ${m[1]}.` : rule
+}
+
 // ─── Rate limit ───────────────────────────────────────────────────────────────
 
 const rateLimitMap = new Map<string, number>()
@@ -322,10 +350,12 @@ export async function POST(req: NextRequest) {
 
   try {
     const {
-      photoBase64, mimeType, bookSlug, childName, senderName, dedication,
-      siblingFullName, siblingBirthDate,
+      photoBase64, mimeType, bookSlug, childName, childGender, senderName, dedication,
+      siblingFullName, siblingBirthDate, giftDate,
       previewIndices, characterBase64: preGeneratedCharacter,
     } = await req.json()
+
+    const gender: 'girl' | 'boy' | '' = childGender || ''
 
     if (!bookSlug || !childName || !senderName) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -373,6 +403,12 @@ export async function POST(req: NextRequest) {
     // New compositing pipeline
     if (bookConfig) {
       const { pages } = bookConfig
+
+      // Resolve gender-specific costumeRule so Gemini never guesses from hairstyle
+      const resolvedConfig = gender
+        ? { ...bookConfig, costumeRule: resolveGenderedCostumeRule(bookConfig.costumeRule, gender) }
+        : bookConfig
+
       const indicesToGenerate: number[] = (previewIndices
         || Array.from({ length: pages.length }, (_, i) => i))
         .map((i: number) => Math.min(i, pages.length - 1))
@@ -382,8 +418,8 @@ export async function POST(req: NextRequest) {
         const pageBase64 = await generateCompositedPage(
           pages[pageIndex],
           characterBase64,
-          { childName, senderName, dedication, siblingFullName, siblingBirthDate },
-          bookConfig,
+          { childName, senderName, dedication, siblingFullName, siblingBirthDate, giftDate },
+          resolvedConfig,
         )
         generatedPages.push(pageBase64)
       }

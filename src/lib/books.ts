@@ -633,6 +633,47 @@ STYLE: Pixar/Disney 3D animated. Glorious sunrise left half. Soft blush right ha
     coverLogoStyle: 'white',
   },
 
+
+  {
+    slug: 'spoken-over-you',
+    title: 'Spoken Over You',
+    subtitle: "God's Promises for [Child's Name]",
+    price: 23.98,
+    coverImage: '/books/spoken-over-you/card-cover.png',
+    cardImage:  '/books/spoken-over-you/card-cover.png',
+    previewImages: [],
+    listingImages: {
+      heroLifestyle:           '/books/spoken-over-you/listings/01-lifestyle-hero.png',
+      secondaryLifestyle:      '/books/spoken-over-you/listings/02-lifestyle-secondary.png',
+      calloutPersonalization:  '/books/spoken-over-you/listings/03-callout-personalization.png',
+      occasionFraming:         '/books/spoken-over-you/listings/04-occasion-framing.png',
+      calloutDedication:       '/books/spoken-over-you/listings/05-callout-dedication.png',
+      themeFraming:            '/books/spoken-over-you/listings/06-theme-framing.png',
+      interiorSpread:          '/books/spoken-over-you/listings/07-interior-spread.png',
+      formatOptions:           '/books/spoken-over-you/listings/08-format-options.png',
+      sizeRuler:               '/books/spoken-over-you/listings/09-size-ruler.png',
+      sizeInHand:              '/books/spoken-over-you/listings/10-size-in-hand.png',
+    },
+    totalPages: 14,
+    tags: ['faith', 'new'],
+    recipient: ['baby', 'toddler', 'child'],
+    occasion: ['baptism', 'birthday', 'christmas', 'easter', 'any'],
+    description: "A one-of-a-kind personalized storybook where your child is the main character — woven through 14 stunning pages of God's promises, brought to life with their face and name.",
+    shortDesc: "God's promises made personal — 14 stunning pages for your child.",
+    badge: 'New',
+    badgeColor: '#E8836A',
+    rating: 5.0,
+    reviews: 0,
+    featured: true,
+    highlights: [
+      "Personalized with your child's face and name on every page",
+      "14 pages of God's promises — beautifully illustrated in 3D Pixar style",
+      "Perfect for baptism, birthday, Christmas, Easter, or any faith occasion",
+      "Closes with a personal keepsake page — name, signature, and date",
+    ],
+    coverLogoStyle: 'white',
+  },
+
 ]
 export const RECIPIENTS = [
   { label: 'Baby / Newborn', value: 'baby' },

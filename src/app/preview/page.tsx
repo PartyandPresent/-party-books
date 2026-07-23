@@ -23,7 +23,7 @@ type ErrorPhase = 'character' | 'pages'
 export default function PreviewPage() {
   const router = useRouter()
   const {
-    childName, senderName, dedication, siblingFullName, siblingBirthDate,
+    childName, childGender, senderName, dedication, siblingFullName, siblingBirthDate, giftDate,
     photoDataUrl, photoMimeType,
     selectedSlug, selectedTitle, selectedPrice,
     setGeneratedPages, setCharacter,
@@ -64,6 +64,7 @@ export default function PreviewPage() {
           photoBase64: photoDataUrl.split(',')[1],
           mimeType: photoMimeType,
           bookSlug: selectedSlug,
+          gender: childGender,
         }),
       })
 
@@ -98,10 +99,12 @@ export default function PreviewPage() {
         body: JSON.stringify({
           bookSlug: selectedSlug,
           childName,
+          childGender,
           senderName,
           dedication,
           siblingFullName,
           siblingBirthDate,
+          giftDate,
           characterBase64,
           previewIndices: PREVIEW_INDICES,
         }),

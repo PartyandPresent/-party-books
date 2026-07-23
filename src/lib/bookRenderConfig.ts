@@ -8,6 +8,7 @@ import { beforeTheMusicPlays } from './books/before-the-music-plays'
 import type { BookPage } from './books/before-the-music-plays'
 import { youWereHereFirst, YOU_WERE_HERE_FIRST_CHARACTER_PROMPT } from './books/you-were-here-first'
 import { youWereHereFirstChildFocus, YOU_WERE_HERE_FIRST_CF_CHARACTER_PROMPT } from './books/you-were-here-first-child-focus'
+import { spokenOverYou, SPOKEN_OVER_YOU_CHARACTER_PROMPT } from './books/spoken-over-you'
 // import { canYouBeMyRingBearer, RING_BEARER_CHARACTER_PROMPT } from './books/can-you-be-my-ring-bearer'  // ARCHIVED
 
 export interface BookRenderConfig {
@@ -19,6 +20,7 @@ export interface BookRenderConfig {
   title: string
   characterPrompt?: string   // overrides DEFAULT_CHARACTER_PROMPT for character generation (Step 1)
   showLogoOnCover?: boolean  // set false to skip logo composite on pageIndex 0 (default: true)
+  logoStyle?: 'color' | 'white'  // 'color' for white-background covers, 'white' for dark/illustrated covers (default: 'white')
 }
 
 const CONFIGS: BookRenderConfig[] = [
@@ -49,6 +51,17 @@ const CONFIGS: BookRenderConfig[] = [
     pages:           youWereHereFirstChildFocus.pages,
     title:           youWereHereFirstChildFocus.title,
     characterPrompt: YOU_WERE_HERE_FIRST_CF_CHARACTER_PROMPT,
+    showLogoOnCover: false,
+  },
+
+  {
+    canvasW:         2000,
+    canvasH:         1000,
+    bookSlug:        'spoken-over-you',
+    costumeRule:     'Girls wear a blue mini dress with white ribbon at the waist and white doll shoes. Boys wear a white polo shirt with a checkered necktie and pants.',
+    pages:           spokenOverYou.pages,
+    title:           spokenOverYou.title,
+    characterPrompt: SPOKEN_OVER_YOU_CHARACTER_PROMPT,
     showLogoOnCover: false,
   },
 

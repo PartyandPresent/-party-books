@@ -6,10 +6,12 @@ interface OrderState {
   selectedPrice: number
   selectedCover: string
   childName: string
+  childGender: 'girl' | 'boy' | ''
   senderName: string
   dedication: string
   siblingFullName: string
   siblingBirthDate: string
+  giftDate: string
   photoDataUrl: string
   photoMimeType: string
   characterDataUrl: string
@@ -26,7 +28,7 @@ interface OrderState {
   }
   orderId: string
   setBook: (slug: string, title: string, price: number, cover: string) => void
-  setPersonalization: (childName: string, senderName: string, dedication: string, siblingFullName?: string, siblingBirthDate?: string) => void
+  setPersonalization: (childName: string, childGender: 'girl' | 'boy' | '', senderName: string, dedication: string, siblingFullName?: string, siblingBirthDate?: string, giftDate?: string) => void
   setPhoto: (dataUrl: string, mimeType: string) => void
   setCharacter: (dataUrl: string) => void
   setGeneratedPages: (pages: string[]) => void
@@ -41,10 +43,12 @@ const defaultState = {
   selectedPrice: 0,
   selectedCover: '',
   childName: '',
+  childGender: '' as 'girl' | 'boy' | '',
   senderName: '',
   dedication: '',
   siblingFullName: '',
   siblingBirthDate: '',
+  giftDate: '',
   photoDataUrl: '',
   photoMimeType: '',
   characterDataUrl: '',
@@ -60,8 +64,8 @@ export const useOrderStore = create<OrderState>((set) => ({
   ...defaultState,
   setBook: (slug, title, price, cover) =>
     set({ selectedSlug: slug, selectedTitle: title, selectedPrice: price, selectedCover: cover }),
-  setPersonalization: (childName, senderName, dedication, siblingFullName = '', siblingBirthDate = '') =>
-    set({ childName, senderName, dedication, siblingFullName, siblingBirthDate }),
+  setPersonalization: (childName, childGender, senderName, dedication, siblingFullName = '', siblingBirthDate = '', giftDate = '') =>
+    set({ childName, childGender, senderName, dedication, siblingFullName, siblingBirthDate, giftDate }),
   setPhoto: (dataUrl, mimeType) =>
     set({ photoDataUrl: dataUrl, photoMimeType: mimeType }),
   setCharacter: (dataUrl) => set({ characterDataUrl: dataUrl }),

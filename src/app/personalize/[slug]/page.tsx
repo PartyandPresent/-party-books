@@ -28,13 +28,22 @@ export default function PersonalizePage() {
   const [photoMime, setPhotoMime] = useState<string>('')
   const [photoError, setPhotoError] = useState('')
   const [childName, setChildName] = useState('')
+  const [childGender, setChildGender] = useState<'girl' | 'boy' | ''>('')
   const [senderName, setSenderName] = useState('')
   const [dedication, setDedication] = useState('')
   const [siblingFullName, setSiblingFullName] = useState('')
   const [siblingBirthDate, setSiblingBirthDate] = useState('')
-  const [fieldErrors, setFieldErrors] = useState<{ childName?: string; senderName?: string }>({})
+  const [giftDate, setGiftDate] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<{ childName?: string; childGender?: string; senderName?: string }>({})
 
   const isYwfCf = slug === 'you-were-here-first-child-focus'
+  const isSoy   = slug === 'spoken-over-you'
+
+  const formatGiftDate = (raw: string) => {
+    if (!raw) return ''
+    const d = new Date(raw + 'T00:00:00')
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  }
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { setBook, setPhoto, setPersonalization } = useOrderStore()
@@ -71,8 +80,9 @@ export default function PersonalizePage() {
   }
 
   const goToStep3 = () => {
-    const errors: { childName?: string; senderName?: string } = {}
+    const errors: { childName?: string; childGender?: string; senderName?: string } = {}
     if (!childName.trim()) errors.childName = "Child's name is required."
+    if (!childGender) errors.childGender = 'Please select girl or boy.'
     if (!senderName.trim()) errors.senderName = 'Your name is required.'
     setFieldErrors(errors)
     if (Object.keys(errors).length > 0) return
@@ -81,7 +91,7 @@ export default function PersonalizePage() {
 
   const handleGenerate = () => {
     setPhoto(photoPreview!, photoMime)
-    setPersonalization(childName.trim(), senderName.trim(), dedication.trim(), siblingFullName.trim(), siblingBirthDate)
+    setPersonalization(childName.trim(), childGender, senderName.trim(), dedication.trim(), siblingFullName.trim(), siblingBirthDate, formatGiftDate(giftDate))
     router.push('/preview')
   }
 
@@ -314,6 +324,34 @@ export default function PersonalizePage() {
 
             <div style={{ marginBottom: 24 }}>
               <label style={labelStyle}>
+                Is the child a girl or a boy? <span style={{ color: CORAL }}>*</span>
+              </label>
+              <div style={{ display: 'flex', gap: 12 }}>
+                {(['girl', 'boy'] as const).map((g) => (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => { setChildGender(g); setFieldErrors(p => ({ ...p, childGender: undefined })) }}
+                    style={{
+                      flex: 1, padding: '13px 0', borderRadius: 12, cursor: 'pointer',
+                      fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
+                      border: `2px solid ${childGender === g ? CORAL : '#E0E0E0'}`,
+                      backgroundColor: childGender === g ? CORAL : '#fff',
+                      color: childGender === g ? '#fff' : BODY,
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {g === 'girl' ? '👧 Girl' : '👦 Boy'}
+                  </button>
+                ))}
+              </div>
+              {fieldErrors.childGender && (
+                <p style={errorText}>{fieldErrors.childGender}</p>
+              )}
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label style={labelStyle}>
                 Child's first name <span style={{ color: CORAL }}>*</span>
               </label>
               <input
@@ -398,6 +436,23 @@ export default function PersonalizePage() {
               </>
             )}
 
+            {isSoy && (
+              <div style={{ marginBottom: 24 }}>
+                <label style={labelStyle}>
+                  Date <span style={{ color: MUTED, fontWeight: 600 }}>(optional)</span>
+                </label>
+                <input
+                  style={inputStyle()}
+                  type="date"
+                  value={giftDate}
+                  onChange={(e) => setGiftDate(e.target.value)}
+                />
+                <p style={{ fontSize: 12, color: MUTED, marginTop: 6 }}>
+                  This appears on the keepsake page as e.g. "July 22, 2026".
+                </p>
+              </div>
+            )}
+
             <div>
               <label style={labelStyle}>
                 Dedication message{' '}
@@ -449,7 +504,7 @@ export default function PersonalizePage() {
                     CHILD'S NAME
                   </span>
                   <p style={{ margin: '2px 0 0', fontWeight: 800, fontSize: 17, color: GREEN }}>
-                    {childName}
+                    {childName} <span style={{ fontWeight: 600, fontSize: 14, color: MUTED }}>({childGender})</span>
                   </p>
                 </div>
                 <div>
@@ -477,6 +532,16 @@ export default function PersonalizePage() {
                     </span>
                     <p style={{ margin: '2px 0 0', fontWeight: 700, fontSize: 15, color: BODY }}>
                       {new Date(siblingBirthDate + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
+                )}
+                {isSoy && giftDate && (
+                  <div style={{ marginTop: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: 0.5 }}>
+                      DATE
+                    </span>
+                    <p style={{ margin: '2px 0 0', fontWeight: 700, fontSize: 15, color: BODY }}>
+                      {formatGiftDate(giftDate)}
                     </p>
                   </div>
                 )}

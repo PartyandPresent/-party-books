@@ -82,6 +82,7 @@ const FONT_FAMILY_OVERRIDES: Record<string, string> = {
   'Lora-Bold.otf':                     'Lora',
   'Lora-Variable.ttf':                 'Lora',
   'Mabook.otf':                        'Mabook',
+  'KGMissKindyMarker.ttf':            'KG Miss Kindy Marker',
 }
 
 function fontFamilyName(fileName: string): string {

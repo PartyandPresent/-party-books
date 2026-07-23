@@ -79,9 +79,19 @@ BACKGROUND: Plain clean white only. No scenery. No props. No text of any kind. N
 FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 
 
+function injectGender(prompt: string, gender: 'girl' | 'boy' | ''): string {
+  if (!gender) return prompt
+  const genderWord = gender === 'girl' ? 'GIRL' : 'BOY'
+  const injection = `GENDER — EXPLICIT OVERRIDE: This child is a ${genderWord}. Generate a ${genderWord} character regardless of hairstyle length, hair style, or any other visual cue in the photo. Do NOT infer gender from the photo.`
+  return prompt.replace(
+    /- GENDER:.*(\n|$)/,
+    `- ${injection}\n`
+  )
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { photoBase64, mimeType, bookSlug } = await req.json()
+    const { photoBase64, mimeType, bookSlug, gender } = await req.json()
 
     if (!photoBase64 || !mimeType) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -95,6 +105,8 @@ export async function POST(req: NextRequest) {
       const legacyBook = getBookBySlug(bookSlug)
       characterPrompt = bookConfig?.characterPrompt || legacyBook?.characterPrompt || DEFAULT_CHARACTER_PROMPT
     }
+
+    characterPrompt = injectGender(characterPrompt, gender || '')
 
     const characterBase64 = await callGemini([
       { inlineData: { mimeType, data: photoBase64 } },
