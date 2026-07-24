@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import SparkleField from '@/components/ui/SparkleField'
 import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { BOOKS, REVIEWS } from '@/lib/books'
@@ -581,6 +582,9 @@ export default function HomePage() {
 
       {/* ── REVIEWS ──────────────────────────────────────── */}
       <ReviewsSection isMobile={isMobile} />
+
+      {/* ── FAQ ──────────────────────────────────────────── */}
+      <FAQAccordion isMobile={isMobile} />
 
       {/* ── FINAL CTA ────────────────────────────────────── */}
       <section style={{ background: GREEN, padding: isMobile ? '48px 20px' : '72px 24px', position: 'relative', overflow: 'hidden' }}>

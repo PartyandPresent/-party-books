@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { BOOKS, REVIEWS } from '@/lib/books'
 import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
+import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 const GREEN = '#2D4A3E'
@@ -482,6 +483,9 @@ export default function BookDetailPage() {
             </div>
           </div>
         </section>
+
+        {/* ── FAQ ── */}
+        <FAQAccordion isMobile={isMobile} />
 
         {/* ── YOU MAY ALSO LOVE ── */}
         <section style={{ padding: isMobile ? '56px 20px' : '88px 24px' }}>
