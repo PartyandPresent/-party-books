@@ -8,13 +8,13 @@ export type CoverFormat = 'hardcover' | 'softcover'
 // "From $39.99 CAD" (or similar) to match the softcover floor price.
 // Do NOT change this automatically — reconcile with the team before updating PDPs.
 export const COVER_FORMAT_PRICES: Record<CoverFormat, number> = {
-  hardcover: 49.99,
-  softcover:  39.99,
+  hardcover: 39.99,
+  softcover:  29.99,
 }
 
 export const COVER_FORMAT_LABELS: Record<CoverFormat, string> = {
-  hardcover: 'Hardcover',
-  softcover: 'Softcover',
+  hardcover: 'Hardbound',
+  softcover: 'Softbound',
 }
 
 export const COVER_FORMAT_DESCS: Record<CoverFormat, string> = {
