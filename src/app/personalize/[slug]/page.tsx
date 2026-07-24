@@ -5,7 +5,9 @@ import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import CoverFormatStep from '@/components/personalize/CoverFormatStep'
 import { useOrderStore } from '@/store/order'
+import { type CoverFormat, COVER_FORMAT_PRICES, COVER_FORMAT_LABELS } from '@/lib/coverFormat'
 import { BOOKS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
@@ -13,31 +15,37 @@ const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
 const BEIGE = '#F5F0E8'
 const CREAM = '#FAFAF5'
-const BODY = '#4A5568'
+const BODY  = '#4A5568'
 const MUTED = '#888888'
+
+const STEP_LABELS = ['Upload Photo', 'Your Message', 'Cover Format', 'Review Order']
 
 export default function PersonalizePage() {
   const params = useParams()
   const router = useRouter()
-  const slug = params.slug as string
-  const book = BOOKS.find(b => b.slug === slug)
+  const slug   = params.slug as string
+  const book   = BOOKS.find(b => b.slug === slug)
 
-  const [step, setStep] = useState(1)
-  const [isDragging, setIsDragging] = useState(false)
+  const [step, setStep]               = useState(1)
+  const [isDragging, setIsDragging]   = useState(false)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
-  const [photoMime, setPhotoMime] = useState<string>('')
-  const [photoError, setPhotoError] = useState('')
-  const [childName, setChildName] = useState('')
+  const [photoMime, setPhotoMime]     = useState<string>('')
+  const [photoError, setPhotoError]   = useState('')
+  const [childName, setChildName]     = useState('')
   const [childGender, setChildGender] = useState<'girl' | 'boy' | ''>('')
-  const [senderName, setSenderName] = useState('')
-  const [dedication, setDedication] = useState('')
+  const [senderName, setSenderName]   = useState('')
+  const [dedication, setDedication]   = useState('')
   const [siblingFullName, setSiblingFullName] = useState('')
   const [siblingBirthDate, setSiblingBirthDate] = useState('')
-  const [giftDate, setGiftDate] = useState('')
+  const [giftDate, setGiftDate]       = useState('')
+  const [coverFormat, setCoverFormatLocal] = useState<CoverFormat>('hardcover')
   const [fieldErrors, setFieldErrors] = useState<{ childName?: string; childGender?: string; senderName?: string }>({})
 
   const isYwfCf = slug === 'you-were-here-first-child-focus'
   const isSoy   = slug === 'spoken-over-you'
+
+  // Display price driven by local format selection — updates the strip in real time.
+  const displayPrice = COVER_FORMAT_PRICES[coverFormat]
 
   const formatGiftDate = (raw: string) => {
     if (!raw) return ''
@@ -46,11 +54,11 @@ export default function PersonalizePage() {
   }
 
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { setBook, setPhoto, setPersonalization } = useOrderStore()
+  const { setBook, setPhoto, setPersonalization, setCoverFormat } = useOrderStore()
   const isMobile = useIsMobile()
 
   useEffect(() => {
-    if (book) setBook(book.slug, book.title, book.price, book.coverImage)
+    if (book) setBook(book.slug, book.title, book.coverImage)
   }, [book, setBook])
 
   const processFile = (file: File) => {
@@ -89,9 +97,14 @@ export default function PersonalizePage() {
     setStep(3); window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const goToStep4 = () => {
+    setStep(4); window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleGenerate = () => {
     setPhoto(photoPreview!, photoMime)
     setPersonalization(childName.trim(), childGender, senderName.trim(), dedication.trim(), siblingFullName.trim(), siblingBirthDate, formatGiftDate(giftDate))
+    setCoverFormat(coverFormat)
     router.push('/preview')
   }
 
@@ -141,7 +154,7 @@ export default function PersonalizePage() {
       <Header />
       <main style={{ maxWidth: 680, margin: '0 auto', padding: isMobile ? '90px 16px 80px' : '90px 24px 80px' }}>
 
-        {/* Book strip */}
+        {/* Book strip — price reflects selected format in real time */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 14,
           backgroundColor: BEIGE, borderRadius: 14, padding: '14px 18px',
@@ -164,16 +177,16 @@ export default function PersonalizePage() {
             </p>
           </div>
           <p style={{ flexShrink: 0, fontWeight: 800, fontSize: 17, color: CORAL, margin: 0 }}>
-            ${book.price.toFixed(2)}
+            ${displayPrice.toFixed(2)}
           </p>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar — 4 steps */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 48 }}>
-          {['Upload Photo', 'Your Message', 'Review Order'].map((label, i) => {
-            const num = i + 1
+          {STEP_LABELS.map((label, i) => {
+            const num    = i + 1
             const active = step === num
-            const done = step > num
+            const done   = step > num
             return (
               <div key={num} style={{ display: 'flex', alignItems: 'center' }}>
                 <div
@@ -190,19 +203,19 @@ export default function PersonalizePage() {
                     {done ? '✓' : num}
                   </div>
                   <span style={{
-                    fontSize: isMobile ? 10 : 12, fontWeight: active ? 800 : 600,
+                    fontSize: isMobile ? 9 : 11, fontWeight: active ? 800 : 600,
                     color: active || done ? CORAL : MUTED,
                     whiteSpace: isMobile ? 'normal' : 'nowrap',
-                    textAlign: 'center', maxWidth: isMobile ? 52 : 'none',
+                    textAlign: 'center', maxWidth: isMobile ? 44 : 'none',
                   }}>
                     {label}
                   </span>
                 </div>
-                {i < 2 && (
+                {i < 3 && (
                   <div style={{
-                    width: isMobile ? 24 : 60, height: 2,
+                    width: isMobile ? 16 : 48, height: 2,
                     backgroundColor: done ? CORAL : '#E0E0E0',
-                    margin: isMobile ? '0 4px' : '0 8px', marginBottom: 20, flexShrink: 0,
+                    margin: isMobile ? '0 3px' : '0 6px', marginBottom: 20, flexShrink: 0,
                   }} />
                 )}
               </div>
@@ -237,7 +250,7 @@ export default function PersonalizePage() {
               >
                 <div style={{ fontSize: 48, marginBottom: 16 }}>📷</div>
                 <p style={{ fontWeight: 800, color: GREEN, fontSize: 16, margin: '0 0 8px' }}>
-                  Drag & drop a photo here
+                  Drag &amp; drop a photo here
                 </p>
                 <p style={{ color: MUTED, fontSize: 14, margin: '0 0 20px' }}>
                   or click to browse your files
@@ -471,15 +484,30 @@ export default function PersonalizePage() {
             </div>
 
             <button style={primaryBtn} onClick={goToStep3}>
-              Continue — Review Order →
+              Continue — Choose Cover Format →
             </button>
           </div>
         )}
 
-        {/* ── STEP 3: Review Order ── */}
+        {/* ── STEP 3: Cover Format ── */}
         {step === 3 && (
           <div style={cardStyle}>
-            <button style={backBtn} onClick={() => setStep(2)}>← Back</button>
+            <CoverFormatStep
+              selected={coverFormat}
+              onSelect={setCoverFormatLocal}
+              onContinue={goToStep4}
+              onBack={() => { setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+              bookCoverImage={book.cardImage ?? book.coverImage}
+              bookTitle={book.title}
+              isMobile={isMobile}
+            />
+          </div>
+        )}
+
+        {/* ── STEP 4: Review Order ── */}
+        {step === 4 && (
+          <div style={cardStyle}>
+            <button style={backBtn} onClick={() => setStep(3)}>← Back</button>
             <h2 style={headingStyle}>Review your order</h2>
             <p style={subStyle}>Everything look right? Then let's bring the magic to life!</p>
 
@@ -581,11 +609,11 @@ export default function PersonalizePage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: GREEN }}>{book.title}</p>
                   <p style={{ margin: '3px 0 0', fontSize: 13, color: MUTED }}>
-                    Personalised hardcover · 17 pages
+                    Personalised {COVER_FORMAT_LABELS[coverFormat].toLowerCase()} · {book.totalPages ?? 17} pages
                   </p>
                 </div>
                 <p style={{ fontWeight: 800, fontSize: 18, color: GREEN, margin: 0, flexShrink: 0 }}>
-                  ${book.price.toFixed(2)}
+                  ${displayPrice.toFixed(2)}
                 </p>
               </div>
               <div style={{ padding: '12px 20px', display: 'flex', justifyContent: 'space-between' }}>

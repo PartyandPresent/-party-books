@@ -1,10 +1,12 @@
 import { create } from 'zustand'
+import { type CoverFormat, COVER_FORMAT_PRICES } from '@/lib/coverFormat'
 
 interface OrderState {
   selectedSlug: string
   selectedTitle: string
   selectedPrice: number
   selectedCover: string
+  coverFormat: CoverFormat
   childName: string
   childGender: 'girl' | 'boy' | ''
   senderName: string
@@ -27,7 +29,8 @@ interface OrderState {
     country: string
   }
   orderId: string
-  setBook: (slug: string, title: string, price: number, cover: string) => void
+  setBook: (slug: string, title: string, cover: string) => void
+  setCoverFormat: (format: CoverFormat) => void
   setPersonalization: (childName: string, childGender: 'girl' | 'boy' | '', senderName: string, dedication: string, siblingFullName?: string, siblingBirthDate?: string, giftDate?: string) => void
   setPhoto: (dataUrl: string, mimeType: string) => void
   setCharacter: (dataUrl: string) => void
@@ -40,8 +43,9 @@ interface OrderState {
 const defaultState = {
   selectedSlug: '',
   selectedTitle: '',
-  selectedPrice: 0,
+  selectedPrice: COVER_FORMAT_PRICES.hardcover,
   selectedCover: '',
+  coverFormat: 'hardcover' as CoverFormat,
   childName: '',
   childGender: '' as 'girl' | 'boy' | '',
   senderName: '',
@@ -62,8 +66,10 @@ const defaultState = {
 
 export const useOrderStore = create<OrderState>((set) => ({
   ...defaultState,
-  setBook: (slug, title, price, cover) =>
-    set({ selectedSlug: slug, selectedTitle: title, selectedPrice: price, selectedCover: cover }),
+  setBook: (slug, title, cover) =>
+    set({ selectedSlug: slug, selectedTitle: title, selectedCover: cover }),
+  setCoverFormat: (format) =>
+    set({ coverFormat: format, selectedPrice: COVER_FORMAT_PRICES[format] }),
   setPersonalization: (childName, childGender, senderName, dedication, siblingFullName = '', siblingBirthDate = '', giftDate = '') =>
     set({ childName, childGender, senderName, dedication, siblingFullName, siblingBirthDate, giftDate }),
   setPhoto: (dataUrl, mimeType) =>
