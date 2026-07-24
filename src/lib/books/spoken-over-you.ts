@@ -134,12 +134,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A precious Child sitting safely on a soft quilt beneath a blossoming tree in a peaceful garden. Around the Child are delicate butterflies, flower petals, tiny birds, a woven basket, and simple wooden play items. Warm dappled sunlight touches the Child\'s round cheeks, tiny fingers, and soft outfit, showing how carefully and beautifully the Child was made. The scene should feel lovingly detailed, gentle, and full of wonder.\n\nCharacters shows solid on the left side and not in the center.\n\n(Key details are showing solid/full)\n- blossoming tree (is seen all throughout the frame)\n- delicate butterflies (shows on top of the faded part as well, along with flower petals, tiny birds, a woven basket, and simple wooden play items)\n\nBackground: Dramatic blur\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 100, y: 116, width: 564, height: 851 },
+      // Text Zone: LEFT — character on RIGHT (design data x=1261)
+      characterPlacement: { x: 1261, y: 116, width: 564, height: 851 },
       textBlocks: [
         {
           id: 'quote',
           template: '"Before I formed you in the womb, I knew you."',
-          x: 1198, y: 313, maxWidth: 636,
+          x: 166, y: 314, maxWidth: 636,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -147,7 +148,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'JEREMIAH 1:5',
-          x: 1334, y: 360, maxWidth: 334,
+          x: 333, y: 360, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -155,7 +156,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'Before the world had your name in it, God did.\n\nYou were not a surprise to Him, [CHILD_NAME].\nYou were a plan.',
-          x: 1165, y: 483, maxWidth: 669,
+          x: 166, y: 484, maxWidth: 669,
           fontFamily: BODY, fontSize: 29.9,
           color: WHITE, align: 'center', lineHeight: 1.62,
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -208,12 +209,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A hopeful sunrise scene with the Child sitting on a soft blanket on a grassy hill, looking toward a glowing horizon. In the distance, a gentle winding river and soft rolling hills create the feeling of a beautiful story unfolding. Add tiny birds in the sky, blooming flowers in the foreground, and a small open storybook. The mood should feel bright, peaceful, and full of promise. No text, no letters, no words in the image.\n\nCharacters shows solid on the right side and not in the center.\n\n(Key details are showing solid/full)\nBackground: (Key details are showing solid) while Dramatic Fade until looking plain solid color.\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 1150, y: 267, width: 700, height: 629 },
+      // Text Zone: RIGHT — character on LEFT (design data x=271)
+      characterPlacement: { x: 271, y: 268, width: 789, height: 629 },
       textBlocks: [
         {
           id: 'quote',
           template: '"I have loved you with an everlasting love."',
-          x: 192, y: 197, maxWidth: 636,
+          x: 1173, y: 198, maxWidth: 636,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -221,7 +223,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'JEREMIAH 31:3',
-          x: 343, y: 235, maxWidth: 334,
+          x: 1324, y: 235, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -229,7 +231,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'You were loved before you knew the word for it.\n\nNot for what you do — simply because you are [CHILD_NAME].\n\nThat is what everlasting means.',
-          x: 229, y: 348, maxWidth: 561,
+          x: 1210, y: 349, maxWidth: 561,
           fontFamily: BODY, fontSize: 29.9,
           color: DARK, align: 'center', lineHeight: 1.5,
           strokeColor: WHITE, strokeWidth: SW_BODY,
@@ -282,12 +284,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A hopeful sunrise scene with the Child sitting on a soft blanket on a grassy hill, facing a glowing horizon showing only the Child\'s back view. In the distance, a gentle winding river and soft rolling hills create the feeling of a beautiful story unfolding. Add tiny birds in the sky, blooming flowers in the foreground, and a small open storybook or baby blanket beside the Child as a subtle symbol of the future. The mood should feel bright, peaceful, and full of promise.\n\nCharacters shows solid on the left side and not in the center.\n\n(Key details are showing solid/full)\n\nBackground: Dramatic blurry faded until the right side becomes solid color background\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 50, y: 56, width: 538, height: 629 },
+      // Text Zone: LEFT — character on RIGHT (design data x=1009)
+      characterPlacement: { x: 1009, y: 56, width: 538, height: 629 },
       textBlocks: [
         {
           id: 'quote',
           template: '"For I know the plans I have for you."',
-          x: 1181, y: 300, maxWidth: 636,
+          x: 184, y: 300, maxWidth: 636,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -295,7 +298,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'JEREMIAH 29:11',
-          x: 1344, y: 336, maxWidth: 334,
+          x: 323, y: 336, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -303,7 +306,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'God has good plans for you, [CHILD_NAME].\n\nYou don\'t have to know the whole story today.\n\nJust trust the One who wrote it.',
-          x: 1204, y: 456, maxWidth: 613,
+          x: 184, y: 456, maxWidth: 613,
           fontFamily: BODY, fontSize: 29.9,
           color: DARK, align: 'center', lineHeight: 1.5,
           strokeColor: WHITE, strokeWidth: SW_BODY,
@@ -393,12 +396,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A dreamy twilight garden scene with the Child sitting safely on a blanket beside a softly glowing lantern. The Child\'s tiny hands reach toward the warm light while fireflies glow gently around nearby flowers. The lantern light softly illuminates the Child\'s cheeks, outfit, and blanket. The sky is a soft blend of dusky blue, lavender, cream, and gold.\n\nCharacters shows solid on the Left side and not in the center.\n\n(Key details are showing solid/full) on top of the faded and solid part\n- lantern / glow\n- fireflies (shown all throughout the image)\n\nBackground: Dramatic 30% fade–60% solid after the lantern image\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 50, y: 317, width: 514, height: 639 },
+      // Text Zone: LEFT — character on RIGHT (design data x=1155)
+      characterPlacement: { x: 1155, y: 318, width: 514, height: 639 },
       textBlocks: [
         {
           id: 'quote',
           template: '"They who wait for the Lord shall renew their strength; they shall mount up with wings like eagles."',
-          x: 1159, y: 282, maxWidth: 741,
+          x: 100, y: 283, maxWidth: 741,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -406,7 +410,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'ISAIAH 40:31',
-          x: 1375, y: 353, maxWidth: 334,
+          x: 291, y: 354, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -414,7 +418,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'When you are tired, He will be your strength.\n\nYou were made to soar, [CHILD_NAME].',
-          x: 1175, y: 470, maxWidth: 710,
+          x: 115, y: 470, maxWidth: 710,
           fontFamily: BODY, fontSize: 29.9,
           color: DARK, align: 'center', lineHeight: 1.5,
           strokeColor: WHITE, strokeWidth: SW_BODY,
@@ -430,12 +434,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A peaceful nighttime meadow beneath a glowing, star-filled sky. The young Child sleeps alone among softly illuminated flowers, wrapped securely in a cozy blanket and surrounded by a gentle golden glow. Their peaceful expression shows that the Child feels safe, protected, and deeply comforted. The wide sky feels magical and serene, while the soft meadow keeps the scene intimate and reassuring. Use silver-blue night tones with warm cream and muted gold highlights. Keep the Child as the only character and the clear emotional focus.\n\nComposition: Place the Child on the right side only, never in the center.\n\nStyle: Premium stylized 3D children\'s storybook illustration. The Child is sharply focused while the environment gradually fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, muted background colors, atmospheric haze, and softly faded frame edges. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, reduced saturation, and no strong yellow tint. Use gentle blush, cream, dusty blue, sage, and muted rose accents. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 1150, y: 106, width: 570, height: 836 },
+      // Text Zone: RIGHT — character on LEFT (design data x=168)
+      characterPlacement: { x: 168, y: 106, width: 570, height: 836 },
       textBlocks: [
         {
           id: 'quote',
           template: '"Let your light shine before others."',
-          x: 101, y: 378, maxWidth: 741,
+          x: 1159, y: 379, maxWidth: 741,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -443,7 +448,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'MATTHEW 5:16',
-          x: 316, y: 416, maxWidth: 334,
+          x: 1350, y: 416, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -451,7 +456,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'There is a light inside you, [CHILD_NAME].\nDo not be afraid to let it shine.',
-          x: 115, y: 545, maxWidth: 710,
+          x: 1175, y: 545, maxWidth: 710,
           fontFamily: BODY, fontSize: 29.9,
           color: DARK, align: 'center', lineHeight: 1.5,
           strokeColor: WHITE, strokeWidth: SW_BODY,
@@ -467,7 +472,8 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       characterActionPrompt:
         'Scene: A beautiful closing blessing scene showing the Child sitting safely beneath a soft floral archway on a cozy blanket, surrounded by gentle symbols from earlier pages: wildflowers, tiny birds, soft golden light, a little lantern glow, and delicate stars. In the background, show a peaceful landscape of rolling hills, a winding river, and a glowing sky. The Child looks loved, chosen, and blessed. The mood should feel complete, sentimental, and full of grace. No text, no letters, no words in the image.\n\nCharacters shows solid on the right side and not in the center.\n\nBackground: dramatic\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      characterPlacement: { x: 1100, y: 200, width: 700, height: 800 },
+      // Text Zone: LEFT — character zone spans center-right (design data x=723,y=400)
+      characterPlacement: { x: 723, y: 400, width: 1118, height: 573 },
       textBlocks: [
         {
           id: 'quote',
@@ -501,8 +507,13 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       pageIndex: 12,
       backgroundAsset: `${BG}/page-13-bg.png`,
       poseReference:   `${REF}/page-13.png`,
+      // ⚠️ CONFLICT: design data shows character on RIGHT (x=1250) for this page,
+      // but characterActionPrompt is currently set to skip character generation.
+      // Update the characterActionPrompt below if you want a character on page 13.
       characterActionPrompt: 'No character — use background as-is.',
       includesSenderCharacter: false,
+      // Text Zone: LEFT — characterPlacement added per design data for collision detection
+      characterPlacement: { x: 1250, y: 253, width: 486, height: 699 },
       textBlocks: [
         {
           id: 'body',
