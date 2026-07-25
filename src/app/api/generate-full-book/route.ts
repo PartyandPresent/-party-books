@@ -474,37 +474,48 @@ function staffEmailHtml({ customerName, customerEmail, childName, senderName, de
 
   return `<!DOCTYPE html>
 <html>
-<body style="font-family:Arial,sans-serif;padding:24px;background:#f5f5f5;">
-  <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;">
-    <h2 style="color:#FF559C;margin:0 0 8px;">📚 All pages generated!</h2>
-    <p style="color:#555;margin:0 0 16px;font-size:14px;">A new order is ready for review and PDF creation.</p>
-    <a href="${reviewUrl}" style="display:inline-block;background:linear-gradient(135deg,#FF559C,#FF3385);color:#fff;text-decoration:none;padding:12px 28px;border-radius:50px;font-size:14px;font-weight:800;margin-bottom:24px;">
-      🔍 Open Quality Review Page →
-    </a>
+<body style="font-family:Arial,sans-serif;padding:24px;background:#FAFAF5;">
+  <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(45,74,62,0.08);">
 
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-      ${[
-        ['Order ID',  `#${shortId}`],
-        ['Customer',  customerName  || 'N/A'],
-        ['Email',     customerEmail],
-        ['Book',      bookTitle],
-        ['Child Name', childName],
-        ['From',      senderName    || 'N/A'],
-      ].map(([label, value]) => `
-      <tr>
-        <td style="padding:8px 0;font-size:13px;color:#888;font-weight:600;width:35%;border-bottom:1px solid #f0f0f0;">${label}</td>
-        <td style="padding:8px 0;font-size:13px;color:#1A1A1A;font-weight:700;border-bottom:1px solid #f0f0f0;">${value}</td>
-      </tr>`).join('')}
-    </table>
+    <!-- Header -->
+    <div style="background:#2D4A3E;padding:24px 32px;">
+      <p style="margin:0 0 4px;font-size:11px;color:rgba(255,255,255,0.5);font-weight:700;letter-spacing:2px;text-transform:uppercase;">Miloriabooks — Staff</p>
+      <h2 style="margin:0 0 6px;color:#ffffff;font-size:20px;font-weight:800;">📚 All pages generated</h2>
+      <p style="margin:0;color:rgba(255,255,255,0.65);font-size:13px;">A new order is ready for quality review.</p>
+    </div>
 
-    <h3 style="color:#2C2C2C;font-size:15px;margin:0 0 12px;">Generated Pages</h3>
-    <table width="100%" cellpadding="0" cellspacing="0">
-      ${urlList}
-    </table>
+    <!-- Body -->
+    <div style="padding:28px 32px;">
 
-    <div style="margin-top:24px;padding:16px;background:#FFEEF5;border-radius:12px;">
-      <p style="margin:0;font-size:13px;color:#FF559C;font-weight:700;">Next steps:</p>
-      <p style="margin:4px 0 0;font-size:13px;color:#555;">1. Review all pages above<br>2. Regenerate any pages that need fixing<br>3. Download the spread PDF once approved</p>
+      <a href="${reviewUrl}" style="display:inline-block;background:#E8836A;color:#fff;text-decoration:none;padding:13px 28px;border-radius:50px;font-size:14px;font-weight:800;margin-bottom:28px;">
+        🔍 Open Quality Review Page →
+      </a>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+        ${[
+          ['Order ID',   `#${shortId}`],
+          ['Customer',   customerName  || 'N/A'],
+          ['Email',      customerEmail],
+          ['Book',       bookTitle],
+          ['Child Name', childName],
+          ['From',       senderName    || 'N/A'],
+        ].map(([label, value]) => `
+        <tr>
+          <td style="padding:10px 0;font-size:13px;color:#888;font-weight:600;width:35%;border-bottom:1px solid #F5F0E8;">${label}</td>
+          <td style="padding:10px 0;font-size:13px;color:#2D4A3E;font-weight:800;border-bottom:1px solid #F5F0E8;">${value}</td>
+        </tr>`).join('')}
+      </table>
+
+      <p style="margin:0 0 12px;font-size:14px;font-weight:800;color:#2D4A3E;">Generated Pages</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${urlList}
+      </table>
+
+      <div style="margin-top:24px;padding:16px 20px;background:#F5F0E8;border-radius:12px;border-left:4px solid #E8836A;">
+        <p style="margin:0 0 6px;font-size:13px;color:#2D4A3E;font-weight:800;">Next steps</p>
+        <p style="margin:0;font-size:13px;color:#4A5568;line-height:1.7;">1. Review all pages above<br>2. Regenerate any pages that need fixing<br>3. Download the Print PDF once approved</p>
+      </div>
+
     </div>
   </div>
 </body>
