@@ -36,7 +36,8 @@ export default function StaffOrderPage({ params }: { params: Promise<{ orderId: 
 }
 
 function StaffOrderContent({ orderId }: { orderId: string }) {
-  const [downloading, setDownloading]     = useState(false)
+  const [downloading, setDownloading]         = useState(false)
+  const [downloadingPrint, setDownloadingPrint] = useState(false)
   const [errors, setErrors]               = useState<Record<number, boolean>>({})
   const [regenerating, setRegenerating]   = useState<Record<number, boolean>>({})
   const [regenErrors, setRegenErrors]     = useState<Record<number, string>>({})
@@ -75,6 +76,25 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
       alert('PDF generation failed. Make sure all pages are uploaded.')
     } finally {
       setDownloading(false)
+    }
+  }
+
+  async function handleDownloadPrintPdf() {
+    setDownloadingPrint(true)
+    try {
+      const res = await fetch(`/api/download-print-pdf?orderId=${orderId}`)
+      if (!res.ok) throw new Error('Print PDF generation failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `order-${orderId}-print.pdf`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      alert('Print PDF generation failed. Make sure all pages are uploaded.')
+    } finally {
+      setDownloadingPrint(false)
     }
   }
 
@@ -118,25 +138,45 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
             Order #{orderId}
           </h1>
         </div>
-        <button
-          onClick={handleDownloadPdf}
-          disabled={downloading}
-          style={{
-            background: downloading ? 'rgba(255,255,255,0.2)' : CORAL,
-            color: '#fff',
-            border: 'none',
-            borderRadius: 50,
-            padding: '12px 28px',
-            fontSize: 14,
-            fontWeight: 800,
-            cursor: downloading ? 'not-allowed' : 'pointer',
-            fontFamily: 'Nunito, sans-serif',
-            boxShadow: downloading ? 'none' : '0 4px 14px rgba(232,131,106,0.4)',
-            transition: 'all 0.2s',
-          }}
-        >
-          {downloading ? '⏳ Generating PDF…' : '⬇ Download Spread PDF'}
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button
+            onClick={handleDownloadPdf}
+            disabled={downloading}
+            style={{
+              background: downloading ? 'rgba(255,255,255,0.2)' : CORAL,
+              color: '#fff',
+              border: 'none',
+              borderRadius: 50,
+              padding: '12px 28px',
+              fontSize: 14,
+              fontWeight: 800,
+              cursor: downloading ? 'not-allowed' : 'pointer',
+              fontFamily: 'Nunito, sans-serif',
+              boxShadow: downloading ? 'none' : '0 4px 14px rgba(232,131,106,0.4)',
+              transition: 'all 0.2s',
+            }}
+          >
+            {downloading ? '⏳ Generating…' : '⬇ Spread PDF'}
+          </button>
+          <button
+            onClick={handleDownloadPrintPdf}
+            disabled={downloadingPrint}
+            style={{
+              background: downloadingPrint ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.15)',
+              color: '#fff',
+              border: '1.5px solid rgba(255,255,255,0.55)',
+              borderRadius: 50,
+              padding: '12px 28px',
+              fontSize: 14,
+              fontWeight: 800,
+              cursor: downloadingPrint ? 'not-allowed' : 'pointer',
+              fontFamily: 'Nunito, sans-serif',
+              transition: 'all 0.2s',
+            }}
+          >
+            {downloadingPrint ? '⏳ Generating…' : '🖨 Print PDF (PNG)'}
+          </button>
+        </div>
       </div>
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 24px' }}>
@@ -266,7 +306,7 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
       </div>
 
       {/* Bottom download */}
-      <div style={{ textAlign: 'center', padding: '0 0 60px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 12, padding: '0 0 60px' }}>
         <button
           onClick={handleDownloadPdf}
           disabled={downloading}
@@ -283,7 +323,25 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
             boxShadow: downloading ? 'none' : '0 4px 20px rgba(232,131,106,0.35)',
           }}
         >
-          {downloading ? '⏳ Generating PDF…' : '⬇ Download Spread PDF'}
+          {downloading ? '⏳ Generating…' : '⬇ Download Spread PDF'}
+        </button>
+        <button
+          onClick={handleDownloadPrintPdf}
+          disabled={downloadingPrint}
+          style={{
+            background: downloadingPrint ? '#ccc' : GREEN,
+            color: '#fff',
+            border: 'none',
+            borderRadius: 50,
+            padding: '16px 40px',
+            fontSize: 16,
+            fontWeight: 800,
+            cursor: downloadingPrint ? 'not-allowed' : 'pointer',
+            fontFamily: 'Nunito, sans-serif',
+            boxShadow: downloadingPrint ? 'none' : '0 4px 20px rgba(45,74,62,0.35)',
+          }}
+        >
+          {downloadingPrint ? '⏳ Generating…' : '🖨 Download Print PDF (PNG)'}
         </button>
       </div>
 

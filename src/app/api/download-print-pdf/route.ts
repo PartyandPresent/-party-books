@@ -118,7 +118,7 @@ async function healSpine(imgBuffer: Buffer, spreadW: number, spreadH: number): P
     raw: { width: spreadW, height: spreadH, channels: ch }
   })
     .removeAlpha()
-    .jpeg({ quality: 95 })
+    .png({ compressionLevel: 6 })
     .toBuffer()
 }
 
@@ -149,7 +149,7 @@ export async function GET(req: NextRequest) {
       const printed = await healSpine(imgBuffer, spreadW, spreadH)
 
       const page = pdfDoc.addPage([PAGE_W_PT, PAGE_H_PT])
-      const img  = await pdfDoc.embedJpg(printed)
+      const img  = await pdfDoc.embedPng(printed)
       page.drawImage(img, { x: 0, y: 0, width: PAGE_W_PT, height: PAGE_H_PT })
     }
 
