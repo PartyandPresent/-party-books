@@ -43,9 +43,9 @@ interface OrderState {
 const defaultState = {
   selectedSlug: '',
   selectedTitle: '',
-  selectedPrice: COVER_FORMAT_PRICES.hardcover,
+  selectedPrice: COVER_FORMAT_PRICES.hardcover8,
   selectedCover: '',
-  coverFormat: 'hardcover' as CoverFormat,
+  coverFormat: 'hardcover8' as CoverFormat,
   childName: '',
   childGender: '' as 'girl' | 'boy' | '',
   senderName: '',

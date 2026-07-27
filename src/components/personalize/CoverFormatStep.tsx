@@ -23,7 +23,7 @@ const CORAL        = '#E8836A'
 const MUTED        = '#888888'
 const SELECTED_CLR = '#4A3080'   // dark purple per design reference
 
-const FORMATS: CoverFormat[] = ['hardcover', 'softcover']
+const FORMATS: CoverFormat[] = ['hardcover8', 'softcover8', 'softcover5']
 
 export default function CoverFormatStep({
   selected, onSelect, onContinue, onBack, bookCoverImage, bookTitle, isMobile,

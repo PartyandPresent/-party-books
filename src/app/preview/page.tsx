@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { type CoverFormat, COVER_FORMAT_PRICES, COVER_FORMAT_LABELS } from '@/lib/coverFormat'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -25,8 +26,8 @@ export default function PreviewPage() {
   const {
     childName, childGender, senderName, dedication, siblingFullName, siblingBirthDate, giftDate,
     photoDataUrl, photoMimeType,
-    selectedSlug, selectedTitle, selectedPrice,
-    setGeneratedPages, setCharacter,
+    selectedSlug, selectedTitle,
+    setGeneratedPages, setCharacter, setCoverFormat,
   } = useOrderStore()
 
   const isMobile = useIsMobile()
@@ -42,6 +43,7 @@ export default function PreviewPage() {
     ['waiting', 'waiting', 'waiting', 'waiting', 'waiting']
   )
   const [overallProgress, setOverallProgress] = useState(0)
+  const [coverFormat, setCoverFormatLocal] = useState<CoverFormat>('hardcover8')
 
   useEffect(() => {
     if (!photoDataUrl || !selectedSlug) {
@@ -308,20 +310,6 @@ export default function PreviewPage() {
           </button>
 
           <button
-            onClick={generateCharacter}
-            style={{
-              width: '100%', padding: '15px 24px',
-              backgroundColor: 'transparent',
-              border: `2px solid ${GREEN}`,
-              color: GREEN, borderRadius: 50,
-              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
-              cursor: 'pointer',
-            }}
-          >
-            🔄 Try a different look
-          </button>
-
-          <button
             onClick={() => router.back()}
             style={{
               background: 'none', border: 'none', color: MUTED,
@@ -533,18 +521,61 @@ export default function PreviewPage() {
 
         {/* Order CTA */}
         <div style={{
-          backgroundColor: '#fff', borderRadius: 20, padding: isMobile ? '20px 16px' : '28px 32px',
+          backgroundColor: '#fff', borderRadius: 20, padding: isMobile ? '24px 20px' : '28px 32px',
           boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          flexWrap: 'wrap', gap: 20,
         }}>
-          <div>
+          {/* Book info */}
+          <div style={{ marginBottom: 20 }}>
             <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 18, color: GREEN }}>{selectedTitle}</p>
             <p style={{ margin: 0, fontSize: 14, color: MUTED }}>
-              Personalised for {childName} · 17 pages · Hardcover
+              Personalised for {childName} · 17 pages
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', width: isMobile ? '100%' : 'auto' }}>
+
+          {/* Cover format selector */}
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: MUTED, letterSpacing: 1, textTransform: 'uppercase' }}>
+              Choose your cover
+            </p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              {(['hardcover8', 'softcover8', 'softcover5'] as const).map((fmt) => {
+                const isSelected = coverFormat === fmt
+                const icon = fmt === 'hardcover8' ? '📚' : fmt === 'softcover8' ? '📖' : '📕'
+                return (
+                  <button
+                    key={fmt}
+                    onClick={() => setCoverFormatLocal(fmt)}
+                    style={{
+                      flex: 1, padding: isMobile ? '12px 6px' : '16px 12px', borderRadius: 14,
+                      border: `2px solid ${isSelected ? GREEN : '#E0E0E0'}`,
+                      backgroundColor: isSelected ? '#EEF5F2' : '#fff',
+                      cursor: 'pointer', fontFamily: 'Nunito, sans-serif',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
+                    }}
+                  >
+                    <span style={{ fontSize: isMobile ? 20 : 26 }}>{icon}</span>
+                    <span style={{ fontWeight: 800, fontSize: isMobile ? 11 : 13, color: GREEN, textAlign: 'center' }}>
+                      {COVER_FORMAT_LABELS[fmt]}
+                    </span>
+                    <span style={{ fontWeight: 800, fontSize: isMobile ? 13 : 16, color: CORAL }}>
+                      ${COVER_FORMAT_PRICES[fmt].toFixed(2)}
+                    </span>
+                    {fmt === 'hardcover8' && (
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, color: '#fff',
+                        backgroundColor: CORAL, padding: '2px 7px', borderRadius: 50,
+                      }}>
+                        POPULAR
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <button
               onClick={generatePages}
               style={{
@@ -557,15 +588,16 @@ export default function PreviewPage() {
               🔄 Regenerate pages
             </button>
             <button
-              onClick={() => router.push('/checkout')}
+              onClick={() => { setCoverFormat(coverFormat); router.push('/checkout') }}
               style={{
-                backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50, padding: '14px 32px',
+                backgroundColor: CORAL, color: '#fff', border: 'none', borderRadius: 50,
+                padding: '14px 28px',
                 fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17, cursor: 'pointer',
                 boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
-                width: isMobile ? '100%' : 'auto',
+                flex: 1, width: isMobile ? '100%' : 'auto',
               }}
             >
-              Order This Book — ${selectedPrice.toFixed(2)}
+              Order This Book — ${COVER_FORMAT_PRICES[coverFormat].toFixed(2)}
             </button>
           </div>
         </div>
