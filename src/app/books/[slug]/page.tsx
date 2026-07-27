@@ -75,7 +75,7 @@ export default function BookDetailPage() {
           }}>
 
             {/* LEFT: Image Gallery */}
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 12, width: '100%', minWidth: 0 }}>
 
               {/* Vertical thumbnail strip — desktop only */}
               {!isMobile && (
@@ -95,7 +95,7 @@ export default function BookDetailPage() {
               )}
 
               {/* Main image */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                 <div style={{
                   position: 'relative', aspectRatio: '1/1',
                   borderRadius: 20, overflow: 'hidden',
@@ -162,7 +162,7 @@ export default function BookDetailPage() {
             </div>
 
             {/* RIGHT: Product Info */}
-            <div>
+            <div style={{ minWidth: 0 }}>
 
               {/* Stars + review count — always at top */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
@@ -200,7 +200,7 @@ export default function BookDetailPage() {
 
               {/* Price */}
               <div style={{ marginBottom: 4 }}>
-                <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: 34, color: GREEN }}>
+                <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 34, color: GREEN }}>
                   ${book.price.toFixed(2)} CAD
                 </span>
               </div>
@@ -238,9 +238,9 @@ export default function BookDetailPage() {
                 style={{
                   display: 'block', textAlign: 'center', width: '100%', boxSizing: 'border-box',
                   background: CORAL, color: '#fff',
-                  fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 17,
-                  padding: '17px 32px', borderRadius: 50,
-                  textDecoration: 'none',
+                  fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: isMobile ? 15 : 17,
+                  padding: isMobile ? '15px 20px' : '17px 32px', borderRadius: 50,
+                  textDecoration: 'none', overflow: 'hidden',
                   boxShadow: '0 8px 24px rgba(232,131,106,0.35)',
                   marginBottom: 6, transition: 'all 0.2s',
                 }}
@@ -313,7 +313,7 @@ export default function BookDetailPage() {
                   fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
                   color: GREEN, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 10,
                 }}>Customer Photos</div>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
                   {[0,1,2,3,4].map(i => (
                     <div key={i} style={{
                       width: 56, height: 56, borderRadius: 10, flexShrink: 0,
