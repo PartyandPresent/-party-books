@@ -185,17 +185,41 @@ function FindYourStory({ isMobile }: { isMobile: boolean }) {
 
 function ReviewsSection({ isMobile }: { isMobile: boolean }) {
   const [idx, setIdx] = useState(0)
-  const CARD = isMobile ? 260 : 300
+  const CARD = 300
   const GAP = 20
-  const VISIBLE = isMobile ? 1 : 3
+  const VISIBLE = 3
   const max = Math.max(0, REVIEWS.length - VISIBLE)
 
+  const cardInner = (r: typeof REVIEWS[0]) => (
+    <>
+      <ReviewPhoto photo={r.photo} avatar={r.avatar} name={r.name} />
+      <div style={{ padding: '16px 20px 20px' }}>
+        <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
+          {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 12, color: GOLD }}>★</span>)}
+        </div>
+        <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 14, color: GREEN, marginBottom: 6 }}>{r.name}</div>
+        <p style={{
+          fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.65,
+          margin: 0, fontStyle: 'italic',
+          display: '-webkit-box',
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: 'vertical' as const,
+          overflow: 'hidden',
+        }}>"{r.text}"</p>
+      </div>
+    </>
+  )
+
   return (
-    <section style={{ background: '#fff', padding: isMobile ? '48px 20px' : '72px 24px' }}>
+    <section style={{ background: '#fff', padding: isMobile ? '48px 0' : '72px 24px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
-        {/* Header row: heading + rating on left, arrows on right */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, gap: 16, flexWrap: 'wrap' }}>
+        {/* Header — arrows shown on desktop only */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+          marginBottom: 40, gap: 16, flexWrap: 'wrap',
+          padding: isMobile ? '0 20px' : '0',
+        }}>
           <div>
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 8px' }}>
               Loved by Families ✦
@@ -206,63 +230,72 @@ function ReviewsSection({ isMobile }: { isMobile: boolean }) {
               <span style={{ fontSize: 13, color: MUTED, marginLeft: 4 }}>from 500+ reviews</span>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 10, alignSelf: 'center' }}>
-            {([
-              { key: 'prev', label: '←', onClick: () => setIdx(i => Math.max(0, i - 1)), disabled: idx === 0 },
-              { key: 'next', label: '→', onClick: () => setIdx(i => Math.min(max, i + 1)), disabled: idx >= max },
-            ] as const).map(btn => (
-              <button key={btn.key} onClick={btn.onClick} disabled={btn.disabled} style={{
-                width: 40, height: 40, borderRadius: '50%',
-                border: `1.5px solid ${btn.disabled ? '#DDD' : GREEN}`,
-                background: btn.disabled ? '#F5F5F5' : '#fff',
-                color: btn.disabled ? MUTED : GREEN,
-                cursor: btn.disabled ? 'default' : 'pointer',
-                fontSize: 18, fontWeight: 700,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.2s',
-                flexShrink: 0,
-              }}>{btn.label}</button>
-            ))}
-          </div>
+          {!isMobile && (
+            <div style={{ display: 'flex', gap: 10, alignSelf: 'center' }}>
+              {([
+                { key: 'prev', label: '←', onClick: () => setIdx(i => Math.max(0, i - 1)), disabled: idx === 0 },
+                { key: 'next', label: '→', onClick: () => setIdx(i => Math.min(max, i + 1)), disabled: idx >= max },
+              ] as const).map(btn => (
+                <button key={btn.key} onClick={btn.onClick} disabled={btn.disabled} style={{
+                  width: 40, height: 40, borderRadius: '50%',
+                  border: `1.5px solid ${btn.disabled ? '#DDD' : GREEN}`,
+                  background: btn.disabled ? '#F5F5F5' : '#fff',
+                  color: btn.disabled ? MUTED : GREEN,
+                  cursor: btn.disabled ? 'default' : 'pointer',
+                  fontSize: 18, fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.2s', flexShrink: 0,
+                }}>{btn.label}</button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Carousel */}
-        <div style={{ overflow: 'hidden', marginBottom: 48 }}>
+        {/* Mobile: native horizontal scroll */}
+        {isMobile ? (
           <div style={{
             display: 'flex', gap: GAP,
-            transform: `translateX(${-idx * (CARD + GAP)}px)`,
-            transition: 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            overflowX: 'auto', scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch' as any,
+            paddingLeft: 20, paddingRight: 20, paddingBottom: 12,
+            marginBottom: 48,
           }}>
             {REVIEWS.map((r, i) => (
               <div key={i} style={{
-                flex: `0 0 ${CARD}px`,
+                flex: '0 0 260px', scrollSnapAlign: 'start',
                 borderRadius: 20, overflow: 'hidden',
                 background: CREAM, border: '1.5px solid #EDE8DF',
                 boxShadow: '0 2px 12px rgba(45,74,62,0.07)',
               }}>
-                <ReviewPhoto photo={r.photo} avatar={r.avatar} name={r.name} />
-                {/* Text below photo */}
-                <div style={{ padding: '16px 20px 20px' }}>
-                  <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
-                    {[1,2,3,4,5].map(s => <span key={s} style={{ fontSize: 12, color: GOLD }}>★</span>)}
-                  </div>
-                  <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 14, color: GREEN, marginBottom: 6 }}>{r.name}</div>
-                  <p style={{
-                    fontFamily: 'Nunito, sans-serif', fontSize: 13, color: BODY, lineHeight: 1.65,
-                    margin: 0, fontStyle: 'italic',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical' as const,
-                    overflow: 'hidden',
-                  }}>"{r.text}"</p>
-                </div>
+                {cardInner(r)}
               </div>
             ))}
+            <div style={{ flex: '0 0 4px' }} />
           </div>
-        </div>
+        ) : (
+          /* Desktop: translateX carousel */
+          <div style={{ overflow: 'hidden', marginBottom: 48 }}>
+            <div style={{
+              display: 'flex', gap: GAP,
+              transform: `translateX(${-idx * (CARD + GAP)}px)`,
+              transition: 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            }}>
+              {REVIEWS.map((r, i) => (
+                <div key={i} style={{
+                  flex: `0 0 ${CARD}px`,
+                  borderRadius: 20, overflow: 'hidden',
+                  background: CREAM, border: '1.5px solid #EDE8DF',
+                  boxShadow: '0 2px 12px rgba(45,74,62,0.07)',
+                }}>
+                  {cardInner(r)}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Tagline */}
-        <div style={{ textAlign: 'center', paddingTop: 40, borderTop: '1px solid #EDE8DF' }}>
+        <div style={{ textAlign: 'center', paddingTop: 40, borderTop: '1px solid #EDE8DF', padding: isMobile ? '40px 20px 0' : '40px 0 0' }}>
           <p style={{
             fontFamily: 'Playfair Display, serif', fontStyle: 'italic',
             fontWeight: 700, fontSize: isMobile ? 18 : 22,

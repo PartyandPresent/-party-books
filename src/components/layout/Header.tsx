@@ -34,9 +34,9 @@ const NAV = [
     label: 'By Recipient',
     href: '/collections/by-recipients',
     items: [
-      { icon: '👶', label: 'For Babies',    href: '/collections/by-recipients' },
-      { icon: '🧒', label: 'For Toddlers',  href: '/collections/by-recipients' },
-      { icon: '👦', label: 'For Children',  href: '/collections/by-recipients' },
+      { icon: '👶', label: 'For Babies',    href: '/collections/by-recipients#babies' },
+      { icon: '🧒', label: 'For Toddlers',  href: '/collections/by-recipients#toddlers' },
+      { icon: '👦', label: 'For Children',  href: '/collections/by-recipients#children' },
     ],
   },
 ]
@@ -126,7 +126,7 @@ export default function Header() {
                     }} />
 
                     {item.items.map(sub => (
-                      <Link key={sub.href} href={sub.href} className="nav-dropdown-link">
+                      <Link key={sub.label} href={sub.href} className="nav-dropdown-link">
                         <span className="dd-icon">{sub.icon}</span>
                         <span style={{ flex: 1 }}>{sub.label}</span>
                         <span className="dd-arrow">→</span>
@@ -193,7 +193,7 @@ export default function Header() {
               </Link>
               <div style={{ paddingLeft: 16, paddingBottom: 8 }}>
                 {item.items.map(sub => (
-                  <Link key={sub.href} href={sub.href}
+                  <Link key={sub.label} href={sub.href}
                     onClick={() => setMenuOpen(false)}
                     style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#666', fontFamily: 'Nunito, sans-serif', fontWeight: 600, fontSize: 14, textDecoration: 'none', padding: '7px 0' }}>
                     <span>{sub.icon}</span>

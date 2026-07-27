@@ -1,11 +1,11 @@
-﻿// â”€â”€â”€ Listing image standard (10-slot template) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+﻿// â"€â"€â"€ Listing image standard (10-slot template) â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 //
 // Every NEW book added to the site must supply a `listingImages` object with
 // all 10 of the following named slots, in this fixed order. The product-page
 // gallery renders them in slot order (1 â†’ 10).
 //
 // SLOT  KEY                      PURPOSE
-//  1    heroLifestyle            Hero lifestyle photo â€” the primary "hero" shot
+//  1    heroLifestyle            Hero lifestyle photo — the primary "hero" shot
 //  2    secondaryLifestyle       Second lifestyle shot (different age/setting)
 //  3    calloutPersonalization   Feature callout: custom character + child's name
 //  4    occasionFraming          Occasion / use-case framing (e.g. flower girl ask)
@@ -14,7 +14,7 @@
 //  7    interiorSpread           Interior page style showcase (illustration spread)
 //  8    formatOptions            Format options (softcover vs. hardcover, etc.)
 //  9    sizeRuler                Size options with measurement reference (ruler)
-// 10    sizeInHand               Size comparison â€” in-hand scale reference
+// 10    sizeInHand               Size comparison — in-hand scale reference
 //
 // FOLDER CONVENTION:
 //   public/books/{slug}/listings/
@@ -31,10 +31,10 @@
 //
 // NOTE: "God's Promises For You" predates this standard and uses the legacy
 // `previewImages` array instead. Do NOT retrofit it. For every book after
-// "Before the Music Plays", use `listingImages` only â€” not `previewImages`.
+// "Before the Music Plays", use `listingImages` only — not `previewImages`.
 //
-// REQUIRED 11th FIELD â€” cardImage (separate from the gallery):
-//   Every new book must ALSO supply a `cardImage` path â€” a clean, flat,
+// REQUIRED 11th FIELD — cardImage (separate from the gallery):
+//   Every new book must ALSO supply a `cardImage` path — a clean, flat,
 //   book-only cover mockup (no lifestyle context, no child holding it).
 //   This is the image used on homepage cards, collection grids, and
 //   product listing thumbnails. It is intentionally SEPARATE from gallery
@@ -65,7 +65,7 @@ export type Book = {
   originalPrice?: number
   coverImage: string
   cardImage?: string              // clean flat cover mockup for cards/grids; falls back to coverImage
-  previewImages: string[]         // legacy â€” God's Promises only; new books use listingImages
+  previewImages: string[]         // legacy — God's Promises only; new books use listingImages
   listingImages?: BookListingImages
   totalPages: number
   tags: string[]
@@ -94,16 +94,16 @@ export function getBookBySlug(slug: string): Book | undefined {
   return BOOKS.find(b => b.slug === slug)
 }
 
-// â”€â”€â”€ Flower Girl book constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€â"€ Flower Girl book constants â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
 export const FLOWER_GIRL_CHARACTER_PROMPT = `Use the uploaded child's photo as the main character reference.
 
-Transform the child from the photo into a full-body premium soft 3D animated flower girl character. Keep the child fully recognizable â€” preserve their exact face shape, skin tone, hair color, hair texture, hairstyle, eye shape, age, and overall likeness from the photo.
+Transform the child from the photo into a full-body premium soft 3D animated flower girl character. Keep the child fully recognizable — preserve their exact face shape, skin tone, hair color, hair texture, hairstyle, eye shape, age, and overall likeness from the photo.
 
 COPY EXACTLY FROM THE PHOTO:
-- FACE: same face shape, same eyes, same nose, same lips, same cheeks â€” faithful likeness, not a generic child
-- SKIN TONE: copy exact skin tone â€” do not lighten, darken, or alter in any way
-- HAIR: copy exact hair color, length, texture, and hairstyle â€” curly, straight, coils, braids, whatever the child has
+- FACE: same face shape, same eyes, same nose, same lips, same cheeks — faithful likeness, not a generic child
+- SKIN TONE: copy exact skin tone — do not lighten, darken, or alter in any way
+- HAIR: copy exact hair color, length, texture, and hairstyle — curly, straight, coils, braids, whatever the child has
 - GENDER: match exactly
 - FRECKLES or MARKS: include any visible facial features
 
@@ -111,13 +111,13 @@ POSE: Full body standing in a gentle 3/4 pose. Sweet innocent smile. Big beautif
 
 OUTFIT: Ivory or cream flower girl dress with soft tulle skirt, delicate floral details, short flutter sleeves, blush pink ribbon sash or bow at the waist. Simple white mary jane wedding shoes. Child holds a small woven wicker petal basket filled with blush pink flower petals in one hand.
 
-ART STYLE â€” CRITICAL: Premium high-end soft 3D children's book illustration â€” the same quality as the best Pixar/Disney animated characters, but rendered with a SOFT, WARM, MATTE, PAINTERLY feel:
-- SOFT DIFFUSE WARM LIGHTING: gentle all-around warmth that wraps the character softly â€” NOT dramatic theatrical lighting, NOT hard shadows from one side
-- SMOOTH MATTE SKIN: natural warm skin tones with subtle rosy warmth on cheeks, nose tip, and chin â€” NO harsh bright specular highlights, NO shiny overexposed skin patches
+ART STYLE — CRITICAL: Premium high-end soft 3D children's book illustration — the same quality as the best Pixar/Disney animated characters, but rendered with a SOFT, WARM, MATTE, PAINTERLY feel:
+- SOFT DIFFUSE WARM LIGHTING: gentle all-around warmth that wraps the character softly — NOT dramatic theatrical lighting, NOT hard shadows from one side
+- SMOOTH MATTE SKIN: natural warm skin tones with subtle rosy warmth on cheeks, nose tip, and chin — NO harsh bright specular highlights, NO shiny overexposed skin patches
 - SOFT warm glow gently outlining the hair edges and shoulders for gentle dimensional depth
 - Highly detailed 3D hair with natural texture, volume, and soft individual strand quality
 - Big rounded 3D eyes with beautiful soft iris detail, gentle natural catchlights, and long soft lashes
-- Overall quality: smooth, warm, matte, soft, premium â€” like a beautifully crafted collectible figurine, rendered softly and warmly in 3D
+- Overall quality: smooth, warm, matte, soft, premium — like a beautifully crafted collectible figurine, rendered softly and warmly in 3D
 
 This must NOT look like a flat 2D illustration or sticker. It must be fully 3D with soft warm depth. Not harsh, not over-lit, not too shiny.
 
@@ -125,44 +125,44 @@ BACKGROUND: Plain clean warm cream. No scenery, no props except the basket. No t
 
 FORMAT: Full body head to toe. Character centered. Clear space all sides.`
 
-const FLOWER_GIRL_CONSISTENCY_NOTE = `CRITICAL â€” CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the flower girl character reference. Use the EXACT same child â€” identical face, identical hair color and style, identical skin tone. Unless this page prompt explicitly says the character is in pajamas or sleeping clothes, always show her in the identical ivory cream flower girl dress with blush pink sash and small wedding shoes. If the page specifies pajamas or sleeping clothes, change the outfit accordingly while keeping her face, hair, and skin tone perfectly identical to the reference. Do not substitute a generic character. Do not alter their appearance in any way.`
+const FLOWER_GIRL_CONSISTENCY_NOTE = `CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the flower girl character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone. Unless this page prompt explicitly says the character is in pajamas or sleeping clothes, always show her in the identical ivory cream flower girl dress with blush pink sash and small wedding shoes. If the page specifies pajamas or sleeping clothes, change the outfit accordingly while keeping her face, hair, and skin tone perfectly identical to the reference. Do not substitute a generic character. Do not alter their appearance in any way.`
 
-// â”€â”€â”€ God's Promises global style â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€â"€ God's Promises global style â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
 const GLOBAL_STYLE = `
-GLOBAL RULES â€” apply to every page:
+GLOBAL RULES — apply to every page:
 
-ART STYLE: Pixar/Disney 3D animated feature film quality. Warm cinematic lighting. Soft volumetric light rays. Full bleed 2:1 landscape canvas (wider than tall â€” like an open book spread). No borders. No watermarks.
+ART STYLE: Pixar/Disney 3D animated feature film quality. Warm cinematic lighting. Soft volumetric light rays. Full bleed 2:1 landscape canvas (wider than tall — like an open book spread). No borders. No watermarks.
 
-CHARACTER: The exact child from the reference image â€” match their face, hair, and skin tone precisely. They wear a beige knit cardigan sweater with buttons and cream pants. Show full body head to toe unless the scene has them sleeping or kneeling.
+CHARACTER: The exact child from the reference image — match their face, hair, and skin tone precisely. They wear a beige knit cardigan sweater with buttons and cream pants. Show full body head to toe unless the scene has them sleeping or kneeling.
 
-SPINE ZONE â€” CRITICAL: The center 12% of the image is the book spine/binding area. Place NO character body, face, text, or important elements here. Character must stand clearly in the LEFT half or clearly in the RIGHT half â€” never straddling center. Background scenery only may pass through naturally.
+SPINE ZONE — CRITICAL: The center 12% of the image is the book spine/binding area. Place NO character body, face, text, or important elements here. Character must stand clearly in the LEFT half or clearly in the RIGHT half — never straddling center. Background scenery only may pass through naturally.
 
-NO CENTER FOLD â€” CRITICAL: Do NOT render any center spine line, fold crease, gutter shadow, depth gradient, or visual divide at the horizontal midpoint. The canvas is a completely flat seamless 2:1 spread â€” background, sky, scenery, and lighting must flow continuously from the left edge to the right edge with no interruption, darkening, or separation at center.
+NO CENTER FOLD — CRITICAL: Do NOT render any center spine line, fold crease, gutter shadow, depth gradient, or visual divide at the horizontal midpoint. The canvas is a completely flat seamless 2:1 spread — background, sky, scenery, and lighting must flow continuously from the left edge to the right edge with no interruption, darkening, or separation at center.
 
-TEXT RENDERING: Render only the exact text content shown in each prompt. No font names. No labels. No extra words. Render every word EXACTLY as written â€” same case, same spelling, no alterations. If text is ALL-CAPS in the prompt, render it ALL-CAPS. If text is mixed case, render it mixed case. Never change the case of any word.
+TEXT RENDERING: Render only the exact text content shown in each prompt. No font names. No labels. No extra words. Render every word EXACTLY as written — same case, same spelling, no alterations. If text is ALL-CAPS in the prompt, render it ALL-CAPS. If text is mixed case, render it mixed case. Never change the case of any word.
 `
 
 export const BOOKS: Book[] = [
 
-  // ARCHIVED â€” God's Promises For You (legacy full-prompt pipeline; replaced by Spoken Over You)
+  // ARCHIVED — God's Promises For You (legacy full-prompt pipeline; replaced by Spoken Over You)
   // Re-enable by uncommenting the block below.
   // {
   //   slug: 'gods-promises-for-you',
   //   title: "God's Promises For You",
 
-  // â”€â”€â”€ Before the Music Plays â€” Version 1 and Version 2 removed from site â”€â”€â”€â”€â”€
+  // â"€â"€â"€ Before the Music Plays — Version 1 and Version 2 removed from site â"€â"€â"€â"€â"€
   // Slug: before-the-music-plays-1 and before-the-music-plays-2
   // Entries deleted 2026-07-04. Keep only 'before-the-music-plays' below.
 
-  // â”€â”€â”€ Before the Music Plays â€” compositing pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  // No pagePrompts â€” route.tsx detects this slug and uses the new compositing
+  // â"€â"€â"€ Before the Music Plays — compositing pipeline â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+  // No pagePrompts — route.tsx detects this slug and uses the new compositing
   // pipeline (src/lib/books/before-the-music-plays.ts + src/lib/compositeText.ts)
   // instead of sending full-page prompts to Gemini.
   {
     slug: 'before-the-music-plays',
     title: 'Before the Music Plays',
-    subtitle: 'A flower girl story â€” personalized with her face',
+    subtitle: 'A flower girl story — personalized with her face',
     price: 23.98,
     coverImage: '/books/before-the-music-plays/card-cover.png',
     cardImage:  '/books/before-the-music-plays/card-cover.png',
@@ -183,8 +183,8 @@ export const BOOKS: Book[] = [
     tags: ['wedding', 'new'],
     recipient: ['toddler', 'child'],
     occasion: ['wedding', 'any'],
-    description: "A beautiful personalized storybook for your little flower girl â€” the story of her special day, told with her face on every page. 17 stunning spreads capturing every magical moment from getting dressed to walking down the aisle.",
-    shortDesc: 'The story of her flower girl day â€” personalized with her face.',
+    description: "A beautiful personalized storybook for your little flower girl — the story of her special day, told with her face on every page. 17 stunning spreads capturing every magical moment from getting dressed to walking down the aisle.",
+    shortDesc: 'The story of her flower girl day — personalized with her face.',
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
@@ -192,7 +192,7 @@ export const BOOKS: Book[] = [
     featured: true,
     highlights: [
       "Personalized with your flower girl's name and her face on every page",
-      'Her full journey â€” from getting ready to walking down the aisle',
+      'Her full journey — from getting ready to walking down the aisle',
       'A keepsake she will treasure from her special wedding day',
       'The perfect gift for your flower girl, before or after the big day',
     ],
@@ -207,16 +207,16 @@ export const BOOKS: Book[] = [
   },
 
 
-  // ARCHIVED â€” Can You Be My Ring Bearer? (re-enable when ready to relaunch)
+  // ARCHIVED — Can You Be My Ring Bearer? (re-enable when ready to relaunch)
 
-  // ARCHIVED â€” You Were Here First (re-enable when ready to relaunch)
+  // ARCHIVED — You Were Here First (re-enable when ready to relaunch)
   // Pipeline config (bookRenderConfig.ts + you-were-here-first.ts) remains active
   // so that any existing orders can still be generated via the staff pipeline.
 
   // {
   //   slug: 'you-were-here-first',
   //   title: 'You Were Here First',
-  //   subtitle: 'A big-sibling story â€” personalized with their face',
+  //   subtitle: 'A big-sibling story — personalized with their face',
   //   price: 23.98,
   //   coverImage: '/books/you-were-here-first/card-cover.png',
   //   cardImage:  '/books/you-were-here-first/card-cover.png',
@@ -238,7 +238,7 @@ export const BOOKS: Book[] = [
   //   recipient: ['toddler', 'child'],
   //   occasion: ['baby-shower', 'any'],
   //   description: "A gentle, personalized picture book for a soon-to-be big sibling, reassuring the child that they were loved first and will always be loved just as much once the new baby arrives.",
-  //   shortDesc: 'For the big sibling â€” personalized with their face, their name, and their baby\'s arrival.',
+  //   shortDesc: 'For the big sibling — personalized with their face, their name, and their baby\'s arrival.',
   //   badge: 'New',
   //   badgeColor: '#E8836A',
   //   rating: 5.0,
@@ -246,7 +246,7 @@ export const BOOKS: Book[] = [
   //   featured: true,
   //   highlights: [
   //     "Personalized with your child's name and their face on every page",
-  //     'Gently reassures the big sibling that they were loved first â€” and always will be',
+  //     'Gently reassures the big sibling that they were loved first — and always will be',
   //     'Closes with a keepsake page: sibling name, baby name, and birth date',
   //     'The perfect gift before or after the new baby arrives',
   //   ],
@@ -256,7 +256,7 @@ export const BOOKS: Book[] = [
   {
     slug: 'you-were-here-first-child-focus',
     title: 'You Were Here First',
-    subtitle: 'A big-sibling story â€” personalized with their face',
+    subtitle: 'A big-sibling story — personalized with their face',
     price: 23.98,
     coverImage: '/books/you-were-here-first-child-focus/card-cover.png',
     cardImage:  '/books/you-were-here-first-child-focus/card-cover.png',
@@ -278,7 +278,7 @@ export const BOOKS: Book[] = [
     recipient: ['toddler', 'child'],
     occasion: ['baby-shower', 'any'],
     description: "A gentle, personalized picture book for a soon-to-be big sibling, reassuring the child that they were loved first and will always be loved just as much once the new baby arrives.",
-    shortDesc: "For the big sibling â€” personalized with their face, their name, and their baby's arrival.",
+    shortDesc: "For the big sibling — personalized with their face, their name, and their baby's arrival.",
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
@@ -286,7 +286,7 @@ export const BOOKS: Book[] = [
     featured: true,
     highlights: [
       "Personalized with your child's name and their face on every page",
-      'Gently reassures the big sibling that they were loved first â€” and always will be',
+      'Gently reassures the big sibling that they were loved first — and always will be',
       'Closes with a keepsake page: sibling name, baby name, and birth date',
       'The perfect gift before or after the new baby arrives',
     ],
@@ -318,8 +318,8 @@ export const BOOKS: Book[] = [
     tags: ['faith', 'new'],
     recipient: ['baby', 'toddler', 'child'],
     occasion: ['baptism', 'birthday', 'christmas', 'easter', 'any'],
-    description: "A one-of-a-kind personalized storybook where your child is the main character â€” woven through 14 stunning pages of God's promises, brought to life with their face and name.",
-    shortDesc: "God's promises made personal â€” 14 stunning pages for your child.",
+    description: "A one-of-a-kind personalized storybook where your child is the main character — woven through 14 stunning pages of God's promises, brought to life with their face and name.",
+    shortDesc: "God's promises made personal — 14 stunning pages for your child.",
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
@@ -327,9 +327,9 @@ export const BOOKS: Book[] = [
     featured: true,
     highlights: [
       "Personalized with your child's face and name on every page",
-      "14 pages of God's promises â€” beautifully illustrated in 3D Pixar style",
+      "14 pages of God's promises — beautifully illustrated in 3D Pixar style",
       "Perfect for baptism, birthday, Christmas, Easter, or any faith occasion",
-      "Closes with a personal keepsake page â€” name, signature, and date",
+      "Closes with a personal keepsake page — name, signature, and date",
     ],
     coverLogoStyle: 'white',
   },
@@ -363,20 +363,20 @@ export type Review = {
 
 export const REVIEWS: Review[] = [
   {
-    name: 'Hiten',
-    rating: 5,
-    text: "Everything about this product is amazing! The cartoon pic, the quality, the finish. Our son absolutely loves it too. We did have some changes we wanted and the customer service was excellent, we were never told no â€” nothing was too big to update for usâ€¦honestly would recommend them without hesitation!",
-    book: 'Before the Music Plays',
-    avatar: 'H',
-    photo: '/books/before-the-music-plays/listings/01-lifestyle-toddler-holding.png',
-  },
-  {
     name: 'Darice',
     rating: 5,
-    text: "Love this book! I bought 2 already and looking forward to buy again.",
+    text: 'Love this book! I bought 2 already and looking forward to buy again.',
     book: 'You Were Here First',
     avatar: 'D',
     photo: '/books/you-were-here-first-child-focus/listings/lifestyle-boy-reading.png',
+  },
+  {
+    name: 'Nichola',
+    rating: 5,
+    text: 'This is such a great book. My grandson loved me reading it to him and the fact that he features in it makes it even more special.',
+    book: 'You Were Here First',
+    avatar: 'N',
+    photo: '/images/reviews/nichola.png',
   },
   {
     name: 'Melinda',
@@ -389,25 +389,9 @@ export const REVIEWS: Review[] = [
   {
     name: 'Gina',
     rating: 5,
-    text: "The seller went over and above to accommodate my request. Very happy with the purchase!",
+    text: 'The seller went over and above to accommodate my request. Very happy with the purchase!',
     book: 'You Were Here First',
     avatar: 'G',
     photo: '/books/you-were-here-first-child-focus/listings/01-lifestyle-hero.png',
-  },
-  {
-    name: 'Cindy',
-    rating: 5,
-    text: "Beautiful book, keepsake. Quality material, from cover to pages, color and design â€” perfect!",
-    book: 'Before the Music Plays',
-    avatar: 'C',
-    photo: '/books/before-the-music-plays/listings/05-dedication-page-closeup.png',
-  },
-  {
-    name: 'Nichola',
-    rating: 5,
-    text: "This is such a great book. My grandson loved me reading it to him and the fact that he features in it makes it even more special.",
-    book: 'You Were Here First',
-    avatar: 'N',
-    photo: '/images/reviews/nichola.png',
   },
 ]

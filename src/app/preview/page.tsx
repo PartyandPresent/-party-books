@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -44,6 +44,14 @@ export default function PreviewPage() {
   )
   const [overallProgress, setOverallProgress] = useState(0)
   const [coverFormat, setCoverFormatLocal] = useState<CoverFormat>('hardcover8')
+  const [charMsgIndex, setCharMsgIndex] = useState(0)
+  const [charMsgVisible, setCharMsgVisible] = useState(true)
+
+  // Zoom lightbox
+  const [zoomOpen, setZoomOpen] = useState(false)
+  const zoomContainerRef = useRef<HTMLDivElement>(null)
+  const zoomImgRef = useRef<HTMLImageElement>(null)
+  const zoomLive = useRef({ scale: 1, ox: 0, oy: 0, dragging: false, sx: 0, sy: 0, pd: 0 })
 
   useEffect(() => {
     if (!photoDataUrl || !selectedSlug) {
@@ -52,6 +60,92 @@ export default function PreviewPage() {
     }
     generateCharacter()
   }, [])
+
+  // Cycle through character-loading messages with a fade
+  useEffect(() => {
+    if (status !== 'loading-character') return
+    setCharMsgIndex(0)
+    setCharMsgVisible(true)
+    const iv = setInterval(() => {
+      setCharMsgVisible(false)
+      setTimeout(() => {
+        setCharMsgIndex(prev => Math.min(prev + 1, 7))
+        setCharMsgVisible(true)
+      }, 350)
+    }, 3500)
+    return () => clearInterval(iv)
+  }, [status])
+
+  // Non-passive wheel + touch listeners for the zoom container
+  useEffect(() => {
+    if (!zoomOpen) return
+    const lv = zoomLive.current
+    lv.scale = 1; lv.ox = 0; lv.oy = 0; lv.dragging = false
+
+    const applyT = () => {
+      if (zoomImgRef.current)
+        zoomImgRef.current.style.transform = `translate(${lv.ox}px,${lv.oy}px) scale(${lv.scale})`
+    }
+    applyT()
+
+    const el = zoomContainerRef.current
+    if (!el) return
+
+    const hypot = (t: TouchList) =>
+      Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY)
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      lv.scale = Math.max(1, Math.min(5, lv.scale * (e.deltaY < 0 ? 1.12 : 0.89)))
+      if (lv.scale === 1) { lv.ox = 0; lv.oy = 0 }
+      applyT()
+    }
+    const ts = (e: TouchEvent) => {
+      if (e.touches.length === 2) { lv.dragging = false; lv.pd = hypot(e.touches) }
+      else { lv.dragging = true; lv.sx = e.touches[0].clientX - lv.ox; lv.sy = e.touches[0].clientY - lv.oy }
+    }
+    const tm = (e: TouchEvent) => {
+      e.preventDefault()
+      if (e.touches.length === 2) {
+        const nd = hypot(e.touches)
+        lv.scale = Math.max(1, Math.min(5, lv.scale * nd / lv.pd))
+        lv.pd = nd; applyT()
+      } else if (lv.dragging && lv.scale > 1) {
+        lv.ox = e.touches[0].clientX - lv.sx
+        lv.oy = e.touches[0].clientY - lv.sy
+        applyT()
+      }
+    }
+    const te = () => {
+      lv.dragging = false
+      if (lv.scale <= 1.05) { lv.scale = 1; lv.ox = 0; lv.oy = 0; applyT() }
+    }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setZoomOpen(false) }
+
+    el.addEventListener('wheel', onWheel, { passive: false })
+    el.addEventListener('touchstart', ts, { passive: false })
+    el.addEventListener('touchmove', tm, { passive: false })
+    el.addEventListener('touchend', te)
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      el.removeEventListener('wheel', onWheel)
+      el.removeEventListener('touchstart', ts)
+      el.removeEventListener('touchmove', tm)
+      el.removeEventListener('touchend', te)
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [zoomOpen])
+
+  // Reset zoom when the viewed page changes inside the lightbox
+  useEffect(() => {
+    if (!zoomOpen) return
+    const lv = zoomLive.current
+    lv.scale = 1; lv.ox = 0; lv.oy = 0
+    if (zoomImgRef.current)
+      zoomImgRef.current.style.transform = 'translate(0px,0px) scale(1)'
+  }, [currentPage, zoomOpen])
 
   // ── Phase 1: Generate character ────────────────────────────────
   const generateCharacter = async () => {
@@ -152,6 +246,29 @@ export default function PreviewPage() {
     }
   }
 
+  // Zoom mouse handlers (React synthetic — fine for mouse, no passive issue)
+  const handleZoomMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return
+    const lv = zoomLive.current
+    lv.dragging = true; lv.sx = e.clientX - lv.ox; lv.sy = e.clientY - lv.oy
+  }
+  const handleZoomMouseMove = (e: React.MouseEvent) => {
+    const lv = zoomLive.current
+    if (!lv.dragging || lv.scale <= 1) return
+    lv.ox = e.clientX - lv.sx; lv.oy = e.clientY - lv.sy
+    if (zoomImgRef.current)
+      zoomImgRef.current.style.transform = `translate(${lv.ox}px,${lv.oy}px) scale(${lv.scale})`
+  }
+  const handleZoomMouseUp = () => { zoomLive.current.dragging = false }
+  const handleZoomDblClick = () => {
+    const lv = zoomLive.current
+    if (lv.scale > 1) { lv.scale = 1; lv.ox = 0; lv.oy = 0 }
+    else { lv.scale = 2.5 }
+    if (zoomImgRef.current)
+      zoomImgRef.current.style.transform = `translate(${lv.ox}px,${lv.oy}px) scale(${lv.scale})`
+  }
+  const openZoom = () => setZoomOpen(true)
+
   // ── Error screen ───────────────────────────────────────────────
   if (status === 'error') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
@@ -177,49 +294,86 @@ export default function PreviewPage() {
   )
 
   // ── Phase 1 loading: Generating character ──────────────────────
+  const pronoun = childGender === 'girl' ? 'her' : childGender === 'boy' ? 'his' : 'their'
+  const charMessages = [
+    `Analyzing ${childName}'s photo...`,
+    `Mapping ${pronoun} facial features...`,
+    `Building the 3D face structure...`,
+    `Sculpting ${pronoun} eyes and expression...`,
+    `Styling ${pronoun} hair and outfit...`,
+    `Rendering the illustration...`,
+    `Adding the final details...`,
+    `Almost ready — just a moment more...`,
+  ]
+
   if (status === 'loading-character') return (
     <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
       <Header />
-      <main style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
+      <main style={{ maxWidth: 520, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
 
-        {/* Animated portrait placeholder */}
-        <div style={{
-          width: 200, height: 200, borderRadius: '50%',
-          margin: '0 auto 32px',
-          background: `linear-gradient(135deg, ${BEIGE}, #E8E0D5)`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 72,
-          boxShadow: '0 8px 40px rgba(45,74,62,0.12)',
-          animation: 'pulse 1.8s ease-in-out infinite',
-        }}>
-          🧒
+        {/* Spinner ring + portrait */}
+        <div style={{ position: 'relative', width: 216, height: 216, margin: '0 auto 36px' }}>
+          {/* Gray track */}
+          <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '5px solid #EDE8E0' }} />
+          {/* Coral spinning arc */}
+          <div style={{
+            position: 'absolute', inset: 0, borderRadius: '50%',
+            border: '5px solid transparent',
+            borderTopColor: CORAL, borderRightColor: CORAL,
+            animation: 'spin 1.4s linear infinite',
+          }} />
+          {/* Portrait circle */}
+          <div style={{
+            position: 'absolute', inset: 10, borderRadius: '50%',
+            background: `linear-gradient(135deg, ${BEIGE}, #E8E0D5)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 64,
+            boxShadow: '0 6px 32px rgba(45,74,62,0.12)',
+            animation: 'pulse 2s ease-in-out infinite',
+          }}>
+            🧒
+          </div>
         </div>
 
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 30, fontWeight: 700, color: GREEN, marginBottom: 12 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 20 }}>
           Creating {childName}'s character...
         </h1>
-        <p style={{ fontSize: 15, color: BODY, lineHeight: 1.7, marginBottom: 32, maxWidth: 400, margin: '0 auto 32px' }}>
-          Our AI is studying {childName}'s photo to build a personalised Pixar-style character.
-          This takes about 20–30 seconds.
-        </p>
 
-        {/* Progress dots */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginBottom: 32 }}>
-          {[0, 1, 2].map(i => (
-            <div key={i} style={{
-              width: 10, height: 10, borderRadius: '50%', backgroundColor: CORAL,
-              animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
-            }} />
-          ))}
+        {/* Cycling status message */}
+        <div style={{
+          minHeight: 28, marginBottom: 20,
+          opacity: charMsgVisible ? 1 : 0,
+          transition: 'opacity 0.35s ease',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        }}>
+          <span style={{ fontSize: 13, color: CORAL }}>✦</span>
+          <p style={{ margin: 0, fontSize: 15, color: CORAL, fontWeight: 700 }}>
+            {charMessages[charMsgIndex]}
+          </p>
+          <span style={{ fontSize: 13, color: CORAL }}>✦</span>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{
+          width: '75%', maxWidth: 300, height: 5, backgroundColor: '#EDE8E0',
+          borderRadius: 50, margin: '0 auto 36px', overflow: 'hidden',
+        }}>
+          <div style={{
+            height: '100%',
+            width: `${Math.round((charMsgIndex + 1) / 8 * 90)}%`,
+            background: `linear-gradient(90deg, ${CORAL}, ${GREEN})`,
+            borderRadius: 50,
+            transition: 'width 0.8s ease',
+          }} />
         </div>
 
         <p style={{ fontSize: 13, color: MUTED }}>
-          Please don't close this tab
+          Please don't close this tab — this takes about 20–30 seconds
         </p>
 
         <style>{`
-          @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.04);opacity:0.85} }
-          @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+          @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:0.9} }
+          @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
         `}</style>
       </main>
       <Footer />
@@ -437,7 +591,8 @@ export default function PreviewPage() {
               <img
                 src={`data:image/png;base64,${pages[currentPage]}`}
                 alt={`Page ${currentPage + 1}`}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                onClick={openZoom}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }}
               />
             ) : (
               <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: MUTED, fontSize: 14 }}>
@@ -463,6 +618,23 @@ export default function PreviewPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
               }}>›</button>
+            )}
+
+            {/* Zoom button */}
+            {pages[currentPage] && (
+              <button
+                onClick={openZoom}
+                style={{
+                  position: 'absolute', bottom: 10, right: 10,
+                  backgroundColor: 'rgba(0,0,0,0.52)', color: '#fff',
+                  border: 'none', borderRadius: 50,
+                  padding: '5px 11px', fontSize: 12, fontWeight: 700,
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
+                  fontFamily: 'Nunito, sans-serif', letterSpacing: 0.3,
+                }}
+              >
+                🔍 Zoom
+              </button>
             )}
           </div>
 
@@ -604,6 +776,114 @@ export default function PreviewPage() {
 
       </main>
       <Footer />
+
+      {/* ── Zoom lightbox ──────────────────────────────────── */}
+      {zoomOpen && pages[currentPage] && (
+        <div
+          onClick={() => setZoomOpen(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            backgroundColor: 'rgba(0,0,0,0.93)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            userSelect: 'none',
+          }}
+        >
+          {/* Close */}
+          <button
+            onClick={e => { e.stopPropagation(); setZoomOpen(false) }}
+            style={{
+              position: 'absolute', top: 14, right: 14, zIndex: 10001,
+              background: 'rgba(255,255,255,0.13)', border: '1px solid rgba(255,255,255,0.22)',
+              color: '#fff', borderRadius: '50%', width: 42, height: 42,
+              fontSize: 20, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'Nunito, sans-serif',
+            }}
+          >✕</button>
+
+          {/* Page label */}
+          <div style={{
+            position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)',
+            color: 'rgba(255,255,255,0.92)', fontSize: 13, fontWeight: 700,
+            fontFamily: 'Nunito, sans-serif', whiteSpace: 'nowrap',
+            background: 'rgba(255,255,255,0.10)', padding: '4px 16px', borderRadius: 50,
+          }}>
+            {PREVIEW_LABELS[currentPage]} · {currentPage + 1} / {pages.filter(Boolean).length}
+          </div>
+
+          {/* Image + zoom/pan container */}
+          <div
+            ref={zoomContainerRef}
+            onClick={e => e.stopPropagation()}
+            onDoubleClick={handleZoomDblClick}
+            onMouseDown={handleZoomMouseDown}
+            onMouseMove={handleZoomMouseMove}
+            onMouseUp={handleZoomMouseUp}
+            onMouseLeave={handleZoomMouseUp}
+            style={{
+              width: isMobile ? '96vw' : '88vw',
+              height: isMobile ? '72vh' : '80vh',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden',
+              cursor: 'grab',
+              touchAction: 'none',
+              borderRadius: 8,
+            }}
+          >
+            <img
+              ref={zoomImgRef}
+              src={`data:image/png;base64,${pages[currentPage]}`}
+              alt={PREVIEW_LABELS[currentPage]}
+              style={{
+                maxWidth: '100%', maxHeight: '100%',
+                objectFit: 'contain', display: 'block',
+                transformOrigin: 'center center',
+                willChange: 'transform',
+                pointerEvents: 'none',
+                userSelect: 'none',
+                borderRadius: 4,
+              }}
+            />
+          </div>
+
+          {/* Prev arrow */}
+          {currentPage > 0 && (
+            <button
+              onClick={e => { e.stopPropagation(); setCurrentPage(p => p - 1) }}
+              style={{
+                position: 'absolute', left: isMobile ? 6 : 16, top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,0.13)', border: '1px solid rgba(255,255,255,0.22)',
+                color: '#fff', borderRadius: '50%', width: 48, height: 48,
+                fontSize: 28, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >‹</button>
+          )}
+
+          {/* Next arrow */}
+          {currentPage < pages.filter(Boolean).length - 1 && (
+            <button
+              onClick={e => { e.stopPropagation(); setCurrentPage(p => p + 1) }}
+              style={{
+                position: 'absolute', right: isMobile ? 6 : 16, top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,0.13)', border: '1px solid rgba(255,255,255,0.22)',
+                color: '#fff', borderRadius: '50%', width: 48, height: 48,
+                fontSize: 28, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >›</button>
+          )}
+
+          {/* Hint */}
+          <div style={{
+            position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
+            color: 'rgba(255,255,255,0.5)', fontSize: 12,
+            fontFamily: 'Nunito, sans-serif', whiteSpace: 'nowrap',
+          }}>
+            {isMobile ? 'Pinch to zoom · Drag to pan' : 'Scroll to zoom · Drag to pan · Double-click to toggle'}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
