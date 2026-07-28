@@ -216,33 +216,22 @@ async function generateCompositedPage(
 
   const bgBase64 = bgBuffer.toString('base64')
 
-  // The cover reference (page 0) has large text baked in that Gemini copies into
-  // the output even when told not to. Skip Image 3 for the cover.
-  const useRef = page.pageIndex !== 0
-  const refBase64 = useRef
-    ? (await fetchPublicFile(page.poseReference)).toString('base64')
-    : null
-
-  const imageRoles = useRef
-    ? `IMAGE ROLES:
-- IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.
-- IMAGE 3 is the LAYOUT REFERENCE. Use it ONLY to determine the character's position, scale, and pose within the frame — nothing else. Do NOT copy the character's appearance, hair, face, or skin from Image 3 (the child shown there is a placeholder with different features). IMAGE 3 CONTAINS PLACEHOLDER TEXT — treat that text as invisible. Do NOT render, trace, copy, or approximate any letter, word, or symbol you see in Image 3. The text area in your output must be a plain, softly faded, empty background with zero text of any kind.`
-    : `IMAGE ROLES:
-- IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
-- IMAGE 2 is the CHARACTER REFERENCE. This is the real child. Copy their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY into the output. Do NOT copy pixels from Image 2 — use it as identity reference only.`
-
+  // poseReference images are NOT sent to Gemini — they show a placeholder child and
+  // Gemini copies that child's appearance even with "don't copy" instructions.
+  // Scene composition is described entirely via characterActionPrompt text.
   const scenePrompt =
     `${page.characterActionPrompt}
 
-${imageRoles}
+IMAGE ROLES:
+- IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
+- IMAGE 2 is the CHARACTER REFERENCE — the real child this book is for. Reproduce their face, eyes, nose, lips, skin tone, hair colour, hair length, and hairstyle EXACTLY. IMAGE 2 is the ONLY valid source for the child's identity and appearance.
 
 RULES:
-- CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. If Image 3 shows a child with different hair (e.g. curly when Image 2 has straight, or a different colour) — ignore Image 3's hair completely and use Image 2's hair.
-- SKIN TONE — CRITICAL: The child's skin tone is a fixed identity attribute copied from Image 2. It must NOT change between pages or in response to scene lighting. Warm, golden, or cosy scene lighting must NOT tan or darken the skin. Cool or neutral lighting must NOT lighten or desaturate it. Do NOT apply ambient light colour to the character's skin. The skin tone in the output must be visually identical to Image 2 regardless of how warm, cool, bright, or dim the scene background is.
+- CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. Do NOT alter or blend the child's appearance based on scene lighting or environment.
+- SKIN TONE — CRITICAL: The child's skin tone is a fixed identity attribute from Image 2. It must NOT change in response to scene lighting. Warm or cosy lighting must NOT tan or darken it; cool lighting must NOT lighten or desaturate it. The skin tone in the output must be visually identical to Image 2 regardless of scene brightness or colour temperature.
 - HAIR: Do NOT add headdress, hat, crown, tiara, feathers, or any accessories not visible in Image 2.
 - COSTUME: Unless the scene description above explicitly specifies a different outfit, ${config.costumeRule}
-- TEXT — CRITICAL: Image 3 contains placeholder text baked in for layout reference only. You MUST NOT render, copy, trace, or approximate any letter, word, name, or symbol from Image 3 in your output. The text side of the canvas must be rendered as a clean, softly faded, plain background — completely empty of any text, letters, or words. Text is composited onto the image in a separate post-production step. Any text you generate will overlap with the composited text and ruin the final page.
+- TEXT: Leave all text areas of the canvas completely blank and clean — text is composited in post-production. Do NOT generate any letters, words, or labels.
 - GROUNDING: Add a subtle, soft contact shadow beneath the character's feet consistent with the lighting direction already present in Image 1.
 - OUTPUT: The complete scene. Same 2:1 landscape ratio as Image 1. No added text, watermarks, or labels of any kind.`
 
@@ -250,7 +239,6 @@ RULES:
     { inlineData: { mimeType: 'image/png', data: bgBase64 } },
     { inlineData: { mimeType: 'image/png', data: characterBase64 } },
   ]
-  if (refBase64) geminiParts.push({ inlineData: { mimeType: 'image/png', data: refBase64 } })
   geminiParts.push({ text: scenePrompt })
 
   const sceneBase64 = await callGemini(geminiParts)
