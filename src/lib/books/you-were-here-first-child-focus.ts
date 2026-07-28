@@ -20,8 +20,7 @@
 // - ⚠ Page_05 text uses [SIBLING_NAME] — likely a typo for [CHILD_NAME]. Awaiting decision.
 // - ⚠ Keepsake L4 uses [CHILD_FULL_NAME], [SIBLING_FULL_NAME], [SIBLING_BIRTH_DATE] — new
 //   frontend form fields required before this page can be fully personalized.
-// - ⚠ Decorative ornament "— ⊗ —" between title and subtitle (cover/keepsake) not implemented.
-//   Recommend baking into background PNGs.
+// - Decorative bow divider "— ⊗ —" implemented as SVG on cover. Keepsake divider baked into page_12_bg.png.
 // - Text color calibrated to '#2a4587' from reference images. Confirm after first test render.
 //
 // ASSET STATUS (2026-07-16 resolved):
@@ -69,7 +68,7 @@ export const youWereHereFirstChildFocus: { slug: string; title: string; pages: B
     // Layout order (cap-top Y coords):
     //   y=42   "You Were"         (title1, smaller)
     //   y=104  "Here First"       (title2, larger — swash arc is natural to BestSwashed)
-    //   y=265  "— ✦ —"            (divider, gold — ✦ falls back gracefully if not in Lora)
+    //   y=282  "— ⊗ —"            (bow divider, white, styled after page_12 keepsake gold divider)
     //   y=305  "A Story for …"    (subtitle, one row, above character head at ~38% = y=380)
     // svgOverlay: white gradient over top 36% of illustration only.
     {
@@ -109,10 +108,13 @@ Style: Premium stylized 3D children's storybook illustration. Use shallow depth 
         '<text x="1715.47" y="251.63" font-family="Best Swashed PERSONAL USE" font-size="88" fill="#2a4587" text-anchor="middle" transform="rotate(7.325, 1715.47, 148.85)">r</text>',
         '<text x="1773.59" y="260.11" font-family="Best Swashed PERSONAL USE" font-size="88" fill="#2a4587" text-anchor="middle" transform="rotate(9.270, 1773.59, 157.33)">s</text>',
         '<text x="1817.53" y="267.86" font-family="Best Swashed PERSONAL USE" font-size="88" fill="#2a4587" text-anchor="middle" transform="rotate(10.727, 1817.53, 165.07)">t</text>',
-        // White divider shifted -30px alongside "Here First".
-        '<line x1="1468.04" y1="282.70" x2="1488.39" y2="282.70" stroke="#FFFFFF" stroke-width="1.5"/>',
-        '<text x="1500" y="290.40" font-family="Lora" font-size="22" fill="#FFFFFF" text-anchor="middle">✦</text>',
-        '<line x1="1511.61" y1="282.70" x2="1531.96" y2="282.70" stroke="#FFFFFF" stroke-width="1.5"/>',
+        // Bow divider — white, styled after page_12 keepsake gold divider.
+        // Two long lines flanking a bowtie/ribbon ornament, centered at x=1500.
+        '<line x1="1252" y1="287" x2="1462" y2="287" stroke="#FFFFFF" stroke-width="1.5"/>',
+        '<path d="M 1500,287 C 1498,281 1488,277 1481,282 C 1474,287 1480,294 1490,293 C 1494,292 1498,290 1500,287" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>',
+        '<path d="M 1500,287 C 1502,281 1512,277 1519,282 C 1526,287 1520,294 1510,293 C 1506,292 1502,290 1500,287" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>',
+        '<circle cx="1500" cy="287" r="2" fill="#FFFFFF"/>',
+        '<line x1="1538" y1="287" x2="1748" y2="287" stroke="#FFFFFF" stroke-width="1.5"/>',
       ].join('\n'),
       textBlocks: [
         {
