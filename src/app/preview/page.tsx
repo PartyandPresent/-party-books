@@ -216,7 +216,7 @@ export default function PreviewPage() {
       }
 
       const data = await res.json()
-      const generatedPages: string[] = data.pages
+      const generatedPages: string[] = (data.pages as string[]).slice(0, PREVIEW_LABELS.length)
       setGeneratedPages(generatedPages)
 
       for (let i = 0; i < generatedPages.length; i++) {
