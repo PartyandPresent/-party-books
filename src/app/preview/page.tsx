@@ -15,8 +15,8 @@ const CREAM = '#FAFAF5'
 const BODY = '#4A5568'
 const MUTED = '#888888'
 
-const PREVIEW_INDICES = [0, 1, 2, 3, 16]
-const PREVIEW_LABELS = ['Cover', 'Dedication', 'Page 2', 'Page 3', 'Final Page']
+const PREVIEW_INDICES = [0, 2, 3, 16]
+const PREVIEW_LABELS = ['Cover', 'Dedication', 'Page 3', 'Final Page']
 
 type Status = 'loading-character' | 'character-ready' | 'loading-pages' | 'done' | 'error'
 type ErrorPhase = 'character' | 'pages'
@@ -36,11 +36,11 @@ export default function PreviewPage() {
   const [errorMsg, setErrorMsg] = useState('')
 
   const [characterBase64, setCharacterBase64] = useState<string | null>(null)
-  const [pages, setPages] = useState<(string | null)[]>([null, null, null, null, null])
+  const [pages, setPages] = useState<(string | null)[]>([null, null, null, null])
   const [currentPage, setCurrentPage] = useState(0)
 
   const [pageStatuses, setPageStatuses] = useState<('waiting' | 'loading' | 'done' | 'error')[]>(
-    ['waiting', 'waiting', 'waiting', 'waiting', 'waiting']
+    ['waiting', 'waiting', 'waiting', 'waiting']
   )
   const [overallProgress, setOverallProgress] = useState(0)
   const [coverFormat, setCoverFormatLocal] = useState<CoverFormat>('hardcover8')
@@ -184,8 +184,8 @@ export default function PreviewPage() {
   // ── Phase 2: Generate pages ────────────────────────────────────
   const generatePages = async () => {
     setStatus('loading-pages')
-    setPages([null, null, null, null, null])
-    setPageStatuses(['waiting', 'waiting', 'waiting', 'waiting', 'waiting'])
+    setPages([null, null, null, null])
+    setPageStatuses(['waiting', 'waiting', 'waiting', 'waiting'])
     setOverallProgress(0)
 
     try {
@@ -560,7 +560,7 @@ export default function PreviewPage() {
         </div>
 
         <p style={{ fontSize: 13, color: MUTED, marginTop: 24 }}>
-          Generating 5 preview pages — this takes about 60–90 seconds
+          Generating 4 preview pages — this takes about 60–90 seconds
         </p>
       </main>
       <Footer />
@@ -579,7 +579,7 @@ export default function PreviewPage() {
             {childName}'s book is ready!
           </h1>
           <p style={{ fontSize: 15, color: BODY }}>
-            Here's a preview of 5 pages — order to unlock all 17!
+            Here's a preview of 4 pages — order to unlock all 17!
           </p>
         </div>
 
@@ -639,7 +639,7 @@ export default function PreviewPage() {
           </div>
 
           <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, fontWeight: 700, margin: '0 0 16px' }}>
-            {PREVIEW_LABELS[currentPage]} — Page {currentPage + 1} of 5 preview pages
+            {PREVIEW_LABELS[currentPage]} — Page {currentPage + 1} of 4 preview pages
           </p>
 
           {/* Thumbnail strip */}
@@ -657,7 +657,7 @@ export default function PreviewPage() {
                 }
               </button>
             ))}
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: 13 }).map((_, i) => (
               <div key={`locked-${i}`} style={{
                 flexShrink: 0, width: 80, height: 45, borderRadius: 6,
                 border: '3px solid transparent', backgroundColor: '#E8E8E8',
@@ -683,7 +683,7 @@ export default function PreviewPage() {
           <div style={{ fontSize: 32 }}>🔒</div>
           <div style={{ flex: 1 }}>
             <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 16, color: GREEN }}>
-              12 more pages are waiting for {childName}!
+              13 more pages are waiting for {childName}!
             </p>
             <p style={{ margin: 0, fontSize: 14, color: BODY }}>
               Order now to unlock all 17 fully illustrated pages of {childName}'s personalized book.
