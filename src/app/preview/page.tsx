@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { type CoverFormat, COVER_FORMAT_PRICES, COVER_FORMAT_LABELS } from '@/lib/coverFormat'
+import { getBookBySlug } from '@/lib/books'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -15,7 +16,6 @@ const CREAM = '#FAFAF5'
 const BODY = '#4A5568'
 const MUTED = '#888888'
 
-const PREVIEW_INDICES = [0, 2, 3, 16]
 const PREVIEW_LABELS = ['Cover', 'Dedication', 'Page 3', 'Final Page']
 
 type Status = 'loading-character' | 'character-ready' | 'loading-pages' | 'done' | 'error'
@@ -31,6 +31,10 @@ export default function PreviewPage() {
   } = useOrderStore()
 
   const isMobile = useIsMobile()
+
+  const bookTotalPages = getBookBySlug(selectedSlug ?? '')?.totalPages ?? 17
+  const previewIndices = [0, 2, 3, bookTotalPages - 1]
+
   const [status, setStatus] = useState<Status>('loading-character')
   const [errorPhase, setErrorPhase] = useState<ErrorPhase>('character')
   const [errorMsg, setErrorMsg] = useState('')
@@ -202,7 +206,7 @@ export default function PreviewPage() {
           siblingBirthDate,
           giftDate,
           characterBase64,
-          previewIndices: PREVIEW_INDICES,
+          previewIndices,
         }),
       })
 
