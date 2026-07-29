@@ -135,15 +135,15 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       backgroundAsset: `${BG}/page-03-bg.png`,
       poseReference:   `${REF}/page-03.png`,
       characterActionPrompt:
-        'Scene: A precious Child sitting safely on a soft quilt beneath a blossoming tree in a peaceful garden. Around the Child are delicate butterflies, flower petals, tiny birds, a woven basket, and simple wooden play items. Warm dappled sunlight touches the Child\'s round cheeks, tiny fingers, and soft outfit, showing how carefully and beautifully the Child was made. The scene should feel lovingly detailed, gentle, and full of wonder.\n\nCharacters shows solid on the left side and not in the center.\n\n(Key details are showing solid/full)\n- blossoming tree (is seen all throughout the frame)\n- delicate butterflies (shows on top of the faded part as well, along with flower petals, tiny birds, a woven basket, and simple wooden play items)\n\nBackground: Dramatic blur\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
+        'Scene: A precious Child sitting safely on a soft quilt beneath a blossoming tree in a peaceful garden. Around the Child are delicate butterflies, flower petals, tiny birds, a woven basket, and simple wooden play items. Warm dappled sunlight touches the Child\'s round cheeks, tiny fingers, and soft outfit, showing how carefully and beautifully the Child was made. The scene should feel lovingly detailed, gentle, and full of wonder.\n\nCharacters shows solid on the right side and not in the center.\n\n(Key details are showing solid/full)\n- blossoming tree (is seen all throughout the frame)\n- delicate butterflies (shows on top of the faded part as well, along with flower petals, tiny birds, a woven basket, and simple wooden play items)\n\nBackground: Dramatic blur\n\nStyle: Premium stylized 3D children\'s storybook illustration. The character is sharply focused, while the environment fades into a softly blurred background. Use shallow depth of field, creamy bokeh, reduced background contrast, vibrant background colors, atmospheric haze. Soft diffused daylight, delicate highlights, gentle shadows, subtle rim light, balanced neutral-to-cool tones, no strong yellow tint. High-end cinematic 3D render, animated-feature quality, global illumination, subsurface skin scattering, volumetric lighting, smooth materials, realistic cloth and hair, clean composition, dreamy heartwarming atmosphere, 50mm lens, wide aperture, high resolution.',
       includesSenderCharacter: false,
-      // Text Zone: RIGHT — character on LEFT (prompt: "left side")
-      characterPlacement: { x: 175, y: 116, width: 564, height: 851 },
+      // Text Zone: LEFT — character on RIGHT (background scene is right side)
+      characterPlacement: { x: 1261, y: 116, width: 564, height: 851 },
       textBlocks: [
         {
           id: 'quote',
           template: '"Before I formed you in the womb, I knew you."',
-          x: 1186, y: 314, maxWidth: 636,
+          x: 166, y: 314, maxWidth: 636,
           fontFamily: BODY, fontSize: 21.9,
           color: MINT, align: 'center',
           strokeColor: DARK, strokeWidth: SW_QUOTE,
@@ -151,7 +151,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'reference',
           template: 'JEREMIAH 1:5',
-          x: 1337, y: 360, maxWidth: 334,
+          x: 333, y: 360, maxWidth: 334,
           fontFamily: BODY, fontSize: 29.9,
           color: YELLOW, align: 'center',
           strokeColor: DARK, strokeWidth: SW_BODY,
@@ -159,7 +159,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
         {
           id: 'body',
           template: 'Before the world had your name in it, God did.\n\nYou were not a surprise to Him, [CHILD_NAME].\nYou were a plan.',
-          x: 1166, y: 484, maxWidth: 669,
+          x: 166, y: 484, maxWidth: 669,
           fontFamily: BODY, fontSize: 29.9,
           color: WHITE, align: 'center', lineHeight: 1.62,
           strokeColor: DARK, strokeWidth: SW_BODY,
