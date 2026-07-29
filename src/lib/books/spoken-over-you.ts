@@ -56,19 +56,22 @@ const SW_BODY  = 4.5
 const SW_P02   = 3.9
 
 // ─── Character prompt (exported for bookRenderConfig) ────────────────────────
-export const SPOKEN_OVER_YOU_CHARACTER_PROMPT = `translated into a high-quality 3D Pixar/Disney-style cartoon look with rounded child-friendly age 6-8 proportions and expressive eyes.
+export const SPOKEN_OVER_YOU_CHARACTER_PROMPT = `Create a full-body 3D Pixar/Disney-style cartoon character of the EXACT child shown in the uploaded photo, translated into a high-quality animated look with rounded child-friendly age 6-8 proportions and expressive eyes.
 
-IMPORTANT:
-Features must match the "Skin tone", Face, "Hair", teeth, nose features of the reference photo.
+COPY EXACTLY FROM THE PHOTO:
+- FACE: same face shape, same eyes, same nose, same lips — faithful likeness, not a generic child
+- SKIN TONE: copy exact skin tone — do not lighten, darken, or alter in any way
+- HAIR: copy exact hair colour, length, and hairstyle exactly as shown
+- GENDER: match exactly — girl generates a girl character, boy generates a boy character
+- FRECKLES or MARKS: include any visible facial features
 
-Strictly the hair, eyes, skin tone and nose.
+CLOTHING — use the outfit that matches the child's gender ONLY. Do NOT show both outfits:
+- If GIRL: Blue Mini Dress with white ribbon at the waist, white doll shoes (no leggings)
+- If BOY: White Polo Shirt with Checkered Necktie, dark pants, small shoes
 
-Clothing:
-Blue Mini Dress with white ribbon in the waist wearing a white doll shoes style (No leggings) for Girls
-White Polo Shirt with Checkered Necktie and Pants for Boys
-
-Whole Body: Rest hands
-Background: Plain White`
+POSE: Full body, head to toe. Relaxed natural standing pose. Arms resting naturally at the sides.
+BACKGROUND: Plain clean white only. No scenery, no props, no text.
+OUTPUT: ONE single child character only. Do NOT generate two characters or show both genders.`
 
 // ─── Pages ───────────────────────────────────────────────────────────────────
 

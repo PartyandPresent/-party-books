@@ -83,10 +83,9 @@ function injectGender(prompt: string, gender: 'girl' | 'boy' | ''): string {
   if (!gender) return prompt
   const genderWord = gender === 'girl' ? 'GIRL' : 'BOY'
   const injection = `GENDER — EXPLICIT OVERRIDE: This child is a ${genderWord}. Generate a ${genderWord} character regardless of hairstyle length, hair style, or any other visual cue in the photo. Do NOT infer gender from the photo.`
-  return prompt.replace(
-    /- GENDER:.*(\n|$)/,
-    `- ${injection}\n`
-  )
+  const replaced = prompt.replace(/- GENDER:.*(\n|$)/, `- ${injection}\n`)
+  // If the pattern wasn't found, prepend the override so it always takes effect.
+  return replaced !== prompt ? replaced : `${injection}\n\n${prompt}`
 }
 
 export async function POST(req: NextRequest) {
