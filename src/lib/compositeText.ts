@@ -212,7 +212,7 @@ function buildSVG(
   canvasWidth: number,
   canvasHeight: number,
   bookSlug: string,
-  svgOverlay?: string,
+  svgOverlay?: string | string[],
 ): string {
   ensureFontsRegistered([bookSlug])
 
@@ -270,7 +270,7 @@ function buildSVG(
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${canvasWidth}" height="${canvasHeight}">` +
     `<defs><style>${fontFaceRules}</style></defs>` +
-    (svgOverlay ?? '') +
+    (Array.isArray(svgOverlay) ? svgOverlay.join('') : (svgOverlay ?? '')) +
     textElements +
     `</svg>`
   )
@@ -428,7 +428,7 @@ export async function compositeTextBlocks(
   canvasWidth: number,
   canvasHeight: number,
   bookSlug: string,
-  svgOverlay?: string,
+  svgOverlay?: string | string[],
 ): Promise<Buffer> {
   if (textBlocks.length === 0 && !svgOverlay) return imageBuffer
 

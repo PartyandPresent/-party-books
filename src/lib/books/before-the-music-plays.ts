@@ -60,7 +60,7 @@ export interface BookPage {
   protectedBackgroundAreas?: Array<{ x: number; y: number; width: number; height: number }>
   // Raw SVG element string(s) injected into the text overlay SVG before text elements.
   // Rendered below text — use for gradient overlays, decorative shapes, etc.
-  svgOverlay?: string
+  svgOverlay?: string | string[]
   textBlocks: BookPageTextBlock[]
 }
 
