@@ -88,6 +88,9 @@ export type Book = {
   characterPrompt?: string
   characterConsistencyNote?: string
   coverLogoStyle?: 'white' | 'color'
+  // Overrides the default preview indices [0, 2, 3, totalPages-1] for books
+  // whose dedication or notable pages live at non-standard positions.
+  previewPageIndices?: [number, number, number, number]
 }
 
 export function getBookBySlug(slug: string): Book | undefined {
@@ -315,6 +318,8 @@ export const BOOKS: Book[] = [
       sizeInHand:              '/books/spoken-over-you/listings/10-size-in-hand.png',
     },
     totalPages: 14,
+    // SOY dedication is at pageIndex 1 (page-02-bg), not the default 2.
+    previewPageIndices: [0, 1, 2, 13],
     tags: ['faith', 'new'],
     recipient: ['baby', 'toddler', 'child'],
     occasion: ['baptism', 'birthday', 'christmas', 'easter', 'any'],

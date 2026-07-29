@@ -32,8 +32,9 @@ export default function PreviewPage() {
 
   const isMobile = useIsMobile()
 
-  const bookTotalPages = getBookBySlug(selectedSlug ?? '')?.totalPages ?? 17
-  const previewIndices = [0, 2, 3, bookTotalPages - 1]
+  const book = getBookBySlug(selectedSlug ?? '')
+  const bookTotalPages = book?.totalPages ?? 17
+  const previewIndices = book?.previewPageIndices ?? [0, 2, 3, bookTotalPages - 1]
 
   const [status, setStatus] = useState<Status>('loading-character')
   const [errorPhase, setErrorPhase] = useState<ErrorPhase>('character')
