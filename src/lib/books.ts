@@ -170,6 +170,8 @@ export const BOOKS: Book[] = [
     title: 'Before the Music Plays',
     subtitle: 'A flower girl story — personalized with her face',
     price: 23.98,
+    // Dedication is at pageIndex 1 (page-01-bg); preview must include it explicitly.
+    previewPageIndices: [0, 1, 2, 16],
     coverImage: '/books/before-the-music-plays/card-cover.png',
     cardImage:  '/books/before-the-music-plays/card-cover.png',
     previewImages: [],
