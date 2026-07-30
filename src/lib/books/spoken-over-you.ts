@@ -125,7 +125,7 @@ export const spokenOverYou: { slug: string; title: string; pages: BookPage[] } =
       textBlocks: [
         {
           id: 'body',
-          template: 'These words were spoken long before you were born, [CHILD_NAME].\n\nThey have been waiting for you all along.',
+          template: '[DEDICATION]',
           x: 1113, y: 307, maxWidth: 372,
           fontFamily: BODY, fontSize: 26.0,
           color: DARK, align: 'center', lineHeight: 1.5,

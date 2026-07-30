@@ -91,6 +91,9 @@ export type Book = {
   // Overrides the default preview indices [0, 2, 3, totalPages-1] for books
   // whose dedication or notable pages live at non-standard positions.
   previewPageIndices?: [number, number, number, number]
+  // Default text shown on the dedication page when the customer provides no custom message.
+  // May contain [CHILD_NAME] — it is pre-resolved before rendering.
+  defaultDedication?: string
 }
 
 export function getBookBySlug(slug: string): Book | undefined {
@@ -200,6 +203,7 @@ export const BOOKS: Book[] = [
       'The perfect gift for your flower girl, before or after the big day',
     ],
     coverLogoStyle: 'white',
+    defaultDedication: 'For [CHILD_NAME], who said yes.\nAnd for the day that needed exactly the right person to make it complete.',
     characterPrompt: FLOWER_GIRL_CHARACTER_PROMPT,
     characterConsistencyNote: FLOWER_GIRL_CONSISTENCY_NOTE,
     accordionContent: {
@@ -261,6 +265,7 @@ export const BOOKS: Book[] = [
     title: 'You Were Here First',
     subtitle: 'A big-sibling story — personalized with their face',
     price: 23.98,
+    defaultDedication: 'the very first,\nand always so loved.',
     coverImage: '/books/you-were-here-first-child-focus/card-cover.png',
     cardImage:  '/books/you-were-here-first-child-focus/card-cover.png',
     previewImages: [],
@@ -302,6 +307,7 @@ export const BOOKS: Book[] = [
     title: 'Spoken Over You',
     subtitle: "God's Promises for [Child's Name]",
     price: 23.98,
+    defaultDedication: 'These words were spoken long before you were born, [CHILD_NAME].\n\nThey have been waiting for you all along.',
     coverImage: '/books/spoken-over-you/card-cover.png',
     cardImage:  '/books/spoken-over-you/card-cover.png',
     previewImages: [],

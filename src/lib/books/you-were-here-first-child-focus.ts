@@ -175,7 +175,7 @@ ${STYLE_SUFFIX}`,
         },
         {
           id: 'ded-tagline',
-          template: 'the very first,\nand always so loved.',
+          template: '[DEDICATION]',
           x: 1030, y: 555, maxWidth: 950,
           fontFamily: TITLE_FONT, fontSize: 48,
           color: WHITE, align: 'left',

@@ -125,7 +125,9 @@ async function generateCompositedPage(
     CHILD_FULL_NAME:    customer.childName,
     SENDER_NAME:        customer.senderName,
     CHILD_NAME_UPPER:   customer.childName.toUpperCase(),
-    DEDICATION:         customer.dedication || `A special book made with love just for ${customer.childName}.`,
+    DEDICATION:         customer.dedication ||
+      getBookBySlug(config.bookSlug)?.defaultDedication?.replace(/\[CHILD_NAME\]/g, customer.childName) ||
+      `A special book made with love just for ${customer.childName}.`,
     SIBLING_NAME:       customer.siblingName      || '',
     SIBLING_FULL_NAME:  customer.siblingFullName  || customer.siblingName || '',
     SIBLING_BIRTH_DATE: customer.siblingBirthDate || customer.birthDate   || '',
@@ -386,7 +388,9 @@ export async function POST(req: NextRequest) {
           .replace(/\[CHILD_NAME_UPPER\]/g, childName.toUpperCase())
           .replace(/\[CHILD_NAME\]/g, childName)
           .replace(/\[SENDER_NAME\]/g, senderName || '')
-          .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)
+          .replace(/\[DEDICATION\]/g, dedication ||
+            book.defaultDedication?.replace(/\[CHILD_NAME\]/g, childName) ||
+            `A special book made with love just for ${childName}.`)
 
         const fullPrompt = `${pagePrompt}
 

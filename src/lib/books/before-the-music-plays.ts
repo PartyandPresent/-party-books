@@ -124,7 +124,7 @@ export const beforeTheMusicPlays: { slug: string; title: string; pages: BookPage
       textBlocks: [
         {
           id: 'dedication',
-          template: 'For [CHILD_NAME], who said yes.\nAnd for the day that needed exactly the right person to make it complete.',
+          template: '[DEDICATION]',
           x: 1171, y: 122, maxWidth: 550,
           fontFamily: BODY_FONT, fontSize: 33.3,
           color: '#292929', align: 'center', lineHeight: 1.4,

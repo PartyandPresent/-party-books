@@ -125,7 +125,9 @@ async function generateCompositedPage(
     CHILD_NAME:       customer.childName,
     SENDER_NAME:      customer.senderName,
     CHILD_NAME_UPPER: customer.childName.toUpperCase(),
-    DEDICATION:       customer.dedication || `A special book made with love just for ${customer.childName}.`,
+    DEDICATION:       customer.dedication ||
+      getBookBySlug(config.bookSlug)?.defaultDedication?.replace(/\[CHILD_NAME\]/g, customer.childName) ||
+      `A special book made with love just for ${customer.childName}.`,
     SIBLING_NAME:     customer.siblingName  || '',
     LAST_NAME:        customer.lastName     || '',
     BIRTH_DATE:       customer.birthDate    || '',
@@ -346,7 +348,9 @@ export async function POST(req: NextRequest) {
     const pagePrompt = book.pagePrompts[idx]
       .replace(/\[CHILD_NAME\]/g, childName)
       .replace(/\[SENDER_NAME\]/g, senderName || '')
-      .replace(/\[DEDICATION\]/g, dedication || `A special book made with love just for ${childName}.`)
+      .replace(/\[DEDICATION\]/g, dedication ||
+        book.defaultDedication?.replace(/\[CHILD_NAME\]/g, childName) ||
+        `A special book made with love just for ${childName}.`)
 
     const staffInstruction = staffNote
       ? `\n\nSTAFF REVISION NOTE — apply this change:\n${staffNote}`
