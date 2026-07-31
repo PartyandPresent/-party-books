@@ -83,6 +83,7 @@ const FONT_FAMILY_OVERRIDES: Record<string, string> = {
   'Lora-Variable.ttf':                 'Lora',
   'Mabook.otf':                        'Mabook',
   'KGMissKindyMarker.ttf':            'KG Miss Kindy Marker',
+  'Little Book.otf':                  'Little Book',
 }
 
 function fontFamilyName(fileName: string): string {
@@ -236,9 +237,61 @@ function buildSVG(
     const family     = fontFamilyName(block.fontFamily)
 
     // Convert designer's cap-height Y to SVG alphabetic baseline Y.
-    // Designer tools (Canva) anchor text at the visual top of capital letters.
-    // SVG "alphabetic" baseline sits at the baseline (below cap top by capHeight px).
     const svgY = block.y + capHeightPx(font, block.fontSize)
+
+    const strokeAttrs = (block.strokeColor && block.strokeWidth)
+      ? ` stroke="${block.strokeColor}" stroke-width="${block.strokeWidth}" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill"`
+      : ''
+    const weightAttr  = block.fontWeight  ? ` font-weight="${block.fontWeight}"`   : ''
+    const filterAttr  = block.filterUrl   ? ` filter="${block.filterUrl}"`          : ''
+
+    // Per-character rendering — used when arch, letter colors, or both are needed.
+    // Arch is relative to actual text width so it looks consistent at any name length.
+    // Two-pass: all strokes rendered first (fill="none"), then all fills on top.
+    // This prevents adjacent character strokes from bleeding over each other's fills.
+    if (block.archPercent || block.letterColors) {
+      const centerX = block.x + block.maxWidth / 2
+      let globalCharIdx = 0
+
+      const charItems: Array<{ x: string; y: string; color: string; ch: string }> = []
+      for (const [lineIdx, line] of lines.entries()) {
+        const lineY = svgY + lineIdx * lineStep
+        const chars = Array.from(line)
+        const lineW = measureWidth(line, font, block.fontSize)
+        const archH = block.archPercent ? (block.archPercent / 100) * lineW : 0
+        const halfW = lineW / 2
+        let curX = block.align === 'center' ? centerX - lineW / 2
+                 : block.align === 'right'  ? block.x + block.maxWidth - lineW
+                 : block.x
+
+        for (const ch of chars) {
+          const chW   = measureWidth(ch, font, block.fontSize)
+          const chCX  = curX + chW / 2
+          const xRel  = chCX - centerX
+          const dy    = (block.archPercent && halfW > 0)
+            ? -archH * (1 - Math.min(1, (Math.abs(xRel) / halfW) ** 2))
+            : 0
+          const color = block.letterColors
+            ? block.letterColors[globalCharIdx % block.letterColors.length]
+            : block.color
+          charItems.push({ x: chCX.toFixed(1), y: (lineY + dy).toFixed(2), color, ch })
+          globalCharIdx++
+          curX += chW
+        }
+      }
+
+      const baseAttrs = `text-anchor="middle" font-family="${family}" font-size="${block.fontSize}"${weightAttr}`
+      const strokePass = (block.strokeColor && block.strokeWidth)
+        ? charItems.map(d =>
+            `<text x="${d.x}" y="${d.y}" ${baseAttrs} fill="none" stroke="${block.strokeColor}" stroke-width="${block.strokeWidth}" stroke-linejoin="round" stroke-linecap="round"${filterAttr}>${xmlEscape(d.ch)}</text>`
+          ).join('')
+        : ''
+      const fillPass = charItems.map(d =>
+        `<text x="${d.x}" y="${d.y}" ${baseAttrs} fill="${d.color}"${filterAttr}>${xmlEscape(d.ch)}</text>`
+      ).join('')
+
+      return strokePass + fillPass
+    }
 
     const anchor = block.align === 'center' ? 'middle'
                  : block.align === 'right'  ? 'end'
@@ -248,18 +301,11 @@ function buildSVG(
                  : block.x
 
     // dy=0 on the first tspan keeps it at svgY (baseline of line 1).
-    // Subsequent tspans advance by lineStep (baseline-to-baseline distance).
     const tspans = lines.map((line, i) =>
       `<tspan x="${tspanX}" dy="${i === 0 ? 0 : lineStep}">${xmlEscape(line)}</tspan>`
     ).join('')
 
-    const strokeAttrs = (block.strokeColor && block.strokeWidth)
-      ? ` stroke="${block.strokeColor}" stroke-width="${block.strokeWidth}" paint-order="stroke fill"`
-      : ''
-
     // No dominant-baseline attr — SVG default is "alphabetic", which is what we want.
-    const weightAttr  = block.fontWeight  ? ` font-weight="${block.fontWeight}"`   : ''
-    const filterAttr  = block.filterUrl   ? ` filter="${block.filterUrl}"`          : ''
     return (
       `<text x="${tspanX}" y="${svgY.toFixed(2)}"` +
       ` text-anchor="${anchor}" font-family="${family}" font-size="${block.fontSize}"${weightAttr}` +
@@ -445,7 +491,13 @@ export async function compositeTextBlocks(
     resolvedTemplates.set(block.id, resolved)
   }
 
-  const svg       = buildSVG(textBlocks, resolvedTemplates, canvasWidth, canvasHeight, bookSlug, svgOverlay)
+  // Skip blocks whose resolved text is empty, or whose showOnlyIfSet token is empty.
+  const activeBlocks = textBlocks.filter(block => {
+    if (block.showOnlyIfSet && !replacements[block.showOnlyIfSet]) return false
+    return (resolvedTemplates.get(block.id) ?? '').trim().length > 0
+  })
+
+  const svg       = buildSVG(activeBlocks, resolvedTemplates, canvasWidth, canvasHeight, bookSlug, svgOverlay)
   const svgBuffer = Buffer.from(svg, 'utf-8')
 
   return sharp(imageBuffer)

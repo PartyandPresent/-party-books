@@ -9,6 +9,7 @@ import type { BookPage } from './books/before-the-music-plays'
 import { youWereHereFirst, YOU_WERE_HERE_FIRST_CHARACTER_PROMPT } from './books/you-were-here-first'
 import { youWereHereFirstChildFocus, YOU_WERE_HERE_FIRST_CF_CHARACTER_PROMPT } from './books/you-were-here-first-child-focus'
 import { spokenOverYou, SPOKEN_OVER_YOU_CHARACTER_PROMPT } from './books/spoken-over-you'
+import { kinderToBeyond, KINDER_TO_BEYOND_CHARACTER_PROMPT } from './books/kinder-to-beyond'
 // import { canYouBeMyRingBearer, RING_BEARER_CHARACTER_PROMPT } from './books/can-you-be-my-ring-bearer'  // ARCHIVED
 
 export interface BookRenderConfig {
@@ -62,6 +63,17 @@ const CONFIGS: BookRenderConfig[] = [
     pages:           spokenOverYou.pages,
     title:           spokenOverYou.title,
     characterPrompt: SPOKEN_OVER_YOU_CHARACTER_PROMPT,
+    showLogoOnCover: false,
+  },
+
+  {
+    canvasW:         2000,
+    canvasH:         1000,
+    bookSlug:        'kinder-to-beyond',
+    costumeRule:     'the character wears age-appropriate school clothing suited to each scene setting.',
+    pages:           kinderToBeyond.pages,
+    title:           kinderToBeyond.title,
+    characterPrompt: KINDER_TO_BEYOND_CHARACTER_PROMPT,
     showLogoOnCover: false,
   },
 

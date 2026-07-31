@@ -201,7 +201,7 @@ async function generateCompositedPage(
     CHILD_NAME_UPPER:   customer.childName.toUpperCase(),
     DEDICATION:         customer.dedication ||
       getBookBySlug(config.bookSlug)?.defaultDedication?.replace(/\[CHILD_NAME\]/g, customer.childName) ||
-      `A special book made with love just for ${customer.childName}.`,
+      '',
     SIBLING_FULL_NAME:  customer.siblingFullName  || '',
     SIBLING_BIRTH_DATE: customer.siblingBirthDate || '',
     DATE:               customer.giftDate || '',
@@ -433,7 +433,7 @@ export async function POST(req: NextRequest) {
         .replace(/\[SENDER_NAME\]/g, senderName)
         .replace(/\[DEDICATION\]/g, dedication ||
           book.defaultDedication?.replace(/\[CHILD_NAME\]/g, childName) ||
-          `A special book made with love just for ${childName}.`)
+          '')
 
       const consistencyNote = book.characterConsistencyNote ||
         `CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`

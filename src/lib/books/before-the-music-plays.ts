@@ -36,6 +36,14 @@ export interface BookPageTextBlock {
   strokeColor?: string
   strokeWidth?: number
   filterUrl?: string
+  // If set, this block is skipped entirely when the named replacement token is empty/absent.
+  showOnlyIfSet?: string
+  // Arch the text baseline along a quadratic bezier. Value is % of maxWidth = rise at center.
+  // e.g. 5 → midpoint lifts by 5% of maxWidth. Single-line and multi-line both supported.
+  archPercent?: number
+  // Per-character fill colors. Array cycles if shorter than the text.
+  // Each character gets its own <text> element so colors don't bleed.
+  letterColors?: string[]
 }
 
 export interface BookPageCharacterPlacement {
