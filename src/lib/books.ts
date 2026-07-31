@@ -312,6 +312,8 @@ export const BOOKS: Book[] = [
     subtitle: 'A kindergarten story — personalized with their face',
     price: 23.98,
     defaultDedication: 'For [CHILD_NAME],\nwho showed us what brave looks like\non the very first day.',
+    // Dedication at array[1] (page-02.png), page_3 spread at array[3] (page-03.png).
+    previewPageIndices: [0, 1, 3, 24],
     coverImage: '/books/kinder-to-beyond/card-cover.png',
     cardImage:  '/books/kinder-to-beyond/card-cover.png',
     previewImages: [],
@@ -327,7 +329,7 @@ export const BOOKS: Book[] = [
       sizeRuler:               '/books/kinder-to-beyond/listings/09-size-ruler.png',
       sizeInHand:              '/books/kinder-to-beyond/listings/10-size-in-hand.png',
     },
-    totalPages: 24,
+    totalPages: 25,
     tags: ['new'],
     recipient: ['child'],
     occasion: ['birthday', 'any'],
@@ -340,7 +342,7 @@ export const BOOKS: Book[] = [
     featured: true,
     highlights: [
       "Personalized with your child's name and their face on every page",
-      '24 pages following every moment of the kindergarten year',
+      '25 pages following every moment of the kindergarten year',
       'From the first nervous morning all the way to graduation day',
       'The perfect gift for the start or end of kindergarten',
     ],

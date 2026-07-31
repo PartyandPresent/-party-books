@@ -101,7 +101,8 @@ const textEls = blocks.map(b => {
   return `<text x="${cx}" y="${baseY.toFixed(1)}" text-anchor="middle" font-family="KG Miss Kindy Marker" font-size="${b.fs}" fill="${b.color}"${strokeAttrs}>${tspans}</text>`
 }).join('')
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1000"><defs><style>${faceRule}</style></defs>${textEls}</svg>`
+const glow = '<defs><radialGradient id="ktbglow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="1540" cy="790" rx="450" ry="200" fill="url(#ktbglow)"/>'
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1000"><defs><style>${faceRule}</style></defs>${glow}${textEls}</svg>`
 
 const bg = await sharp(BG_PATH).resize(2000, 1000, { fit: 'fill' }).toBuffer()
 await sharp(bg)

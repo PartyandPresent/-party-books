@@ -488,6 +488,16 @@ export async function compositeTextBlocks(
         resolved = resolved.replace(new RegExp(`\\[${key}\\]`, 'g'), value)
       }
     }
+    // If the template resolved to nothing but a default is provided, use it.
+    // Strip any remaining unfilled [TOKEN] patterns before checking emptiness.
+    if (block.defaultIfEmpty && !resolved.replace(/\[[A-Z_]+\]/g, '').trim()) {
+      resolved = block.defaultIfEmpty
+      for (const [key, value] of Object.entries(replacements)) {
+        if (value !== undefined) {
+          resolved = resolved.replace(new RegExp(`\\[${key}\\]`, 'g'), value)
+        }
+      }
+    }
     resolvedTemplates.set(block.id, resolved)
   }
 

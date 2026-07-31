@@ -5,9 +5,10 @@
 // CANVAS: 2000 × 1000 px
 // DESIGN DATA: Design_Data_Kinder-To-Beyond.xlsx — 120 DPI, pt × 1.667 = px
 //
-// PAGES (24 active — array indices 0–23):
+// PAGES (25 active — array indices 0–24):
 //   [0]  Cover        Page_00 (Cover)
-//   [1]  Page_2       The Morning Begins
+//   [1]  Dedication   Page_2 bg — customer message or default; no character
+//   [2]  Page_2       The Morning Begins
 //   [2]  Page_3       A Brave Little Smile
 //   [3]  Page_4       Stepping Out the Door
 //   [4]  Page_5       The Road to School
@@ -32,7 +33,6 @@
 //   [23] And Beyond   Page_25 scene; Backgrounds/Page_24 (Last Page).png bg
 //
 // OMITTED (no background asset):
-//   Page 1  (dedication)
 //   Page 24 (graduation) — design data has text but no background PNG
 //
 // FONT: KGMissKindyMarker.ttf → "KG Miss Kindy Marker"
@@ -88,10 +88,11 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       backgroundAsset: `${BG}/page-00-cover.png`,
       poseReference:   `${REF}/page-00-cover.png`,
       characterActionPrompt:
-        `A cover-worthy illustration of a happy kindergarten-age child, full of excitement and joy. Place the child on the RIGHT half of the canvas — never centered and never in the left half. Their pose should feel celebratory: standing with a big joyful smile or doing a small joyful jump with a school backpack.\n\nLeave a clear open area at the TOP of the right panel (roughly the top 20% — y=0 to y=200 on a 1000 px canvas) for the book title text. Likewise leave the BOTTOM 20% (y=800 to y=1000) open for subtitle text. Place the child between these two zones.\n\nSurround the child with a playful back-to-school atmosphere: stars, confetti, crayons, books, a school building, clouds, sunshine. The LEFT half of the canvas must remain a clean solid white panel — place absolutely nothing there.${STYLE}`,
+        `A cover-worthy illustration of a happy kindergarten-age child, full of excitement and joy. CRITICAL FRAMING RULE: Show the child FULL BODY from HEAD to FEET — do not crop or zoom in. The entire character must be visible within the frame, head at the top and feet near the bottom. The child must be HORIZONTALLY CENTERED on the right half of the canvas. Their pose should feel celebratory: standing with a big joyful smile, wearing a school backpack. Surround the child with a playful back-to-school atmosphere: stars, confetti, crayons, books, a school building, clouds, sunshine.\n\nThe LEFT half of the canvas must remain a clean solid white panel — place absolutely nothing there.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
-      characterPlacement: { x: 1000, y: 21, width: 1000, height: 979 },
+      characterPlacement: { x: 1180, y: 265, width: 650, height: 735 },
+      svgOverlay: '<defs><radialGradient id="ktbglow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="1540" cy="790" rx="450" ry="200" fill="url(#ktbglow)"/>',
       textBlocks: [
         {
           id: 'child-name',
@@ -140,10 +141,34 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       ],
     },
 
+    // ── Page 01 — Dedication ─────────────────────────────────────────────────────
+    // Character on RIGHT half. Dedication text on LEFT white panel (x 100–850).
+    // skipTextCollision keeps the text pinned; character placement stays right of x=1050.
+    {
+      pageIndex: 1,
+      backgroundAsset: `${BG}/page-02.png`,
+      poseReference:   `${REF}/page-02.png`,
+      characterActionPrompt:
+        `A warm, joyful illustration of the child standing calmly on the RIGHT half of the canvas, facing slightly inward with a gentle smile — as if they are the star of the dedication page. The pose is relaxed and endearing: hands resting naturally, backpack on, looking hopeful and ready. The bedroom background shows softly behind them.\n\nThe LEFT half of the canvas must remain a completely clean white panel — place absolutely nothing there. The character must be fully contained within the RIGHT half (x > 1000 on a 2000 px canvas).${STYLE}`,
+      includesSenderCharacter: false,
+      skipTextCollision: true,
+      characterPlacement: { x: 1050, y: 0, width: 950, height: 1000 },
+      textBlocks: [
+        {
+          id: 'dedication',
+          template: '[DEDICATION]',
+          defaultIfEmpty: 'To [CHILD_NAME],\n\nMay every year bring you new adventures, big discoveries, and the courage to try. We are so proud of who you are — and who you are becoming.\n\nWith all our love,',
+          x: 100, y: 250, maxWidth: 750,
+          fontFamily: FONT, fontSize: FS,
+          color: NAVY, align: 'center', lineHeight: 1.5,
+        },
+      ],
+    },
+
     // ── Page 02 — The Morning Begins ─────────────────────────────────────────────
     // Design: text RIGHT (overlaid on illustration), white
     {
-      pageIndex: 1,
+      pageIndex: 2,
       backgroundAsset: `${BG}/page-02.png`,
       poseReference:   `${REF}/page-02.png`,
       characterActionPrompt:
@@ -165,7 +190,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 03 — A Brave Little Smile ───────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 2,
+      pageIndex: 3,
       backgroundAsset: `${BG}/page-03.png`,
       poseReference:   `${REF}/page-03.png`,
       characterActionPrompt:
@@ -187,7 +212,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 04 — Stepping Out the Door ─────────────────────────────────────────
     // Design: text LEFT, white
     {
-      pageIndex: 3,
+      pageIndex: 4,
       backgroundAsset: `${BG}/page-04.png`,
       poseReference:   `${REF}/page-04.png`,
       characterActionPrompt:
@@ -209,7 +234,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 05 — The Road to School ─────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 4,
+      pageIndex: 5,
       backgroundAsset: `${BG}/page-05.png`,
       poseReference:   `${REF}/page-05.png`,
       characterActionPrompt:
@@ -231,7 +256,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 06 — First Look at the School ──────────────────────────────────────
     // Design: text LEFT, navy
     {
-      pageIndex: 5,
+      pageIndex: 6,
       backgroundAsset: `${BG}/page-06.png`,
       poseReference:   `${REF}/page-06.png`,
       characterActionPrompt:
@@ -253,7 +278,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 07 — A Warm Welcome ─────────────────────────────────────────────────
     // Design: text RIGHT, navy, fontSize=25.2pt→42px
     {
-      pageIndex: 6,
+      pageIndex: 7,
       backgroundAsset: `${BG}/page-07.png`,
       poseReference:   `${REF}/page-07.png`,
       characterActionPrompt:
@@ -275,7 +300,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 08 — Discovering the Classroom ─────────────────────────────────────
     // ⚠ char RIGHT (reference overrides prompt). Design: text LEFT, white
     {
-      pageIndex: 7,
+      pageIndex: 8,
       backgroundAsset: `${BG}/page-08.png`,
       poseReference:   `${REF}/page-08.png`,
       characterActionPrompt:
@@ -297,7 +322,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 09 — My Very Own Cubby ──────────────────────────────────────────────
     // Design: text RIGHT, white
     {
-      pageIndex: 8,
+      pageIndex: 9,
       backgroundAsset: `${BG}/page-09.png`,
       poseReference:   `${REF}/page-09.png`,
       characterActionPrompt:
@@ -319,7 +344,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 10 — Circle Time Wonder ─────────────────────────────────────────────
     // Design: text LEFT, navy
     {
-      pageIndex: 9,
+      pageIndex: 10,
       backgroundAsset: `${BG}/page-10.png`,
       poseReference:   `${REF}/page-10.png`,
       characterActionPrompt:
@@ -341,7 +366,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 11 — A New Friend ───────────────────────────────────────────────────
     // Design: text RIGHT, navy, maxWidth=691
     {
-      pageIndex: 10,
+      pageIndex: 11,
       backgroundAsset: `${BG}/page-11.png`,
       poseReference:   `${REF}/page-11.png`,
       characterActionPrompt:
@@ -363,7 +388,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 12 — Letters Everywhere ─────────────────────────────────────────────
     // Design: text LEFT, white
     {
-      pageIndex: 11,
+      pageIndex: 12,
       backgroundAsset: `${BG}/page-12.png`,
       poseReference:   `${REF}/page-12.png`,
       characterActionPrompt:
@@ -385,7 +410,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 13 — Making Art ──────────────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 12,
+      pageIndex: 13,
       backgroundAsset: `${BG}/page-13.png`,
       poseReference:   `${REF}/page-13.png`,
       characterActionPrompt:
@@ -407,7 +432,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 14 — Counting Little Wonders ───────────────────────────────────────
     // Design: text LEFT, white
     {
-      pageIndex: 13,
+      pageIndex: 14,
       backgroundAsset: `${BG}/page-14.png`,
       poseReference:   `${REF}/page-14.png`,
       characterActionPrompt:
@@ -429,7 +454,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 15 — Music and Movement ─────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 14,
+      pageIndex: 15,
       backgroundAsset: `${BG}/page-15.png`,
       poseReference:   `${REF}/page-15.png`,
       characterActionPrompt:
@@ -451,7 +476,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 16 — Playground Adventures ─────────────────────────────────────────
     // Design: text LEFT, white
     {
-      pageIndex: 15,
+      pageIndex: 16,
       backgroundAsset: `${BG}/page-16.png`,
       poseReference:   `${REF}/page-16.png`,
       characterActionPrompt:
@@ -473,7 +498,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 17 — Snack Time Kindness ────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 16,
+      pageIndex: 17,
       backgroundAsset: `${BG}/page-17.png`,
       poseReference:   `${REF}/page-17.png`,
       characterActionPrompt:
@@ -495,7 +520,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 18 — When Things Feel Hard ─────────────────────────────────────────
     // Design: text LEFT, navy
     {
-      pageIndex: 17,
+      pageIndex: 18,
       backgroundAsset: `${BG}/page-18.png`,
       poseReference:   `${REF}/page-18.png`,
       characterActionPrompt:
@@ -517,7 +542,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 19 — Brave Again ─────────────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 18,
+      pageIndex: 19,
       backgroundAsset: `${BG}/page-19.png`,
       poseReference:   `${REF}/page-19.png`,
       characterActionPrompt:
@@ -539,7 +564,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 20 — Sharing Something Special ─────────────────────────────────────
     // Design: text LEFT, navy
     {
-      pageIndex: 19,
+      pageIndex: 20,
       backgroundAsset: `${BG}/page-20.png`,
       poseReference:   `${REF}/page-20.png`,
       characterActionPrompt:
@@ -561,7 +586,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 21 — Story Time Magic ───────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 20,
+      pageIndex: 21,
       backgroundAsset: `${BG}/page-21.png`,
       poseReference:   `${REF}/page-21.png`,
       characterActionPrompt:
@@ -583,7 +608,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 22 — Growing Every Day ──────────────────────────────────────────────
     // Design: text LEFT, navy
     {
-      pageIndex: 21,
+      pageIndex: 22,
       backgroundAsset: `${BG}/page-22.png`,
       poseReference:   `${REF}/page-22.png`,
       characterActionPrompt:
@@ -605,7 +630,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // ── Page 23 — The Last Day Glow ──────────────────────────────────────────────
     // Design: text RIGHT, navy
     {
-      pageIndex: 22,
+      pageIndex: 23,
       backgroundAsset: `${BG}/page-23.png`,
       poseReference:   `${REF}/page-23.png`,
       characterActionPrompt:
@@ -629,7 +654,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // Design: text LEFT at x=480, navy
     // ⚠ Page_24 graduation OMITTED — no background asset (design data has text but no PNG)
     {
-      pageIndex: 23,
+      pageIndex: 24,
       backgroundAsset: `${BG}/page-24-last.png`,
       poseReference:   `${REF}/page-25-and-beyond.png`,
       characterActionPrompt:
