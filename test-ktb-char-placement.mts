@@ -16,8 +16,7 @@ const bookSlug   = 'kinder-to-beyond'
 // ── Proposed character placement ──────────────────────────────────────────────
 // Reference analysis: head at y≈265, full body showing to y≈960.
 // Width ~650px (vs current 900) — character is smaller and proportional.
-const CURRENT_PLACEMENT = { x: 1050, y: 230, width: 900,  height: 1200 }
-const NEW_PLACEMENT     = { x: 1180, y: 265, width: 650,  height: 735  }
+const NEW_PLACEMENT = { x: 1180, y: 310, width: 650, height: 760 }
 
 // ── Cover page config ─────────────────────────────────────────────────────────
 const cover  = kinderToBeyond.pages[0]

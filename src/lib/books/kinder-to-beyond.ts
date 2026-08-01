@@ -91,7 +91,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
         `A cover-worthy illustration of a happy kindergarten-age child, full of excitement and joy. CRITICAL FRAMING RULE: Show the child FULL BODY from HEAD to FEET — do not crop or zoom in. The entire character must be visible within the frame, head at the top and feet near the bottom. The child must be HORIZONTALLY CENTERED on the right half of the canvas. Their pose should feel celebratory: standing with a big joyful smile, wearing a school backpack. Surround the child with a playful back-to-school atmosphere: stars, confetti, crayons, books, a school building, clouds, sunshine.\n\nThe LEFT half of the canvas must remain a clean solid white panel — place absolutely nothing there.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
-      characterPlacement: { x: 1180, y: 265, width: 650, height: 735 },
+      characterPlacement: { x: 1180, y: 310, width: 650, height: 760 },
       svgOverlay: '<defs><radialGradient id="ktbglow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="1540" cy="790" rx="450" ry="200" fill="url(#ktbglow)"/>',
       textBlocks: [
         {
