@@ -51,6 +51,9 @@ export default function PreviewPage() {
   const [coverFormat, setCoverFormatLocal] = useState<CoverFormat>('hardcover8')
   const [charMsgIndex, setCharMsgIndex] = useState(0)
   const [charMsgVisible, setCharMsgVisible] = useState(true)
+  const [currentGeneratingIdx, setCurrentGeneratingIdx] = useState(-1)
+  const [pageLoadMsgIdx, setPageLoadMsgIdx] = useState(0)
+  const [pageLoadMsgVisible, setPageLoadMsgVisible] = useState(true)
 
   // Zoom lightbox
   const [zoomOpen, setZoomOpen] = useState(false)
@@ -80,6 +83,21 @@ export default function PreviewPage() {
     }, 3500)
     return () => clearInterval(iv)
   }, [status])
+
+  // Cycle through per-page loading messages; resets when the active page changes
+  useEffect(() => {
+    if (status !== 'loading-pages' || currentGeneratingIdx < 0) return
+    setPageLoadMsgIdx(0)
+    setPageLoadMsgVisible(true)
+    const iv = setInterval(() => {
+      setPageLoadMsgVisible(false)
+      setTimeout(() => {
+        setPageLoadMsgIdx(prev => prev + 1)
+        setPageLoadMsgVisible(true)
+      }, 350)
+    }, 2800)
+    return () => clearInterval(iv)
+  }, [status, currentGeneratingIdx])
 
   // Non-passive wheel + touch listeners for the zoom container
   useEffect(() => {
@@ -186,61 +204,53 @@ export default function PreviewPage() {
     }
   }
 
-  // ── Phase 2: Generate pages ────────────────────────────────────
+  // ── Phase 2: Generate pages (one call per page for live progressive reveal)
   const generatePages = async () => {
     setStatus('loading-pages')
     setPages([null, null, null, null])
     setPageStatuses(['waiting', 'waiting', 'waiting', 'waiting'])
     setOverallProgress(0)
+    setCurrentGeneratingIdx(0)
+
+    const allPages: string[] = []
 
     try {
-      const res = await fetch('/api/generate-book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookSlug: selectedSlug,
-          childName,
-          childGender,
-          senderName,
-          dedication,
-          siblingFullName,
-          siblingBirthDate,
-          giftDate,
-          characterBase64,
-          previewIndices,
-        }),
-      })
+      for (let i = 0; i < previewIndices.length; i++) {
+        setCurrentGeneratingIdx(i)
+        setPageStatuses(prev => { const n = [...prev]; n[i] = 'loading'; return n })
 
-      if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Page generation failed')
+        const res = await fetch('/api/generate-book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookSlug: selectedSlug,
+            childName,
+            childGender,
+            senderName,
+            dedication,
+            siblingFullName,
+            siblingBirthDate,
+            giftDate,
+            characterBase64,
+            previewIndices: [previewIndices[i]],
+          }),
+        })
+
+        if (!res.ok) {
+          const err = await res.json()
+          throw new Error(err.error || 'Page generation failed')
+        }
+
+        const data = await res.json()
+        const pageBase64 = (data.pages as string[])[0]
+        allPages.push(pageBase64)
+
+        setPages(prev => { const n = [...prev]; n[i] = pageBase64; return n })
+        setPageStatuses(prev => { const n = [...prev]; n[i] = 'done'; return n })
+        setOverallProgress(Math.round(((i + 1) / previewIndices.length) * 100))
       }
 
-      const data = await res.json()
-      const generatedPages: string[] = (data.pages as string[]).slice(0, PREVIEW_LABELS.length)
-      setGeneratedPages(generatedPages)
-
-      for (let i = 0; i < generatedPages.length; i++) {
-        setPageStatuses(prev => {
-          const next = [...prev]
-          next[i] = 'loading'
-          return next
-        })
-        await new Promise(r => setTimeout(r, 300))
-        setPages(prev => {
-          const next = [...prev]
-          next[i] = generatedPages[i]
-          return next
-        })
-        setPageStatuses(prev => {
-          const next = [...prev]
-          next[i] = 'done'
-          return next
-        })
-        setOverallProgress(Math.round(((i + 1) / generatedPages.length) * 100))
-        await new Promise(r => setTimeout(r, 200))
-      }
-
+      setGeneratedPages(allPages)
       setCurrentPage(0)
       setTimeout(() => setStatus('done'), 600)
 
@@ -486,91 +496,190 @@ export default function PreviewPage() {
   )
 
   // ── Phase 3 loading: Generating pages ─────────────────────────
-  if (status === 'loading-pages') return (
-    <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
-      <Header />
-      <main style={{ maxWidth: 600, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
+  if (status === 'loading-pages') {
+    const PAGE_MSGS = [
+      [`Placing ${childName}'s character on the cover...`, 'Composing the title illustration...', 'Adding the school background scene...', 'Polishing the final cover...', 'Almost there!'],
+      ['Setting up the dedication page...', `Positioning ${childName}'s character...`, 'Laying in your personal message...', 'Finishing the dedication layout...', 'Almost done...'],
+      [`Painting ${childName} in the illustration...`, 'Bringing this page to life...', 'Adding the storybook details...', 'Finishing the scene...', 'Almost done...'],
+      ['Creating the final spread...', `Writing ${childName}'s happy ending...`, 'Adding the last details...', 'Book preview almost ready!', 'One moment more...'],
+    ]
+    const idx = Math.max(0, currentGeneratingIdx)
+    const msgSet = PAGE_MSGS[idx] ?? PAGE_MSGS[0]
+    const currentMsg = msgSet[pageLoadMsgIdx % msgSet.length]
+    const spotlightImage = pages[idx]
+    const doneCount = pageStatuses.filter(s => s === 'done').length
 
-        {/* Approved character thumbnail */}
-        {characterBase64 && (
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: CREAM, fontFamily: 'Nunito, sans-serif' }}>
+        <Header />
+        <main style={{ maxWidth: 620, margin: '0 auto', padding: isMobile ? '100px 20px 80px' : '100px 24px 80px', textAlign: 'center' }}>
+
+          {/* Character avatar */}
+          {characterBase64 && (
+            <div style={{
+              width: 64, height: 64, borderRadius: '50%',
+              margin: '0 auto 16px',
+              overflow: 'hidden',
+              border: `3px solid ${CORAL}`,
+              boxShadow: '0 4px 16px rgba(232,131,106,0.3)',
+            }}>
+              <img
+                src={`data:image/png;base64,${characterBase64}`}
+                alt={childName}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          )}
+
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 26, fontWeight: 700, color: GREEN, marginBottom: 6 }}>
+            Creating {childName}'s book...
+          </h1>
+          <p style={{ fontSize: 14, color: BODY, marginBottom: 24, lineHeight: 1.6 }}>
+            Please don't close this tab!
+          </p>
+
+          {/* Spotlight — shows the page currently being generated */}
           <div style={{
-            width: 80, height: 80, borderRadius: '50%',
-            margin: '0 auto 20px',
-            overflow: 'hidden',
-            border: `3px solid ${CORAL}`,
-            boxShadow: '0 4px 16px rgba(232,131,106,0.3)',
+            borderRadius: 16, overflow: 'hidden', marginBottom: 16,
+            aspectRatio: '2/1', position: 'relative',
+            backgroundColor: '#E8E0D8',
+            boxShadow: '0 6px 28px rgba(0,0,0,0.10)',
           }}>
-            <img
-              src={`data:image/png;base64,${characterBase64}`}
-              alt={childName}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          </div>
-        )}
-
-        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: GREEN, marginBottom: 10 }}>
-          Illustrating {childName}'s book...
-        </h1>
-        <p style={{ fontSize: 15, color: BODY, marginBottom: 36, lineHeight: 1.6 }}>
-          Using {childName}'s approved character to paint every page.<br />
-          Please don't close this tab!
-        </p>
-
-        {/* Overall progress bar */}
-        <div style={{ backgroundColor: '#E8E8E8', borderRadius: 50, height: 10, marginBottom: 32, overflow: 'hidden' }}>
-          <div style={{
-            height: '100%',
-            width: `${overallProgress}%`,
-            background: `linear-gradient(90deg, ${CORAL}, ${GREEN})`,
-            borderRadius: 50,
-            transition: 'width 0.6s ease',
-          }} />
-        </div>
-
-        {/* Per-page status */}
-        <div style={{ backgroundColor: '#fff', borderRadius: 16, padding: '24px 28px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', textAlign: 'left' }}>
-          {PREVIEW_LABELS.map((label, i) => {
-            const s = pageStatuses[i]
-            return (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 14,
-                padding: '10px 0',
-                borderBottom: i < PREVIEW_LABELS.length - 1 ? '1px solid #F0F0F0' : 'none',
-              }}>
+            {spotlightImage ? (
+              <>
+                <img
+                  src={`data:image/png;base64,${spotlightImage}`}
+                  alt="Generated page"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
                 <div style={{
-                  width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-                  backgroundColor:
-                    s === 'done' ? '#22C55E' :
-                    s === 'loading' ? CORAL :
-                    s === 'error' ? '#EF4444' : '#E8E8E8',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, color: '#fff', fontWeight: 800,
-                  transition: 'background-color 0.3s',
+                  position: 'absolute', top: 12, right: 12,
+                  backgroundColor: '#22C55E', color: '#fff',
+                  borderRadius: 50, padding: '4px 14px',
+                  fontSize: 12, fontWeight: 800,
+                  boxShadow: '0 2px 8px rgba(34,197,94,0.4)',
                 }}>
-                  {s === 'done' ? '✓' : s === 'loading' ? '…' : s === 'error' ? '✗' : ''}
+                  ✓ Complete!
                 </div>
-                <span style={{
-                  fontSize: 14, fontWeight: s === 'loading' ? 800 : 600,
-                  color: s === 'done' ? '#22C55E' : s === 'loading' ? CORAL : s === 'error' ? '#EF4444' : MUTED,
-                  flex: 1,
+              </>
+            ) : (
+              <>
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(90deg, #F0EDE8 0%, #E4DDD5 40%, #F0EDE8 80%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'pageShimmer 1.8s ease-in-out infinite',
+                }} />
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', justifyContent: 'center', gap: 14,
                 }}>
-                  🎨 Illustrating {label}
-                </span>
-                <span style={{ fontSize: 12, color: MUTED, fontWeight: 600 }}>
-                  {s === 'done' ? 'Done!' : s === 'loading' ? 'Working...' : s === 'error' ? 'Failed' : 'Waiting'}
-                </span>
-              </div>
-            )
-          })}
-        </div>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: '50%',
+                    border: `4px solid ${CORAL}`, borderTopColor: 'transparent',
+                    animation: 'pageSpin 0.85s linear infinite',
+                  }} />
+                  <p style={{
+                    margin: 0, fontSize: 15, fontWeight: 800,
+                    color: GREEN, textAlign: 'center', padding: '0 28px',
+                    opacity: pageLoadMsgVisible ? 1 : 0,
+                    transition: 'opacity 0.35s ease',
+                  }}>
+                    {currentMsg}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
 
-        <p style={{ fontSize: 13, color: MUTED, marginTop: 24 }}>
-          Generating 4 preview pages — this takes about 60–90 seconds
-        </p>
-      </main>
-      <Footer />
-    </div>
-  )
+          {/* Progress bar */}
+          <div style={{ backgroundColor: '#E8E8E8', borderRadius: 50, height: 8, marginBottom: 22, overflow: 'hidden' }}>
+            <div style={{
+              height: '100%',
+              width: `${overallProgress}%`,
+              background: `linear-gradient(90deg, ${CORAL}, ${GREEN})`,
+              borderRadius: 50,
+              transition: 'width 0.7s ease',
+            }} />
+          </div>
+
+          {/* Thumbnail strip — 4 page cards */}
+          <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
+            {PREVIEW_LABELS.map((label, i) => {
+              const s = pageStatuses[i]
+              const isActive = i === idx && s === 'loading'
+              const isDone = s === 'done'
+              return (
+                <div key={i} style={{
+                  flex: 1, borderRadius: 10, overflow: 'hidden',
+                  border: `2px solid ${isDone ? '#22C55E' : isActive ? CORAL : '#E0E0E0'}`,
+                  transition: 'border-color 0.3s',
+                  backgroundColor: '#fff',
+                }}>
+                  <div style={{ aspectRatio: '2/1', backgroundColor: '#F4F0EC', position: 'relative' }}>
+                    {pages[i] ? (
+                      <img
+                        src={`data:image/png;base64,${pages[i]}`}
+                        alt={label}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100%', height: '100%',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        {isActive ? (
+                          <div style={{
+                            width: 16, height: 16, borderRadius: '50%',
+                            border: `3px solid ${CORAL}`, borderTopColor: 'transparent',
+                            animation: 'pageSpin 0.85s linear infinite',
+                          }} />
+                        ) : (
+                          <span style={{ fontSize: 16, opacity: 0.25 }}>🎨</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{
+                    textAlign: 'center', padding: '5px 4px',
+                    backgroundColor: isDone ? '#F0FDF4' : isActive ? '#FFF5F3' : '#F9F9F9',
+                  }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 800,
+                      color: isDone ? '#16A34A' : isActive ? CORAL : MUTED,
+                    }}>
+                      {isDone ? '✓ Done' : isActive ? 'Creating...' : label}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <p style={{ fontSize: 13, color: MUTED }}>
+            {doneCount === 0
+              ? 'Starting generation — about 60–90 seconds total'
+              : doneCount === previewIndices.length
+              ? 'All pages complete!'
+              : `${doneCount} of ${previewIndices.length} pages ready — still painting...`}
+          </p>
+
+        </main>
+        <Footer />
+        <style>{`
+          @keyframes pageShimmer {
+            0%   { background-position: -200% 0 }
+            100% { background-position:  200% 0 }
+          }
+          @keyframes pageSpin {
+            from { transform: rotate(0deg) }
+            to   { transform: rotate(360deg) }
+          }
+        `}</style>
+      </div>
+    )
+  }
 
   // ── Phase 4: Done — show preview pages ────────────────────────
   return (
@@ -584,7 +693,7 @@ export default function PreviewPage() {
             {childName}'s book is ready!
           </h1>
           <p style={{ fontSize: 15, color: BODY }}>
-            Here's a preview of 4 pages — order to unlock all 17!
+            Here's a preview of 4 pages — order to unlock all {bookTotalPages}!
           </p>
         </div>
 
@@ -688,10 +797,10 @@ export default function PreviewPage() {
           <div style={{ fontSize: 32 }}>🔒</div>
           <div style={{ flex: 1 }}>
             <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 16, color: GREEN }}>
-              13 more pages are waiting for {childName}!
+              {bookTotalPages - 4} more pages are waiting for {childName}!
             </p>
             <p style={{ margin: 0, fontSize: 14, color: BODY }}>
-              Order now to unlock all 17 fully illustrated pages of {childName}'s personalized book.
+              Order now to unlock all {bookTotalPages} fully illustrated pages of {childName}'s personalized book.
             </p>
           </div>
         </div>
@@ -705,7 +814,7 @@ export default function PreviewPage() {
           <div style={{ marginBottom: 20 }}>
             <p style={{ margin: '0 0 4px', fontWeight: 800, fontSize: 18, color: GREEN }}>{selectedTitle}</p>
             <p style={{ margin: 0, fontSize: 14, color: MUTED }}>
-              Personalised for {childName} · 17 pages
+              Personalised for {childName} · {bookTotalPages} pages
             </p>
           </div>
 
@@ -753,17 +862,6 @@ export default function PreviewPage() {
 
           {/* Action buttons */}
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <button
-              onClick={generatePages}
-              style={{
-                backgroundColor: 'transparent', border: `2px solid ${CORAL}`,
-                color: CORAL, borderRadius: 50, padding: '12px 24px',
-                fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, cursor: 'pointer',
-                width: isMobile ? '100%' : 'auto',
-              }}
-            >
-              🔄 Regenerate pages
-            </button>
             <button
               onClick={() => { setCoverFormat(coverFormat); router.push('/checkout') }}
               style={{
