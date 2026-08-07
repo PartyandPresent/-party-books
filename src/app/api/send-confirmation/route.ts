@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { createShopifyOrder } from '@/lib/shopify'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -33,12 +32,6 @@ export async function POST(req: NextRequest) {
         bookTitle, orderId, amountTotal, shippingAddress,
       }),
     })
-
-    // Sync to Shopify — fire-and-forget so a Shopify failure never blocks email delivery
-    createShopifyOrder({
-      customerName, customerEmail, childName, senderName,
-      bookTitle, stripeOrderId: orderId, amountTotal, shippingAddress,
-    }).catch(err => console.error('Shopify sync failed (non-fatal):', err))
 
     return NextResponse.json({ success: true })
 

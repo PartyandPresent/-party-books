@@ -1,89 +1,116 @@
-const SHOPIFY_DOMAIN  = process.env.SHOPIFY_STORE_DOMAIN       // e.g. your-store.myshopify.com
-const SHOPIFY_TOKEN   = process.env.SHOPIFY_ADMIN_API_TOKEN    // Admin API access token
-const SHOPIFY_VERSION = '2025-01'
+const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!
+const SHOPIFY_TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN!
+const API_VERSION    = '2025-01'
 
-interface ShopifyOrderInput {
-  customerName:    string
-  customerEmail:   string
-  childName:       string
-  senderName:      string
-  bookTitle:       string
-  stripeOrderId:   string  // short ID e.g. 'ABC12345'
-  amountTotal:     number  // dollars
-  shippingAddress: string  // formatted: "Street, City, ZIP, Country"
+const COUNTRY_CODES: Record<string, string> = {
+  'Philippines':    'PH',
+  'Australia':      'AU',
+  'United States':  'US',
+  'United Kingdom': 'GB',
+  'Canada':         'CA',
+  'Singapore':      'SG',
+  'New Zealand':    'NZ',
 }
 
-// Creates a paid, unfulfilled order in Shopify for every completed Stripe payment.
-// The order appears in Shopify admin for fulfillment tracking and reporting.
-// Credentials are optional — if not set, this is a no-op (logged, not thrown).
-export async function createShopifyOrder(input: ShopifyOrderInput): Promise<void> {
-  if (!SHOPIFY_DOMAIN || !SHOPIFY_TOKEN) {
-    console.warn('Shopify credentials not configured (SHOPIFY_STORE_DOMAIN / SHOPIFY_ADMIN_API_TOKEN) — skipping order sync')
-    return
-  }
+export interface ShopifyOrderInput {
+  email:           string
+  childName:       string
+  bookTitle:       string
+  stripeSessionId: string
+  bookAmount:      number   // dollars — book price only
+  shippingAmount:  number   // dollars
+  shippingName:    string
+  shippingPhone?:  string
+  shippingStreet:  string
+  shippingCity:    string
+  shippingState?:  string
+  shippingZip:     string
+  shippingCountry: string
+}
 
-  const nameParts = input.customerName.trim().split(' ')
-  const firstName = nameParts[0] || ''
-  const lastName  = nameParts.slice(1).join(' ') || ''
+export async function shopifyOrderExists(stripeSessionId: string): Promise<boolean> {
+  const url = `https://${SHOPIFY_DOMAIN}/admin/api/${API_VERSION}/orders.json?tag=stripe:${encodeURIComponent(stripeSessionId)}&status=any&limit=1`
+  const res = await fetch(url, {
+    headers: { 'X-Shopify-Access-Token': SHOPIFY_TOKEN },
+  })
+  if (!res.ok) return false
+  const data = await res.json()
+  return (data.orders?.length ?? 0) > 0
+}
 
-  // Best-effort parse of "Street, City, ZIP, Country"
-  const [address1 = '', city = '', zip = '', country = 'CA'] =
-    input.shippingAddress.split(',').map(s => s.trim())
+export async function createShopifyOrder(
+  input: ShopifyOrderInput,
+): Promise<{ id: number; orderNumber: number } | null> {
+  const [firstName, ...rest] = input.shippingName.trim().split(' ')
+  const lastName    = rest.join(' ') || '-'
+  const countryCode = COUNTRY_CODES[input.shippingCountry] ?? 'PH'
 
   const payload = {
     order: {
-      email:                      input.customerEmail,
+      email:                      input.email,
       financial_status:           'paid',
+      fulfillment_status:         null,
       send_receipt:               false,
       send_fulfillment_receipt:   false,
-      tags:                       'miloriabooks, stripe-paid',
-      note:                       `Stripe #${input.stripeOrderId} | For: ${input.childName} | From: ${input.senderName || '—'}`,
+      tags:                       `stripe:${input.stripeSessionId}`,
+      note:                       `Stripe session: ${input.stripeSessionId}`,
       note_attributes: [
-        { name: 'Stripe Order ID', value: `#${input.stripeOrderId}` },
         { name: 'Child Name',      value: input.childName },
-        { name: 'Sender Name',     value: input.senderName || '' },
+        { name: 'Book Title',      value: input.bookTitle },
+        { name: 'Stripe Session',  value: input.stripeSessionId },
       ],
       line_items: [
         {
-          title:              input.bookTitle,
-          price:              input.amountTotal.toFixed(2),
+          title:              `${input.bookTitle} — Personalised for ${input.childName}`,
           quantity:           1,
+          price:              input.bookAmount.toFixed(2),
           requires_shipping:  true,
+          fulfillment_service: 'manual',
         },
       ],
-      customer: {
-        first_name: firstName,
-        last_name:  lastName,
-        email:      input.customerEmail,
-      },
+      shipping_lines: [
+        {
+          title: 'Standard Shipping',
+          price: input.shippingAmount.toFixed(2),
+          code:  'STANDARD',
+        },
+      ],
       shipping_address: {
         first_name: firstName,
         last_name:  lastName,
-        address1,
-        city,
-        zip,
-        country,
+        address1:   input.shippingStreet,
+        city:       input.shippingCity,
+        province:   input.shippingState || '',
+        zip:        input.shippingZip,
+        country_code: countryCode,
+        phone:      input.shippingPhone || '',
+      },
+      customer: {
+        email:      input.email,
+        first_name: firstName,
+        last_name:  lastName,
       },
     },
   }
 
   const res = await fetch(
-    `https://${SHOPIFY_DOMAIN}/admin/api/${SHOPIFY_VERSION}/orders.json`,
+    `https://${SHOPIFY_DOMAIN}/admin/api/${API_VERSION}/orders.json`,
     {
       method:  'POST',
       headers: {
-        'Content-Type':             'application/json',
-        'X-Shopify-Access-Token':   SHOPIFY_TOKEN,
+        'Content-Type':            'application/json',
+        'X-Shopify-Access-Token':  SHOPIFY_TOKEN,
       },
       body: JSON.stringify(payload),
-    }
+    },
   )
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(`Shopify order sync failed (${res.status}): ${JSON.stringify(err)}`)
+    const err = await res.text()
+    console.error('[Shopify] Order creation failed:', res.status, err)
+    return null
   }
 
-  const result = await res.json()
-  console.log(`✓ Shopify order created: #${result.order?.order_number} (id ${result.order?.id})`)
+  const data = await res.json()
+  return { id: data.order.id, orderNumber: data.order.order_number }
 }
