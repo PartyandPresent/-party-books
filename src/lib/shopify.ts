@@ -1,6 +1,6 @@
 const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!
 const SHOPIFY_TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN!
-const API_VERSION    = '2025-01'
+const API_VERSION    = '2026-07'
 
 const COUNTRY_CODES: Record<string, string> = {
   'Philippines':    'PH',
