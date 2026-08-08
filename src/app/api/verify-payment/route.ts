@@ -40,32 +40,43 @@ export async function GET(req: NextRequest) {
 
     // Create Shopify order once per Stripe session (idempotent) — non-fatal
     try {
-      if (response.email && !(await shopifyOrderExists(sessionId))) {
-        const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 10 })
-        const bookItem  = lineItems.data.find(li => li.description !== 'Shipping')
-        const shipItem  = lineItems.data.find(li => li.description === 'Shipping')
+      console.log(`[Shopify] Starting for session ${sessionId}, email="${response.email}", domain="${process.env.SHOPIFY_STORE_DOMAIN}"`)
+      if (!response.email) {
+        console.log('[Shopify] Skipping — no email on session')
+      } else {
+        const exists = await shopifyOrderExists(sessionId)
+        console.log(`[Shopify] orderExists=${exists}`)
+        if (!exists) {
+          const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 10 })
+          const bookItem  = lineItems.data.find(li => li.description !== 'Shipping')
+          const shipItem  = lineItems.data.find(li => li.description === 'Shipping')
 
-        const bookAmount = bookItem  ? (bookItem.amount_total  / 100) : response.amountTotal
-        const shipAmount = shipItem  ? (shipItem.amount_total  / 100) : 0
+          const bookAmount = bookItem  ? (bookItem.amount_total  / 100) : response.amountTotal
+          const shipAmount = shipItem  ? (shipItem.amount_total  / 100) : 0
 
-        const shopifyResult = await createShopifyOrder({
-          email:           response.email,
-          childName:       meta.childName       || '',
-          bookTitle:       meta.bookTitle        || 'Personalised Book',
-          stripeSessionId: sessionId,
-          bookAmount,
-          shippingAmount:  shipAmount,
-          shippingName:    meta.shippingName    || details?.name || '',
-          shippingPhone:   meta.shippingPhone   || details?.phone || '',
-          shippingStreet:  meta.shippingStreet  || address?.line1 || '',
-          shippingCity:    meta.shippingCity    || address?.city  || '',
-          shippingState:   meta.shippingState   || address?.state || '',
-          shippingZip:     meta.shippingZip     || address?.postal_code || '',
-          shippingCountry: meta.shippingCountry || address?.country || 'Philippines',
-        })
+          console.log(`[Shopify] Creating order: book=$${bookAmount}, ship=$${shipAmount}, country="${meta.shippingCountry || address?.country}"`)
 
-        if (shopifyResult) {
-          console.log(`[Shopify] Order #${shopifyResult.orderNumber} created (id ${shopifyResult.id}) for session ${sessionId}`)
+          const shopifyResult = await createShopifyOrder({
+            email:           response.email,
+            childName:       meta.childName       || '',
+            bookTitle:       meta.bookTitle        || 'Personalised Book',
+            stripeSessionId: sessionId,
+            bookAmount,
+            shippingAmount:  shipAmount,
+            shippingName:    meta.shippingName    || details?.name || '',
+            shippingPhone:   meta.shippingPhone   || details?.phone || '',
+            shippingStreet:  meta.shippingStreet  || address?.line1 || '',
+            shippingCity:    meta.shippingCity    || address?.city  || '',
+            shippingState:   meta.shippingState   || address?.state || '',
+            shippingZip:     meta.shippingZip     || address?.postal_code || '',
+            shippingCountry: meta.shippingCountry || address?.country || 'Philippines',
+          })
+
+          if (shopifyResult) {
+            console.log(`[Shopify] Order #${shopifyResult.orderNumber} created (id ${shopifyResult.id})`)
+          } else {
+            console.log('[Shopify] createShopifyOrder returned null — see error above')
+          }
         }
       }
     } catch (shopifyErr: any) {
