@@ -38,34 +38,38 @@ export async function GET(req: NextRequest) {
         : '',
     }
 
-    // Create Shopify order once per Stripe session (idempotent)
-    if (response.email && !(await shopifyOrderExists(sessionId))) {
-      const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 10 })
-      const bookItem  = lineItems.data.find(li => li.description !== 'Shipping')
-      const shipItem  = lineItems.data.find(li => li.description === 'Shipping')
+    // Create Shopify order once per Stripe session (idempotent) — non-fatal
+    try {
+      if (response.email && !(await shopifyOrderExists(sessionId))) {
+        const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 10 })
+        const bookItem  = lineItems.data.find(li => li.description !== 'Shipping')
+        const shipItem  = lineItems.data.find(li => li.description === 'Shipping')
 
-      const bookAmount = bookItem  ? (bookItem.amount_total  / 100) : response.amountTotal
-      const shipAmount = shipItem  ? (shipItem.amount_total  / 100) : 0
+        const bookAmount = bookItem  ? (bookItem.amount_total  / 100) : response.amountTotal
+        const shipAmount = shipItem  ? (shipItem.amount_total  / 100) : 0
 
-      const shopifyResult = await createShopifyOrder({
-        email:           response.email,
-        childName:       meta.childName       || '',
-        bookTitle:       meta.bookTitle        || 'Personalised Book',
-        stripeSessionId: sessionId,
-        bookAmount,
-        shippingAmount:  shipAmount,
-        shippingName:    meta.shippingName    || details?.name || '',
-        shippingPhone:   meta.shippingPhone   || details?.phone || '',
-        shippingStreet:  meta.shippingStreet  || address?.line1 || '',
-        shippingCity:    meta.shippingCity    || address?.city  || '',
-        shippingState:   meta.shippingState   || address?.state || '',
-        shippingZip:     meta.shippingZip     || address?.postal_code || '',
-        shippingCountry: meta.shippingCountry || address?.country || 'Philippines',
-      })
+        const shopifyResult = await createShopifyOrder({
+          email:           response.email,
+          childName:       meta.childName       || '',
+          bookTitle:       meta.bookTitle        || 'Personalised Book',
+          stripeSessionId: sessionId,
+          bookAmount,
+          shippingAmount:  shipAmount,
+          shippingName:    meta.shippingName    || details?.name || '',
+          shippingPhone:   meta.shippingPhone   || details?.phone || '',
+          shippingStreet:  meta.shippingStreet  || address?.line1 || '',
+          shippingCity:    meta.shippingCity    || address?.city  || '',
+          shippingState:   meta.shippingState   || address?.state || '',
+          shippingZip:     meta.shippingZip     || address?.postal_code || '',
+          shippingCountry: meta.shippingCountry || address?.country || 'Philippines',
+        })
 
-      if (shopifyResult) {
-        console.log(`[Shopify] Order #${shopifyResult.orderNumber} created (id ${shopifyResult.id}) for session ${sessionId}`)
+        if (shopifyResult) {
+          console.log(`[Shopify] Order #${shopifyResult.orderNumber} created (id ${shopifyResult.id}) for session ${sessionId}`)
+        }
       }
+    } catch (shopifyErr: any) {
+      console.error('[Shopify] Non-fatal error in verify-payment:', shopifyErr?.message)
     }
 
     return NextResponse.json(response)
