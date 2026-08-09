@@ -1,5 +1,5 @@
-const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!
-const SHOPIFY_TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN!
+const SHOPIFY_DOMAIN = (process.env.SHOPIFY_STORE_DOMAIN || '').replace(/^﻿/, '').trim()
+const SHOPIFY_TOKEN  = (process.env.SHOPIFY_ADMIN_TOKEN  || '').replace(/^﻿/, '').trim()
 const API_VERSION    = '2026-07'
 
 const COUNTRY_CODES: Record<string, string> = {
