@@ -172,17 +172,10 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 //   Shadow/grounding is handled naturally by Gemini matching the scene's lighting.
 //
 //   Resize output to canvas dimensions (1774×887), composite logo on cover, composite text.
-function getBaseUrl(): string {
-  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return 'http://localhost:3000'
-}
-
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
-  const urlPath = assetPath.replace(/^public\//, '/')
-  const res = await fetch(`${getBaseUrl()}${urlPath}`)
-  if (!res.ok) throw new Error(`Failed to fetch ${urlPath}: ${res.status}`)
-  return Buffer.from(await res.arrayBuffer())
+  const relativePath = assetPath.replace(/^\//, '').replace(/^public\//, '')
+  const fullPath = path.join(process.cwd(), 'public', relativePath)
+  return fs.readFileSync(fullPath)
 }
 
 async function generateCompositedPage(
