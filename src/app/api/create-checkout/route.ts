@@ -9,7 +9,8 @@ export async function POST(req: NextRequest) {
   try {
     const { title, price, shipping, childName, email, shippingDetails } = await req.json()
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const rawBase = (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim()
+    const baseUrl = rawBase.startsWith('http') ? rawBase : 'https://www.miloriabooks.com'
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
