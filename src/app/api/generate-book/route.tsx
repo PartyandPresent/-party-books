@@ -174,11 +174,14 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 //   Resize output to canvas dimensions (1774×887), composite logo on cover, composite text.
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
   const urlPath = assetPath.replace(/^public\//, '/')
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000'
-  const res = await fetch(`${baseUrl}${urlPath}`)
+  const baseUrl = process.env.ASSET_HOST || 'http://localhost:3000'
+  const url = `${baseUrl}${urlPath}`
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to fetch asset ${urlPath}: ${res.status}`)
+  const ct = res.headers.get('content-type') || ''
+  if (!ct.startsWith('image/') && !ct.startsWith('application/octet-stream')) {
+    throw new Error(`Asset ${urlPath} returned unexpected content-type: ${ct}`)
+  }
   return Buffer.from(await res.arrayBuffer())
 }
 
