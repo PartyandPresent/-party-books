@@ -173,9 +173,13 @@ FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
 //
 //   Resize output to canvas dimensions (1774×887), composite logo on cover, composite text.
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
-  const relativePath = assetPath.replace(/^\//, '').replace(/^public\//, '')
-  const fullPath = path.join(process.cwd(), 'public', relativePath)
-  return fs.readFileSync(fullPath)
+  const urlPath = assetPath.replace(/^public\//, '/')
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000'
+  const res = await fetch(`${baseUrl}${urlPath}`)
+  if (!res.ok) throw new Error(`Failed to fetch asset ${urlPath}: ${res.status}`)
+  return Buffer.from(await res.arrayBuffer())
 }
 
 async function generateCompositedPage(
