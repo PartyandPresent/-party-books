@@ -100,15 +100,19 @@ async function callGemini(promptParts: any[]): Promise<string> {
 }
 
 function getBaseUrl(): string {
-  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return 'http://localhost:3000'
+  const rawHost = (process.env.ASSET_HOST || '').replace(/^﻿/, '').trim()
+  if (rawHost.startsWith('http')) return rawHost
+  return 'https://www.miloriabooks.com'
 }
 
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
   const urlPath = assetPath.replace(/^public\//, '/')
   const res = await fetch(`${getBaseUrl()}${urlPath}`)
   if (!res.ok) throw new Error(`Failed to fetch ${urlPath}: ${res.status}`)
+  const ct = res.headers.get('content-type') || ''
+  if (!ct.startsWith('image/') && !ct.startsWith('application/octet-stream')) {
+    throw new Error(`Asset ${urlPath} returned wrong content-type: ${ct}`)
+  }
   return Buffer.from(await res.arrayBuffer())
 }
 
@@ -429,7 +433,7 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided 
       html: staffEmailHtml({
         customerName, customerEmail, childName, senderName, dedication,
         bookTitle, bookSlug, orderId, pageUrls, cloudinaryReady,
-        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+        baseUrl: (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim() || 'https://www.miloriabooks.com',
       }),
     })
     console.log('✓ Staff email sent')
