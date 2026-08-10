@@ -158,7 +158,9 @@ POSE: Full body head to toe. Relaxed natural standing pose. Slight 3/4 angle tur
 
 BACKGROUND: Plain clean white only. No scenery. No props. No text of any kind. No cast shadow on the background.
 
-FORMAT: 1:1 square ratio. Character centered with clear space on all sides.`
+FRAMING — CRITICAL: The complete character must be fully visible with NO cropping of any body part. Both feet must be clearly visible at the bottom. The top of the head must have clear space above it. The character should fill roughly 75–80% of the image height, leaving visible empty margins at both top and bottom. If the reference photo shows only a face or partial body, STILL generate a COMPLETE full-body character from head to toe — do NOT match the cropping of the reference photo.
+
+FORMAT: 1:1 square ratio. Character horizontally centered with clear empty space on all four sides.`
 
 
 // Scene generation pipeline for one page (3-image approach):

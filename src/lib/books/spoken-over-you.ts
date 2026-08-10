@@ -70,7 +70,11 @@ CLOTHING — use the outfit that matches the child's gender ONLY. Do NOT show bo
 - If BOY: White Polo Shirt with Checkered Necktie, dark pants, small shoes
 
 POSE: Full body, head to toe. Relaxed natural standing pose. Arms resting naturally at the sides.
+
+FRAMING — CRITICAL: The complete character must be fully visible with NO cropping of any body part. Both feet must be clearly visible at the bottom. The top of the head must have clear space above it. The character should fill roughly 75–80% of the image height, leaving visible empty margins at both top and bottom. If the reference photo shows only a face or partial body, STILL generate a COMPLETE full-body character from head to toe — do NOT match the cropping of the reference photo.
+
 BACKGROUND: Plain clean white only. No scenery, no props, no text.
+FORMAT: 1:1 square ratio. Character horizontally centered with clear empty space on all four sides.
 OUTPUT: ONE single child character only. Do NOT generate two characters or show both genders.`
 
 // ─── Pages ───────────────────────────────────────────────────────────────────
