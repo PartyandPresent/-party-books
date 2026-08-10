@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { createShopifyOrder, shopifyOrderExists } from '@/lib/shopify'
+import { createShopifyOrder } from '@/lib/shopify'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-05-27.dahlia' as any,
@@ -40,13 +40,17 @@ export async function GET(req: NextRequest) {
 
     // Create Shopify order once per Stripe session (idempotent) — non-fatal
     try {
-      console.log(`[Shopify] Starting for session ${sessionId}, email="${response.email}", domain="${process.env.SHOPIFY_STORE_DOMAIN}"`)
+      console.log(`[Shopify] Starting for session ${sessionId}, email="${response.email}"`)
       if (!response.email) {
         console.log('[Shopify] Skipping — no email on session')
       } else {
-        const exists = await shopifyOrderExists(sessionId)
-        console.log(`[Shopify] orderExists=${exists}`)
-        if (!exists) {
+        // Dedup via Stripe payment intent metadata — no Shopify tags needed
+        const paymentIntentId = session.payment_intent as string | null
+        const pi = paymentIntentId ? await stripe.paymentIntents.retrieve(paymentIntentId) : null
+        const alreadyCreated = pi?.metadata?.shopify_order_id
+
+        console.log(`[Shopify] alreadyCreated=${alreadyCreated || 'no'}`)
+        if (!alreadyCreated) {
           const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 10 })
           const bookItem  = lineItems.data.find(li => li.description !== 'Shipping')
           const shipItem  = lineItems.data.find(li => li.description === 'Shipping')
@@ -74,6 +78,11 @@ export async function GET(req: NextRequest) {
 
           if (shopifyResult) {
             console.log(`[Shopify] Order #${shopifyResult.orderNumber} created (id ${shopifyResult.id})`)
+            if (paymentIntentId) {
+              await stripe.paymentIntents.update(paymentIntentId, {
+                metadata: { shopify_order_id: String(shopifyResult.id) },
+              })
+            }
           } else {
             console.log('[Shopify] createShopifyOrder returned null — see error above')
           }
