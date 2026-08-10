@@ -29,7 +29,7 @@ export interface ShopifyOrderInput {
 }
 
 export async function shopifyOrderExists(stripeSessionId: string): Promise<boolean> {
-  const url = `https://${SHOPIFY_DOMAIN}/admin/api/${API_VERSION}/orders.json?tag=stripe:${encodeURIComponent(stripeSessionId)}&status=any&limit=1`
+  const url = `https://${SHOPIFY_DOMAIN}/admin/api/${API_VERSION}/orders.json?tag=stripe-${encodeURIComponent(stripeSessionId)}&status=any&limit=1`
   const res = await fetch(url, {
     headers: { 'X-Shopify-Access-Token': SHOPIFY_TOKEN },
   })
@@ -52,7 +52,7 @@ export async function createShopifyOrder(
       fulfillment_status:         null,
       send_receipt:               false,
       send_fulfillment_receipt:   false,
-      tags:                       `stripe:${input.stripeSessionId}`,
+      tags:                       `stripe-${input.stripeSessionId}`,
       note:                       `Stripe session: ${input.stripeSessionId}`,
       note_attributes: [
         { name: 'Child Name',      value: input.childName },
