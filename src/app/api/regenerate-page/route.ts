@@ -100,9 +100,9 @@ async function callGemini(promptParts: any[]): Promise<string> {
 }
 
 function getBaseUrl(): string {
-  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return 'http://localhost:3000'
+  const rawHost = (process.env.ASSET_HOST || '').replace(/^﻿/, '').trim()
+  if (rawHost.startsWith('http')) return rawHost
+  return 'https://www.miloriabooks.com'
 }
 
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
@@ -115,23 +115,27 @@ async function fetchPublicFile(assetPath: string): Promise<Buffer> {
 async function generateCompositedPage(
   page: BookPage,
   characterBase64: string,
-  customer: { childName: string; senderName: string; dedication?: string; siblingName?: string; lastName?: string; birthDate?: string; gifterNames?: string },
+  customer: { childName: string; senderName: string; dedication?: string; siblingName?: string; siblingFullName?: string; siblingBirthDate?: string; lastName?: string; birthDate?: string; gifterNames?: string },
   config: BookRenderConfig,
   staffNote?: string,
 ): Promise<string> {
   const bgBuffer = await fetchPublicFile(page.backgroundAsset)
 
   const replacements: TextReplacements = {
-    CHILD_NAME:       customer.childName,
-    SENDER_NAME:      customer.senderName,
-    CHILD_NAME_UPPER: customer.childName.toUpperCase(),
-    DEDICATION:       customer.dedication ||
+    CHILD_NAME:         customer.childName,
+    CHILD_FULL_NAME:    customer.childName,
+    SENDER_NAME:        customer.senderName,
+    CHILD_NAME_UPPER:   customer.childName.toUpperCase(),
+    DEDICATION:         customer.dedication ||
       getBookBySlug(config.bookSlug)?.defaultDedication?.replace(/\[CHILD_NAME\]/g, customer.childName) ||
       '',
-    SIBLING_NAME:     customer.siblingName  || '',
-    LAST_NAME:        customer.lastName     || '',
-    BIRTH_DATE:       customer.birthDate    || '',
-    GIFTER_NAMES:     customer.gifterNames  || '',
+    SIBLING_NAME:       customer.siblingName      || '',
+    SIBLING_FULL_NAME:  customer.siblingFullName  || '',
+    SIBLING_BIRTH_DATE: customer.siblingBirthDate || '',
+    LAST_NAME:          customer.lastName         || '',
+    BIRTH_DATE:         customer.birthDate        || '',
+    GIFTER_NAMES:       customer.gifterNames      || '',
+    DATE:               '',
   }
 
   if (!page.characterPlacement) {
@@ -211,6 +215,24 @@ RULES:
     composite = Buffer.from(withLogo, 'base64')
   }
 
+  // For covers where the logo is baked into the background (showLogoOnCover: false),
+  // restore the left panel from the original background so Gemini can't erase the logo.
+  if (page.pageIndex === 0 && config.showLogoOnCover === false) {
+    const leftW = Math.round(config.canvasW / 2)
+    const bgResizedFull = await sharp(bgBuffer)
+      .resize(config.canvasW, config.canvasH, { fit: 'fill' })
+      .png()
+      .toBuffer()
+    const leftHalf = await sharp(bgResizedFull)
+      .extract({ left: 0, top: 0, width: leftW, height: config.canvasH })
+      .png()
+      .toBuffer()
+    composite = await sharp(composite)
+      .composite([{ input: leftHalf, left: 0, top: 0, blend: 'over' }])
+      .png()
+      .toBuffer()
+  }
+
   // Restore protected areas from the original background on top of the Gemini scene.
   // Fixes z-order: Gemini overwrites any background box/ornament in the character area;
   // pasting the background back on top restores the box so it appears over the character.
@@ -245,8 +267,25 @@ RULES:
 
   const withText = await compositeTextBlocks(
     composite, textBlocks, replacements, config.canvasW, config.canvasH, config.bookSlug,
+    page.svgOverlay,
   )
   return withText.toString('base64')
+}
+
+// Save the current version of a page as page_XX_orig before first overwrite.
+// If page_XX_orig already exists this is a no-op.
+async function backupOriginalIfNeeded(folder: string, publicId: string): Promise<void> {
+  const origPublicId = `${publicId}_orig`
+  const origUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/${origPublicId}`
+  const checkRes = await fetch(origUrl, { method: 'HEAD' })
+  if (checkRes.ok) return
+
+  const currentUrl = `https://res.cloudinary.com/${CLOUD}/image/upload/${folder}/${publicId}`
+  const currentRes = await fetch(currentUrl)
+  if (!currentRes.ok) return
+
+  const data = Buffer.from(await currentRes.arrayBuffer()).toString('base64')
+  await uploadToCloudinary(data, folder, origPublicId)
 }
 
 async function uploadToCloudinary(base64: string, folder: string, publicId: string): Promise<string> {
@@ -298,7 +337,7 @@ export async function POST(req: NextRequest) {
     if (!metaRes.ok) {
       return NextResponse.json({ error: 'Order metadata not found — make sure the full book was generated first.' }, { status: 404 })
     }
-    const { childName, senderName, dedication, siblingName, lastName, birthDate, gifterNames, bookSlug } = await metaRes.json()
+    const { childName, senderName, dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames, bookSlug } = await metaRes.json()
 
     const bookConfig = getBookRenderConfig(bookSlug)
     if (bookConfig) {
@@ -319,11 +358,12 @@ export async function POST(req: NextRequest) {
       const pageBase64 = await generateCompositedPage(
         pages[idx],
         characterBase64,
-        { childName, senderName: senderName || '', dedication, siblingName, lastName, birthDate, gifterNames },
+        { childName, senderName: senderName || '', dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames },
         bookConfig,
         staffNote || '',
       )
 
+      await backupOriginalIfNeeded(folder, publicId)
       const pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
       return NextResponse.json({ url: pageUrl })
     }
@@ -367,6 +407,7 @@ CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: Use the EXACT same child 
 
     if (idx === 0) pageBase64 = await compositeLogoOnCover(pageBase64)
 
+    await backupOriginalIfNeeded(folder, publicId)
     const pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
     return NextResponse.json({ url: pageUrl })
 

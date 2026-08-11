@@ -41,6 +41,8 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
   const [errors, setErrors]               = useState<Record<number, boolean>>({})
   const [regenerating, setRegenerating]   = useState<Record<number, boolean>>({})
   const [regenErrors, setRegenErrors]     = useState<Record<number, string>>({})
+  const [reverting, setReverting]         = useState<Record<number, boolean>>({})
+  const [revertErrors, setRevertErrors]   = useState<Record<number, string>>({})
   const [imageVersions, setImageVersions] = useState<Record<number, number>>({})
   const [staffNotes, setStaffNotes]       = useState<Record<number, string>>({})
   const [pageCount, setPageCount]         = useState(17)
@@ -118,6 +120,26 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
       setRegenerating(r => ({ ...r, [pageIndex]: false }))
     }
   }, [orderId, staffNotes])
+
+  const handleRevert = useCallback(async (pageIndex: number) => {
+    setReverting(r => ({ ...r, [pageIndex]: true }))
+    setRevertErrors(e => ({ ...e, [pageIndex]: '' }))
+    setErrors(e => ({ ...e, [pageIndex]: false }))
+    try {
+      const res = await fetch('/api/revert-page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, pageIndex }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Revert failed')
+      setImageVersions(v => ({ ...v, [pageIndex]: Math.round(Date.now() / 1000) }))
+    } catch (err: any) {
+      setRevertErrors(e => ({ ...e, [pageIndex]: err.message }))
+    } finally {
+      setReverting(r => ({ ...r, [pageIndex]: false }))
+    }
+  }, [orderId])
 
   return (
     <div style={{ minHeight: '100vh', background: CREAM, fontFamily: 'Nunito, sans-serif' }}>
@@ -211,29 +233,56 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
                   {regenerating[index] && (
                     <span style={{ fontSize: 12, color: CORAL, fontWeight: 700 }}>Generating…</span>
                   )}
+                  {reverting[index] && (
+                    <span style={{ fontSize: 12, color: CORAL, fontWeight: 700 }}>Reverting…</span>
+                  )}
                   {regenErrors[index] && (
                     <span style={{ fontSize: 12, color: '#e55', fontWeight: 700 }}>⚠ {regenErrors[index]}</span>
                   )}
+                  {revertErrors[index] && (
+                    <span style={{ fontSize: 12, color: '#e55', fontWeight: 700 }}>⚠ {revertErrors[index]}</span>
+                  )}
                 </div>
-                <button
-                  onClick={() => handleRegenerate(index)}
-                  disabled={!!regenerating[index]}
-                  style={{
-                    background: '#fff',
-                    color: regenerating[index] ? MUTED : GREEN,
-                    border: `1.5px solid ${regenerating[index] ? '#ddd' : GREEN}`,
-                    borderRadius: 50,
-                    padding: '7px 20px',
-                    fontSize: 13,
-                    fontWeight: 800,
-                    cursor: regenerating[index] ? 'not-allowed' : 'pointer',
-                    fontFamily: 'Nunito, sans-serif',
-                    transition: 'all 0.15s',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {regenerating[index] ? '⏳ Regenerating…' : '↻ Regenerate'}
-                </button>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <button
+                    onClick={() => handleRevert(index)}
+                    disabled={!!reverting[index] || !!regenerating[index]}
+                    style={{
+                      background: '#fff',
+                      color: (reverting[index] || regenerating[index]) ? MUTED : CORAL,
+                      border: `1.5px solid ${(reverting[index] || regenerating[index]) ? '#ddd' : CORAL}`,
+                      borderRadius: 50,
+                      padding: '7px 16px',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      cursor: (reverting[index] || regenerating[index]) ? 'not-allowed' : 'pointer',
+                      fontFamily: 'Nunito, sans-serif',
+                      transition: 'all 0.15s',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {reverting[index] ? '⏳ Reverting…' : '↩ Revert'}
+                  </button>
+                  <button
+                    onClick={() => handleRegenerate(index)}
+                    disabled={!!regenerating[index] || !!reverting[index]}
+                    style={{
+                      background: '#fff',
+                      color: (regenerating[index] || reverting[index]) ? MUTED : GREEN,
+                      border: `1.5px solid ${(regenerating[index] || reverting[index]) ? '#ddd' : GREEN}`,
+                      borderRadius: 50,
+                      padding: '7px 20px',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      cursor: (regenerating[index] || reverting[index]) ? 'not-allowed' : 'pointer',
+                      fontFamily: 'Nunito, sans-serif',
+                      transition: 'all 0.15s',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {regenerating[index] ? '⏳ Regenerating…' : '↻ Regenerate'}
+                  </button>
+                </div>
               </div>
 
               {/* Staff note textarea */}
@@ -275,7 +324,7 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
                     key={url}
                     src={url}
                     alt={label}
-                    style={{ width: '100%', display: 'block', opacity: regenerating[index] ? 0.4 : 1, transition: 'opacity 0.3s' }}
+                    style={{ width: '100%', display: 'block', opacity: (regenerating[index] || reverting[index]) ? 0.4 : 1, transition: 'opacity 0.3s' }}
                     onError={() => setErrors(e => ({ ...e, [index]: true }))}
                   />
                 )}
@@ -289,12 +338,18 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
                     pointerEvents: 'none',
                   }} />
                 )}
-                {/* Regenerating overlay */}
-                {regenerating[index] && (
+                {/* Processing overlay */}
+                {(regenerating[index] || reverting[index]) && (
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.65)' }}>
                     <div style={{ background: '#fff', borderRadius: 12, padding: '16px 28px', boxShadow: '0 4px 20px rgba(45,74,62,0.15)', textAlign: 'center' }}>
-                      <p style={{ margin: 0, fontSize: 14, fontWeight: 800, color: GREEN, fontFamily: 'Nunito, sans-serif' }}>⏳ Regenerating page…</p>
-                      <p style={{ margin: '4px 0 0', fontSize: 12, color: MUTED, fontFamily: 'Nunito, sans-serif' }}>This takes about 30–60 seconds</p>
+                      {regenerating[index] ? (
+                        <>
+                          <p style={{ margin: 0, fontSize: 14, fontWeight: 800, color: GREEN, fontFamily: 'Nunito, sans-serif' }}>⏳ Regenerating page…</p>
+                          <p style={{ margin: '4px 0 0', fontSize: 12, color: MUTED, fontFamily: 'Nunito, sans-serif' }}>This takes about 30–60 seconds</p>
+                        </>
+                      ) : (
+                        <p style={{ margin: 0, fontSize: 14, fontWeight: 800, color: CORAL, fontFamily: 'Nunito, sans-serif' }}>↩ Reverting to original…</p>
+                      )}
                     </div>
                   </div>
                 )}
