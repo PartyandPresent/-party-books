@@ -26,12 +26,13 @@ export interface BookRenderConfig {
 
 const CONFIGS: BookRenderConfig[] = [
   {
-    canvasW:     1774,
-    canvasH:     887,
-    bookSlug:    'before-the-music-plays',
-    costumeRule: 'use a white or ivory flower girl dress with a satin sash and white dress shoes.',
-    pages:       beforeTheMusicPlays.pages,
-    title:       beforeTheMusicPlays.title,
+    canvasW:         1774,
+    canvasH:         887,
+    bookSlug:        'before-the-music-plays',
+    costumeRule:     'use a white or ivory flower girl dress with a satin sash and white dress shoes.',
+    pages:           beforeTheMusicPlays.pages,
+    title:           beforeTheMusicPlays.title,
+    showLogoOnCover: false,  // logo is baked into the background — left panel is always restored after Gemini
   },
   {
     canvasW:         2000,

@@ -214,6 +214,24 @@ RULES:
     composite = Buffer.from(withLogo, 'base64')
   }
 
+  // For covers where the logo is baked into the background (showLogoOnCover: false),
+  // restore the entire left half pixel-for-pixel so Gemini can never overwrite the logo.
+  if (page.pageIndex === 0 && config.showLogoOnCover === false) {
+    const leftW = Math.round(config.canvasW / 2)
+    const bgResizedFull = await sharp(bgBuffer)
+      .resize(config.canvasW, config.canvasH, { fit: 'fill' })
+      .png()
+      .toBuffer()
+    const leftHalf = await sharp(bgResizedFull)
+      .extract({ left: 0, top: 0, width: leftW, height: config.canvasH })
+      .png()
+      .toBuffer()
+    composite = await sharp(composite)
+      .composite([{ input: leftHalf, left: 0, top: 0, blend: 'over' }])
+      .png()
+      .toBuffer()
+  }
+
   // Restore protected areas from the original background on top of the Gemini scene.
   // Fixes z-order: Gemini overwrites any background box/ornament in the character area;
   // pasting the background back on top restores the box so it appears over the character.
