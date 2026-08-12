@@ -146,15 +146,18 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     },
 
     // ── Page 01 — Dedication ─────────────────────────────────────────────────────
-    // Text-only page — no Gemini character generation.
-    // Uses the bedroom background (page-02.png, right half illustrated, left half white).
-    // Morning Begins (pageIndex 2) uses the SAME background but WITH a character, so the
-    // two pages look visually distinct (one has character, one does not).
+    // Uses page-02 reference so the bedroom scene + character position matches the reference.
+    // (useReferenceAsScene=true means page-02.png reference is sent as IMAGE 1 to Gemini.)
+    // Text is the customer's dedication message overlaid on the generated scene.
     {
       pageIndex: 1,
       backgroundAsset: `${BG}/page-02.png`,
+      poseReference:   `${REF}/page-02.png`,
+      characterActionPrompt:
+        `A warm, joyful bedroom scene. The child stands on the right side of the canvas, facing slightly inward with a gentle smile — holding their backpack, looking hopeful and ready for the school year. The bedroom background shows softly behind them. The left half of the canvas must remain a completely clean white panel.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
+      characterPlacement: { x: 999, y: 0, width: 1001, height: 1000 },
       textBlocks: [
         {
           id: 'dedication',
