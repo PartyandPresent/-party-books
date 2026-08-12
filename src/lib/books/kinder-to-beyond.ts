@@ -165,7 +165,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
           defaultIfEmpty: 'To [CHILD_NAME],\n\nMay every year bring you new adventures, big discoveries, and the courage to try. We are so proud of who you are — and who you are becoming.\n\nWith all our love,',
           x: 1020, y: 150, maxWidth: 420,
           fontFamily: FONT, fontSize: FS,
-          color: NAVY, align: 'center', lineHeight: 1.5,
+          color: WHITE, align: 'center', lineHeight: 1.5,
         },
       ],
     },
