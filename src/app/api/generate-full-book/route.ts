@@ -376,26 +376,44 @@ export async function POST(req: NextRequest) {
       const { pages } = bookConfig
       bookTitle = bookConfig.title
 
-      for (const page of pages) {
-        const pageBase64 = await generateCompositedPage(
-          page,
-          characterBase64,
-          { childName, senderName: senderName || '', dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames },
-          bookConfig,
-        )
+      const customer = { childName, senderName: senderName || '', dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames }
 
-        let pageUrl = ''
-        if (cloudinaryReady) {
-          try {
-            const publicId = `page_${String(page.pageIndex).padStart(2, '0')}`
-            pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
-          } catch (err) {
-            console.error(`Cloudinary upload failed for page ${page.pageIndex}:`, err)
+      // Generate pages in parallel batches of 4 so long books (e.g. KTB 25 pages)
+      // finish well within Vercel's 5-minute function limit.
+      const BATCH = 4
+      const pageResults: Array<{ pageIndex: number; url: string }> = []
+
+      for (let b = 0; b < pages.length; b += BATCH) {
+        const batch = pages.slice(b, b + BATCH)
+        const settled = await Promise.allSettled(
+          batch.map(async (page) => {
+            const pageBase64 = await generateCompositedPage(page, characterBase64, customer, bookConfig)
+            let pageUrl = ''
+            if (cloudinaryReady) {
+              try {
+                const publicId = `page_${String(page.pageIndex).padStart(2, '0')}`
+                pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
+              } catch (err) {
+                console.error(`Cloudinary upload failed for page ${page.pageIndex}:`, err)
+              }
+            }
+            console.log(`✓ Page ${page.pageIndex + 1}/${pages.length} generated${pageUrl ? ' and uploaded' : ''}`)
+            return { pageIndex: page.pageIndex, url: pageUrl }
+          })
+        )
+        for (const result of settled) {
+          if (result.status === 'fulfilled') {
+            pageResults.push(result.value)
+          } else {
+            console.error(`Page generation failed in batch starting at ${b}:`, result.reason)
           }
         }
+      }
 
-        pageUrls.push(pageUrl)
-        console.log(`✓ Page ${page.pageIndex + 1}/${pages.length} generated${pageUrl ? ' and uploaded' : ''}`)
+      // Rebuild pageUrls in page order for the staff email
+      pageResults.sort((a, b) => a.pageIndex - b.pageIndex)
+      for (const page of pages) {
+        pageUrls.push(pageResults.find(r => r.pageIndex === page.pageIndex)?.url ?? '')
       }
     } else {
       // Legacy pipeline for other book slugs
