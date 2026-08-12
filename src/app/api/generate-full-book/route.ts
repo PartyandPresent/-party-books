@@ -371,108 +371,115 @@ export async function POST(req: NextRequest) {
       await uploadToCloudinary(characterBase64, folder, 'character')
     }
 
-    const bookConfig = getBookRenderConfig(bookSlug)
-    if (bookConfig) {
-      const { pages } = bookConfig
-      bookTitle = bookConfig.title
+    // Generation is wrapped in its own try/catch so the staff email always fires
+    // even if generation crashes or a batch fails partway through.
+    try {
+      const bookConfig = getBookRenderConfig(bookSlug)
+      if (bookConfig) {
+        const { pages } = bookConfig
+        bookTitle = bookConfig.title
 
-      const customer = { childName, senderName: senderName || '', dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames }
+        const customer = { childName, senderName: senderName || '', dedication, siblingName, siblingFullName, siblingBirthDate, lastName, birthDate, gifterNames }
 
-      // Generate pages in parallel batches of 4 so long books (e.g. KTB 25 pages)
-      // finish well within Vercel's 5-minute function limit.
-      const BATCH = 4
-      const pageResults: Array<{ pageIndex: number; url: string }> = []
+        // Generate pages in parallel batches of 4 so long books (e.g. KTB 25 pages)
+        // finish well within Vercel's 5-minute function limit.
+        const BATCH = 4
+        const pageResults: Array<{ pageIndex: number; url: string }> = []
 
-      for (let b = 0; b < pages.length; b += BATCH) {
-        const batch = pages.slice(b, b + BATCH)
-        const settled = await Promise.allSettled(
-          batch.map(async (page) => {
-            const pageBase64 = await generateCompositedPage(page, characterBase64, customer, bookConfig)
-            let pageUrl = ''
-            if (cloudinaryReady) {
-              try {
-                const publicId = `page_${String(page.pageIndex).padStart(2, '0')}`
-                pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
-              } catch (err) {
-                console.error(`Cloudinary upload failed for page ${page.pageIndex}:`, err)
+        for (let b = 0; b < pages.length; b += BATCH) {
+          const batch = pages.slice(b, b + BATCH)
+          const settled = await Promise.allSettled(
+            batch.map(async (page) => {
+              const pageBase64 = await generateCompositedPage(page, characterBase64, customer, bookConfig)
+              let pageUrl = ''
+              if (cloudinaryReady) {
+                try {
+                  const publicId = `page_${String(page.pageIndex).padStart(2, '0')}`
+                  pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
+                } catch (err) {
+                  console.error(`Cloudinary upload failed for page ${page.pageIndex}:`, err)
+                }
               }
+              console.log(`✓ Page ${page.pageIndex + 1}/${pages.length} generated${pageUrl ? ' and uploaded' : ''}`)
+              return { pageIndex: page.pageIndex, url: pageUrl }
+            })
+          )
+          for (const result of settled) {
+            if (result.status === 'fulfilled') {
+              pageResults.push(result.value)
+            } else {
+              console.error(`Page generation failed in batch starting at ${b}:`, result.reason)
             }
-            console.log(`✓ Page ${page.pageIndex + 1}/${pages.length} generated${pageUrl ? ' and uploaded' : ''}`)
-            return { pageIndex: page.pageIndex, url: pageUrl }
-          })
-        )
-        for (const result of settled) {
-          if (result.status === 'fulfilled') {
-            pageResults.push(result.value)
-          } else {
-            console.error(`Page generation failed in batch starting at ${b}:`, result.reason)
           }
         }
-      }
 
-      // Rebuild pageUrls in page order for the staff email
-      pageResults.sort((a, b) => a.pageIndex - b.pageIndex)
-      for (const page of pages) {
-        pageUrls.push(pageResults.find(r => r.pageIndex === page.pageIndex)?.url ?? '')
-      }
-    } else {
-      // Legacy pipeline for other book slugs
-      const book = getBookBySlug(bookSlug)
-      if (!book?.pagePrompts?.length) {
-        return NextResponse.json({ error: 'Book not found or has no prompts' }, { status: 404 })
-      }
-      bookTitle = book.title
+        // Rebuild pageUrls in page order for the staff email
+        pageResults.sort((a, b) => a.pageIndex - b.pageIndex)
+        for (const page of pages) {
+          pageUrls.push(pageResults.find(r => r.pageIndex === page.pageIndex)?.url ?? '')
+        }
+      } else {
+        // Legacy pipeline for other book slugs
+        const book = getBookBySlug(bookSlug)
+        if (!book?.pagePrompts?.length) throw new Error('Book not found or has no prompts')
+        bookTitle = book.title
 
-      for (let i = 0; i < book.pagePrompts.length; i++) {
-        const pagePrompt = book.pagePrompts[i]
-          .replace(/\[CHILD_NAME_UPPER\]/g, childName.toUpperCase())
-          .replace(/\[CHILD_NAME\]/g, childName)
-          .replace(/\[SENDER_NAME\]/g, senderName || '')
-          .replace(/\[DEDICATION\]/g, dedication ||
-            book.defaultDedication?.replace(/\[CHILD_NAME\]/g, childName) ||
-            '')
+        for (let i = 0; i < book.pagePrompts.length; i++) {
+          const pagePrompt = book.pagePrompts[i]
+            .replace(/\[CHILD_NAME_UPPER\]/g, childName.toUpperCase())
+            .replace(/\[CHILD_NAME\]/g, childName)
+            .replace(/\[SENDER_NAME\]/g, senderName || '')
+            .replace(/\[DEDICATION\]/g, dedication ||
+              book.defaultDedication?.replace(/\[CHILD_NAME\]/g, childName) ||
+              '')
 
-        const fullPrompt = `${pagePrompt}
+          const fullPrompt = `${pagePrompt}
 
 CRITICAL — CHARACTER MUST MATCH THE REFERENCE IMAGE: The first image provided is the character reference. Use the EXACT same child — identical face, identical hair color and style, identical skin tone, identical beige knit cardigan sweater with buttons, identical cream pants. Do not substitute a generic character. Do not alter their appearance in any way.`
 
-        let pageBase64 = await callGemini([
-          { inlineData: { mimeType: 'image/png', data: characterBase64 } },
-          { text: fullPrompt },
-        ])
+          let pageBase64 = await callGemini([
+            { inlineData: { mimeType: 'image/png', data: characterBase64 } },
+            { text: fullPrompt },
+          ])
 
-        if (i === 0) {
-          pageBase64 = await compositeLogoOnCover(pageBase64)
-        }
+          if (i === 0) pageBase64 = await compositeLogoOnCover(pageBase64)
 
-        let pageUrl = ''
-        if (cloudinaryReady) {
-          try {
-            const publicId = `page_${String(i).padStart(2, '0')}`
-            pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
-          } catch (err) {
-            console.error(`Cloudinary upload failed for page ${i}:`, err)
+          let pageUrl = ''
+          if (cloudinaryReady) {
+            try {
+              const publicId = `page_${String(i).padStart(2, '0')}`
+              pageUrl = await uploadToCloudinary(pageBase64, folder, publicId)
+            } catch (err) {
+              console.error(`Cloudinary upload failed for page ${i}:`, err)
+            }
           }
-        }
 
-        pageUrls.push(pageUrl)
-        console.log(`✓ Page ${i + 1}/${book.pagePrompts.length} generated${pageUrl ? ' and uploaded' : ''}`)
+          pageUrls.push(pageUrl)
+          console.log(`✓ Page ${i + 1}/${book.pagePrompts.length} generated${pageUrl ? ' and uploaded' : ''}`)
+        }
       }
+    } catch (genErr: any) {
+      console.error('Generation error — staff email will still send:', genErr)
     }
 
+    // Always send staff email regardless of whether generation succeeded or partially failed.
+    // Staff can regenerate any missing pages from the review page.
     const resend = new Resend(process.env.RESEND_API_KEY)
-
-    await resend.emails.send({
-      from: 'party & presents <onboarding@resend.dev>',
-      to: 'booksproject@partyandpresents.com',
-      subject: `📚 All pages ready — ${childName}'s book (Order #${orderId?.slice(-8).toUpperCase()})`,
-      html: staffEmailHtml({
-        customerName, customerEmail, childName, senderName, dedication,
-        bookTitle, bookSlug, orderId, pageUrls, cloudinaryReady,
-        baseUrl: (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim() || 'https://www.miloriabooks.com',
-      }),
-    })
-    console.log('✓ Staff email sent')
+    try {
+      await resend.emails.send({
+        from: 'party & presents <onboarding@resend.dev>',
+        to: 'booksproject@partyandpresents.com',
+        subject: `📚 ${pageUrls.filter(Boolean).length}/${pageUrls.length || '?'} pages ready — ${childName}'s book (Order #${orderId?.slice(-8).toUpperCase()})`,
+        html: staffEmailHtml({
+          customerName, customerEmail, childName, senderName, dedication,
+          bookTitle, bookSlug, orderId, pageUrls, cloudinaryReady,
+          baseUrl: (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim() || 'https://www.miloriabooks.com',
+        }),
+      })
+      console.log('✓ Staff email sent')
+    } catch (emailErr: any) {
+      console.error('Staff email failed:', emailErr)
+    }
 
     return NextResponse.json({ success: true, totalPages: pageUrls.length })
 
