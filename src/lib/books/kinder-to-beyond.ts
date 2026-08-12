@@ -92,7 +92,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       backgroundAsset: `${BG}/page-00-cover.png`,
       poseReference:   `${REF}/page-00-cover.png`,
       characterActionPrompt:
-        `STYLE — CRITICAL: This must be a premium 3D CGI Pixar/Disney animated film still. NOT 2D illustrated, NOT watercolour, NOT flat cartoon. High-end cinematic 3D render with global illumination, subsurface skin scattering, soft depth-of-field bokeh.\n\nCHARACTER — CRITICAL: The child in this scene is the EXACT child from IMAGE 2. Copy their face, hair colour, hair style, skin tone, and features with complete precision. Do NOT invent or substitute a generic child — IMAGE 2 is the only valid source for the child's identity and appearance.\n\nSCENE: The child stands FULL BODY from HEAD TO FEET, HORIZONTALLY CENTERED on the right half of the canvas. Pose is celebratory: big joyful smile, wearing a school backpack. The scene around the child shows a bright back-to-school world — a cheerful school building in the background, a gentle path, colourful stars and confetti in the air, crayons and books in the foreground, soft sunshine and fluffy clouds.\n\nFRAMING: Both feet must be fully visible at the bottom, top of the head at the top with clear space above. Do NOT crop any part of the child.\n\nThe LEFT half of the canvas must remain a completely clean solid white panel — place absolutely nothing there.${STYLE}`,
+        `STYLE — CRITICAL: This must be a premium 3D CGI Pixar/Disney animated film still. NOT 2D illustrated, NOT watercolour, NOT flat cartoon. High-end cinematic 3D render with global illumination, subsurface skin scattering, soft depth-of-field bokeh.\n\nCHARACTER — CRITICAL: The child in this scene is the EXACT child from IMAGE 2. Copy their face, hair colour, hair style, skin tone, and features with complete precision. Do NOT invent or substitute a generic child — IMAGE 2 is the only valid source for the child's identity and appearance.\n\nSCENE: The child stands FULL BODY from HEAD TO FEET, HORIZONTALLY CENTERED on the right half of the canvas. Pose is celebratory: big joyful smile, wearing a school backpack. The scene around the child shows a bright back-to-school world — a cheerful school building in the background, a gentle path, colourful stars and confetti in the air, crayons and books in the foreground, soft sunshine and fluffy clouds.\n\nFRAMING — CRITICAL: The top 35% of the canvas (approximately the top 350px of a 1000px tall canvas) must remain completely clear — this area contains the book title text and the character must NOT enter it. The child's head must begin no higher than 35% from the top. Both feet must be fully visible at the bottom of the canvas. Do NOT crop any part of the child.\n\nThe LEFT half of the canvas must remain a completely clean solid white panel — place absolutely nothing there.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
       characterPlacement: { x: 1170, y: 340, width: 670, height: 783 },
@@ -674,6 +674,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
           x: 1020, y: 100, maxWidth: 420,
           fontFamily: FONT, fontSize: FS,
           color: NAVY, align: 'center', lineHeight: LH,
+          strokeColor: '#ffffff', strokeWidth: 10,
         },
       ],
     },
