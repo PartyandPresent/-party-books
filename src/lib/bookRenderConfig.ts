@@ -22,6 +22,7 @@ export interface BookRenderConfig {
   characterPrompt?: string   // overrides DEFAULT_CHARACTER_PROMPT for character generation (Step 1)
   showLogoOnCover?: boolean  // set false to skip logo composite on pageIndex 0 (default: true)
   logoStyle?: 'color' | 'white'  // 'color' for white-background covers, 'white' for dark/illustrated covers (default: 'white')
+  useReferenceAsScene?: boolean  // when true, poseReference is sent as IMAGE 1; Gemini replaces placeholder child with approved child
 }
 
 const CONFIGS: BookRenderConfig[] = [
@@ -68,14 +69,15 @@ const CONFIGS: BookRenderConfig[] = [
   },
 
   {
-    canvasW:         2000,
-    canvasH:         1000,
-    bookSlug:        'kinder-to-beyond',
-    costumeRule:     'the character wears age-appropriate school clothing suited to each scene setting.',
-    pages:           kinderToBeyond.pages,
-    title:           kinderToBeyond.title,
-    characterPrompt: KINDER_TO_BEYOND_CHARACTER_PROMPT,
-    showLogoOnCover: false,
+    canvasW:              2000,
+    canvasH:              1000,
+    bookSlug:             'kinder-to-beyond',
+    costumeRule:          'the character wears age-appropriate school clothing suited to each scene setting.',
+    pages:                kinderToBeyond.pages,
+    title:                kinderToBeyond.title,
+    characterPrompt:      KINDER_TO_BEYOND_CHARACTER_PROMPT,
+    showLogoOnCover:      false,
+    useReferenceAsScene:  true,
   },
 
   // ARCHIVED — can-you-be-my-ring-bearer (re-enable when ready to relaunch)

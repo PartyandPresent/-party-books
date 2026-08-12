@@ -59,8 +59,8 @@ export interface BookPageCharacterPlacement {
 export interface BookPage {
   pageIndex: number
   backgroundAsset: string           // path relative to project root
-  poseReference: string             // original unmodified mockup — locks pose for Gemini
-  characterActionPrompt: string     // pose/action only; scene = backgroundAsset
+  poseReference?: string            // original unmodified mockup — locks pose for Gemini (omit on text-only pages)
+  characterActionPrompt?: string    // pose/action only; scene = backgroundAsset (omit on text-only pages)
   includesSenderCharacter: boolean  // true = sender baked into bg; cleanup removed child only
   characterPlacement?: BookPageCharacterPlacement  // undefined on no-character pages (1, 16)
   skipTextCollision?: boolean       // true = text/character overlap is intentional; skip auto-shift

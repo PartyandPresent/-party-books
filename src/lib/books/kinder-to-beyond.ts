@@ -146,18 +146,15 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     },
 
     // ── Page 01 — Dedication ─────────────────────────────────────────────────────
-    // Character on FAR RIGHT portion of right half (x > ~1480).
-    // Dedication text sits in the middle-right zone (x 1020–1440), beside the character.
-    // LEFT white panel remains empty — text and character share the right illustrated area.
+    // Text-only page — no Gemini character generation.
+    // Uses the bedroom background (page-02.png, right half illustrated, left half white).
+    // Morning Begins (pageIndex 2) uses the SAME background but WITH a character, so the
+    // two pages look visually distinct (one has character, one does not).
     {
       pageIndex: 1,
       backgroundAsset: `${BG}/page-02.png`,
-      poseReference:   `${REF}/page-02.png`,
-      characterActionPrompt:
-        `A warm, joyful illustration of the child standing calmly on the FAR RIGHT side of the canvas, facing slightly inward with a gentle smile — as if they are the star of the dedication page. The pose is relaxed and endearing: hands resting naturally, backpack on, looking hopeful and ready. The bedroom background shows softly behind them.\n\nThe LEFT half of the canvas must remain a completely clean white panel — place absolutely nothing there. The character must be placed on the FAR RIGHT portion of the canvas — contained within approximately x > 1480 on a 2000 px canvas. The zone between x 1000 and x 1480 must remain open so dedication text can appear beside the character without overlapping.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
-      characterPlacement: { x: 1480, y: 0, width: 520, height: 1000 },
       textBlocks: [
         {
           id: 'dedication',
@@ -655,23 +652,24 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     },
 
     // ── And Beyond — Closing Spread ──────────────────────────────────────────────
-    // Background: page-24-last.png (white LEFT panel + dreamlike scene RIGHT)
-    // Character on FAR RIGHT (x > ~1480). Closing text in middle-right zone beside character.
+    // Background: page-24-last.png (white LEFT panel + dreamlike school-path scene RIGHT)
+    // Reference: page-25-and-beyond.png shows character standing CENTER of the right half
+    // (on the path, roughly x 790–1330). Text is to the RIGHT of the character (x ≈ 1390).
     // ⚠ Page_24 graduation OMITTED — no background asset (design data has text but no PNG)
     {
       pageIndex: 24,
       backgroundAsset: `${BG}/page-24-last.png`,
       poseReference:   `${REF}/page-25-and-beyond.png`,
       characterActionPrompt:
-        `A hopeful final scene symbolising the future beyond kindergarten. The child stands looking ahead on a gentle path toward a bright horizon. Include soft symbolic elements: books, stars, paper aeroplanes, a distant school path opening into a wider world. The mood feels inspiring, emotional, and full of promise. Place the child on the FAR RIGHT side of the canvas — the LEFT half is a clean white panel, leave it completely empty. The character must be contained within approximately x > 1480 on a 2000 px canvas. The zone between x 1000 and x 1480 must remain open so closing story text can appear beside the character without overlapping.${STYLE}`,
+        `A hopeful final scene symbolising the future beyond kindergarten. The child stands looking ahead on a gentle path toward a bright horizon with a school visible in the background. Include soft symbolic elements: books, stars, paper aeroplanes. The mood feels inspiring, emotional, and full of promise.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
-      characterPlacement: { x: 1480, y: 0, width: 520, height: 1000 },
+      characterPlacement: { x: 790, y: 0, width: 540, height: 1000 },
       textBlocks: [
         {
           id: 'body',
           template: 'Kindergarten was only the first chapter of your incredible adventure.\n\nThere will be more books to read, questions to ask, friends to meet, and dreams to follow.\n\nKeep learning. Keep wondering. Keep being brave.\n\nThe whole wide world is waiting for you, [CHILD_NAME].',
-          x: 1020, y: 100, maxWidth: 420,
+          x: 1390, y: 100, maxWidth: 380,
           fontFamily: FONT, fontSize: FS,
           color: NAVY, align: 'center', lineHeight: LH,
           strokeColor: '#ffffff', strokeWidth: 10,

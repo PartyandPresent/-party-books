@@ -150,11 +150,36 @@ async function generateCompositedPage(
 
   const bgBase64 = bgBuffer.toString('base64')
 
-  // poseReference images are NOT sent to Gemini — they show a placeholder child and
-  // Gemini copies that child's appearance even with "don't copy" instructions.
-  // Scene composition is described entirely via characterActionPrompt text.
-  const scenePrompt =
-    `${page.characterActionPrompt}
+  // For books with useReferenceAsScene, send the design reference as IMAGE 1 so Gemini sees
+  // the exact scene layout, character position, and art style. Task: replace the placeholder
+  // child with the approved child while keeping everything else identical.
+  // For covers (pageIndex 0) and pages without a reference, fall back to background-based generation.
+  let image1Base64 = bgBase64
+  let scenePrompt: string
+
+  if (config.useReferenceAsScene && page.poseReference && page.pageIndex !== 0) {
+    const refBuffer = await fetchPublicFile(page.poseReference)
+    image1Base64 = refBuffer.toString('base64')
+    scenePrompt =
+      `TASK: Character replacement in an existing illustrated scene.
+
+IMAGE 1 is the DESIGN REFERENCE — it shows the exact background, scene composition, character position, pose, scale, and art style for this page. Your output must be IDENTICAL to IMAGE 1 in every respect, with only ONE change: replace the placeholder child with the child from IMAGE 2.
+
+IMAGE 2 is the REAL CHILD this book is for. This is the ONLY valid source for the child's face, skin tone, hair colour, hair length, and features.
+
+RULES:
+- SCENE PRESERVATION: Every detail from IMAGE 1 — background, props, lighting, colours, atmosphere, art style, and character position — must remain exactly the same.
+- CHARACTER POSITION: Place the replacement child in the SAME position, pose, scale, and body orientation as the placeholder child in IMAGE 1.
+- CHILD IDENTITY — CRITICAL: Face, skin tone, hair colour, hair length, hair style, and facial features must EXACTLY match IMAGE 2. Do NOT copy the placeholder child's appearance from IMAGE 1.
+- SKIN TONE — CRITICAL: The child's skin tone from IMAGE 2 must be preserved exactly. Scene lighting must NOT change it.
+- HAIR: Do NOT add any hat, headwear, crown, tiara, or accessories not visible in IMAGE 2.
+- COSTUME: ${config.costumeRule}
+- TEXT: IMAGE 1 may contain story text — remove ALL text and words from the output. Text is composited separately in post-production.
+- GROUNDING: Add a subtle contact shadow beneath the character's feet consistent with the lighting in IMAGE 1.
+- OUTPUT: Same 2:1 landscape ratio as IMAGE 1. No added text, watermarks, or labels of any kind.`
+  } else {
+    scenePrompt =
+      `${page.characterActionPrompt}
 
 IMAGE ROLES:
 - IMAGE 1 is the BACKGROUND. Preserve it pixel-for-pixel — do NOT regenerate, recolour, or alter any part of the background. Only fill in the area where the character is placed.
@@ -168,9 +193,10 @@ RULES:
 - TEXT: Leave all text areas of the canvas completely blank and clean — text is composited in post-production. Do NOT generate any letters, words, or labels.
 - GROUNDING: Add a subtle, soft contact shadow beneath the character's feet consistent with the lighting direction already present in Image 1.
 - OUTPUT: The complete scene. Same 2:1 landscape ratio as Image 1. No added text, watermarks, or labels of any kind.`
+  }
 
   const geminiParts: any[] = [
-    { inlineData: { mimeType: 'image/png', data: bgBase64 } },
+    { inlineData: { mimeType: 'image/png', data: image1Base64 } },
     { inlineData: { mimeType: 'image/png', data: characterBase64 } },
   ]
   geminiParts.push({ text: scenePrompt })
