@@ -106,10 +106,16 @@ function getBaseUrl(): string {
 }
 
 async function fetchPublicFile(assetPath: string): Promise<Buffer> {
-  const urlPath = assetPath.replace(/^public\//, '/')
-  const res = await fetch(`${getBaseUrl()}${urlPath}`)
-  if (!res.ok) throw new Error(`Failed to fetch ${urlPath}: ${res.status}`)
-  return Buffer.from(await res.arrayBuffer())
+  // Read from the local filesystem first — instant in both local dev and Vercel serverless
+  // (public/ is bundled into the deployment). HTTP fallback handles any edge case.
+  try {
+    return fs.readFileSync(path.join(process.cwd(), assetPath))
+  } catch {
+    const urlPath = assetPath.replace(/^public\//, '/')
+    const res = await fetch(`${getBaseUrl()}${urlPath}`)
+    if (!res.ok) throw new Error(`Failed to fetch ${urlPath}: ${res.status}`)
+    return Buffer.from(await res.arrayBuffer())
+  }
 }
 
 async function generateCompositedPage(
