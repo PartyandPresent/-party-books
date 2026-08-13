@@ -95,7 +95,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `STYLE — CRITICAL: This must be a premium 3D CGI Pixar/Disney animated film still. NOT 2D illustrated, NOT watercolour, NOT flat cartoon. High-end cinematic 3D render with global illumination, subsurface skin scattering, soft depth-of-field bokeh.\n\nCHARACTER — CRITICAL: The child in this scene is the EXACT child from IMAGE 2. Copy their face, hair colour, hair style, skin tone, and features with complete precision. Do NOT invent or substitute a generic child — IMAGE 2 is the only valid source for the child's identity and appearance.\n\nSCENE: The child stands FULL BODY, LARGE and CLOSE TO THE VIEWER, HORIZONTALLY CENTERED on the right half of the canvas. The child's face must be clearly visible and centred in the middle zone of the right panel — approximately 40–50% from the top of the canvas. The body extends naturally downward so that the torso and legs fill the lower portion of the canvas. Pose is celebratory: big joyful smile, wearing a school backpack. The scene around the child shows a bright back-to-school world — a cheerful school building in the background, a gentle path, colourful stars and confetti in the air, crayons and books in the foreground, soft sunshine and fluffy clouds.\n\nFRAMING — CRITICAL: The top 25% of the canvas must remain clear for the book title above. The child's full body should be large and prominent — filling roughly 70–80% of the right panel width. Both feet must reach near the bottom of the canvas. Do NOT crop the head.\n\nThe LEFT half of the canvas must remain a completely clean solid white panel — place absolutely nothing there.${STYLE}`,
       includesSenderCharacter: false,
-
+      skipTextCollision: true,
       characterPlacement: { x: 1050, y: 258, width: 900, height: 1000 },
       svgOverlay: '<defs><radialGradient id="ktbglow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="1540" cy="790" rx="450" ry="200" fill="url(#ktbglow)"/>',
       textBlocks: [
@@ -634,27 +634,24 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     },
 
     // ── And Beyond — Closing Spread ──────────────────────────────────────────────
-    // Book page 23 → Reference Page_25-and-beyond
-    // Background: page-24-last.png (white LEFT panel + dreamlike school-path scene RIGHT)
-    // ⚠ Page_24 graduation OMITTED — no background asset (design data has text but no PNG)
-    // protectedBackgroundAreas restores the white left half from page-24-last.png on top
-    // of the Gemini-generated scene (which uses the reference and fills the full canvas).
+    // Book page 23 → background-based generation (NO poseReference)
+    // Background: page-24-last.png — white LEFT half (x=0–1000) + dreamlike scene RIGHT half.
+    // No poseReference means Gemini receives page-24-last.png as IMAGE 1 and is instructed to
+    // preserve it pixel-for-pixel, keeping the white left panel intact.
+    // Right side layout: text in LEFT half of right (x=1000–1500), character in RIGHT half (x=1500–2000).
     {
       pageIndex: 23,
       backgroundAsset: `${BG}/page-24-last.png`,
-      poseReference:   `${REF}/page-25-and-beyond.png`,
       characterActionPrompt:
-        `A hopeful final scene symbolising the future beyond kindergarten. The child stands looking ahead on a gentle path toward a bright horizon with a school visible in the background. Include soft symbolic elements: books, stars, paper aeroplanes. The mood feels inspiring, emotional, and full of promise.${STYLE}`,
+        `A hopeful final scene. The child stands on the far RIGHT portion of the canvas — place them fully within x=1500 to x=2000. They look ahead on a gentle stone path toward a bright horizon with a dreamy school building in the background. Stars drift overhead and paper aeroplanes glide through a soft sky. The mood feels inspiring, emotional, and full of promise. The LEFT HALF of the canvas (x=0 to x=1000) is a clean solid white panel — preserve it completely, place nothing there.${STYLE}`,
       includesSenderCharacter: false,
-
-      characterPlacement: { x: 1450, y: 0, width: 510, height: 1000 },
-      protectedBackgroundAreas: [{ x: 0, y: 0, width: 1000, height: 1000 }],
+      characterPlacement: { x: 1500, y: 0, width: 500, height: 1000 },
       svgOverlay: `<defs><filter id="ktb-text-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="white" flood-opacity="0.95"/></filter></defs>`,
       textBlocks: [
         {
           id: 'body',
           template: 'Kindergarten was only the first chapter of your incredible adventure.\n\nThere will be more books to read, questions to ask, friends to meet, and dreams to follow.\n\nKeep learning. Keep wondering. Keep being brave.\n\nThe whole wide world is waiting for you, [CHILD_NAME].',
-          x: 1020, y: 100, maxWidth: 370,
+          x: 1040, y: 100, maxWidth: 420,
           fontFamily: FONT, fontSize: FS,
           color: NAVY, align: 'center', lineHeight: LH,
           filterUrl: 'url(#ktb-text-shadow)',
