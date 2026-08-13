@@ -637,6 +637,8 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
     // Book page 23 → Reference Page_25-and-beyond
     // Background: page-24-last.png (white LEFT panel + dreamlike school-path scene RIGHT)
     // ⚠ Page_24 graduation OMITTED — no background asset (design data has text but no PNG)
+    // protectedBackgroundAreas restores the white left half from page-24-last.png on top
+    // of the Gemini-generated scene (which uses the reference and fills the full canvas).
     {
       pageIndex: 23,
       backgroundAsset: `${BG}/page-24-last.png`,
@@ -646,6 +648,8 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       includesSenderCharacter: false,
       skipTextCollision: true,
       characterPlacement: { x: 1450, y: 0, width: 510, height: 1000 },
+      protectedBackgroundAreas: [{ x: 0, y: 0, width: 1000, height: 1000 }],
+      svgOverlay: `<defs><filter id="ktb-text-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="white" flood-opacity="0.95"/></filter></defs>`,
       textBlocks: [
         {
           id: 'body',
@@ -653,7 +657,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
           x: 1020, y: 100, maxWidth: 370,
           fontFamily: FONT, fontSize: FS,
           color: NAVY, align: 'center', lineHeight: LH,
-          strokeColor: '#ffffff', strokeWidth: 10,
+          filterUrl: 'url(#ktb-text-shadow)',
         },
       ],
     },
