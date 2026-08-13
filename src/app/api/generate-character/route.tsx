@@ -13,8 +13,9 @@ async function sleep(ms: number) {
 }
 
 async function callGemini(promptParts: any[]): Promise<string> {
-  const delays = [5000, 10000]
-  for (let attempt = 0; attempt <= delays.length; attempt++) {
+  // Longer delays for rate-limit recovery; abort retries use a short fixed 5s gap
+  const rateDelays = [15000, 30000]
+  for (let attempt = 0; attempt <= rateDelays.length; attempt++) {
     try {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 90000)
@@ -34,14 +35,14 @@ async function callGemini(promptParts: any[]): Promise<string> {
       if (res.status === 429 || res.status === 503) {
         const body = await res.json().catch(() => ({}))
         console.error(`Gemini ${res.status} (attempt ${attempt}):`, JSON.stringify(body))
-        if (attempt < delays.length) { await sleep(delays[attempt]); continue }
+        if (attempt < rateDelays.length) { await sleep(rateDelays[attempt]); continue }
         throw new Error('Our AI is busy right now. Please try again in a moment.')
       }
       if (!res.ok) {
         const e = await res.json().catch(() => ({}))
         const msg = e?.error?.message || `Gemini error ${res.status}`
-        if ((msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded')) && attempt < delays.length) {
-          await sleep(delays[attempt]); continue
+        if ((msg.toLowerCase().includes('high demand') || msg.toLowerCase().includes('overloaded')) && attempt < rateDelays.length) {
+          await sleep(rateDelays[attempt]); continue
         }
         throw new Error(msg)
       }
@@ -50,8 +51,9 @@ async function callGemini(promptParts: any[]): Promise<string> {
       if (!imgPart) throw new Error('No image returned from Gemini')
       return imgPart.inlineData.data as string
     } catch (e: any) {
-      if (attempt < delays.length && (e.message?.includes('high demand') || e.message?.includes('overload') || e.message?.includes('abort'))) {
-        await sleep(delays[attempt]); continue
+      if (attempt < rateDelays.length && (e.message?.includes('high demand') || e.message?.includes('overload') || e.message?.includes('abort'))) {
+        // Short 5s retry gap for slow/aborted calls; full rate-delay for API errors
+        await sleep(e.message?.includes('abort') ? 5000 : rateDelays[attempt]); continue
       }
       throw e
     }
