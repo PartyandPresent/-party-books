@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { getBookRenderConfig } from '@/lib/bookRenderConfig'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,12 +19,19 @@ export async function GET(req: NextRequest) {
     if (!metaRes.ok) return NextResponse.json({ error: 'Order metadata not found' }, { status: 404 })
     const { bookSlug } = await metaRes.json()
 
+    // Prefer the book config's authoritative page count. Fall back to counting
+    // reference files for legacy books that predate the compositing pipeline.
     let pageCount = 17
-    try {
-      const refDir = path.join(process.cwd(), 'public', 'books', bookSlug, 'ref')
-      const files = fs.readdirSync(refDir).filter(f => /^page-\d+\.png$/i.test(f))
-      if (files.length > 0) pageCount = files.length
-    } catch { /* keep fallback */ }
+    const bookConfig = getBookRenderConfig(bookSlug)
+    if (bookConfig) {
+      pageCount = bookConfig.pages.length
+    } else {
+      try {
+        const refDir = path.join(process.cwd(), 'public', 'books', bookSlug, 'ref')
+        const files = fs.readdirSync(refDir).filter(f => /^page-\d+\.png$/i.test(f))
+        if (files.length > 0) pageCount = files.length
+      } catch { /* keep fallback */ }
+    }
 
     return NextResponse.json({ bookSlug, pageCount })
   } catch (err: any) {
