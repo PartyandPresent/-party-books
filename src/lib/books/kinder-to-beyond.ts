@@ -155,16 +155,16 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       backgroundAsset: `${BG}/page-02.png`,
       poseReference:   `${REF}/page-02.png`,
       characterActionPrompt:
-        `A warm, joyful bedroom scene. The child stands on the right side of the canvas, facing slightly inward with a gentle smile — holding their backpack, looking hopeful and ready for the school year. The bedroom background shows softly behind them. The left half of the canvas must remain a completely clean white panel.${STYLE}`,
+        `A warm, joyful bedroom scene. The child stands on the FAR RIGHT of the canvas — place the character fully within x=1500 to x=2000 (the rightmost quarter of the spread). The child faces slightly inward (toward the left), holding their backpack, with a gentle hopeful smile. The bedroom background shows softly around them. IMPORTANT: x=0 to x=1000 must remain a completely clean solid white panel. x=1000 to x=1500 must be a calm, uncluttered scene area with NO character — leave it visually open so dedication text can be read clearly over it.${STYLE}`,
       includesSenderCharacter: false,
       skipTextCollision: true,
-      characterPlacement: { x: 999, y: 0, width: 1001, height: 1000 },
+      characterPlacement: { x: 1500, y: 0, width: 500, height: 1000 },
       textBlocks: [
         {
           id: 'dedication',
           template: '[DEDICATION]',
           defaultIfEmpty: 'To [CHILD_NAME],\n\nMay every year bring you new adventures, big discoveries, and the courage to try. We are so proud of who you are — and who you are becoming.\n\nWith all our love,',
-          x: 1100, y: 150, maxWidth: 380,
+          x: 1040, y: 150, maxWidth: 420,
           fontFamily: FONT, fontSize: FS,
           color: WHITE, align: 'center', lineHeight: 1.5,
         },
