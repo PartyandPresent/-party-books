@@ -173,6 +173,7 @@ RULES:
 - SCENE PRESERVATION: Every detail from IMAGE 1 — background, props, lighting, colours, atmosphere, art style, and character position — must remain exactly the same.
 - CHARACTER POSITION: Place the replacement child in the SAME position, pose, scale, and body orientation as the placeholder child in IMAGE 1.
 - CHILD IDENTITY — CRITICAL: Face, skin tone, hair colour, hair length, hair style, and facial features must EXACTLY match IMAGE 2. Do NOT copy the placeholder child's appearance from IMAGE 1.
+- CHARACTER RENDERING STYLE — CRITICAL: The replacement child MUST be rendered as a premium 3D CGI Pixar/Disney animated character, exactly matching the rendering quality and visual style of IMAGE 2. IMAGE 2 is a 3D CGI character — preserve that exact three-dimensional look, soft subsurface skin, rounded volumes, and cinematic lighting in the output. Do NOT render the character as a 2D flat illustration, watercolour, or cartoon drawing, even if IMAGE 1 uses a 2D art style. Only the child is replaced; only the child must be 3D CGI.
 - SKIN TONE — CRITICAL: The child's skin tone from IMAGE 2 must be preserved exactly. Scene lighting must NOT change it.
 - HAIR: Do NOT add any hat, headwear, crown, tiara, or accessories not visible in IMAGE 2.
 - COSTUME: ${config.costumeRule}
@@ -189,6 +190,7 @@ IMAGE ROLES:
 
 RULES:
 - CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. Do NOT alter or blend the child's appearance based on scene lighting or environment.
+- CHARACTER RENDERING STYLE — CRITICAL: The child MUST be rendered as a premium 3D CGI Pixar/Disney animated character, exactly matching the rendering quality and visual style of Image 2. Do NOT render the child as a 2D flat illustration, watercolour, or cartoon drawing. Preserve the three-dimensional look, soft subsurface skin, rounded volumes, and cinematic lighting from Image 2.
 - SKIN TONE — CRITICAL: The child's skin tone is a fixed identity attribute from Image 2. It must NOT change in response to scene lighting. Warm or cosy lighting must NOT tan or darken it; cool lighting must NOT lighten or desaturate it. The skin tone in the output must be visually identical to Image 2 regardless of scene brightness or colour temperature.
 - HAIR: Do NOT add headdress, hat, crown, tiara, feathers, or any accessories not visible in Image 2.
 - COSTUME: Unless the scene description above explicitly specifies a different outfit, ${config.costumeRule}

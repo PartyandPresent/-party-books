@@ -233,6 +233,7 @@ IMAGE ROLES:
 
 RULES:
 - CHARACTER IDENTITY: The child's face, hair, and skin tone must match Image 2 exactly. Do NOT alter or blend the child's appearance based on scene lighting or environment.
+- CHARACTER RENDERING STYLE — CRITICAL: The child MUST be rendered as a premium 3D CGI Pixar/Disney animated character, exactly matching the rendering quality and visual style of Image 2. Do NOT render the child as a 2D flat illustration, watercolour, or cartoon drawing. Preserve the three-dimensional look, soft subsurface skin, rounded volumes, and cinematic lighting from Image 2.
 - SKIN TONE — CRITICAL: The child's skin tone is a fixed identity attribute from Image 2. It must NOT change in response to scene lighting. Warm or cosy lighting must NOT tan or darken it; cool lighting must NOT lighten or desaturate it. The skin tone in the output must be visually identical to Image 2 regardless of scene brightness or colour temperature.
 - HAIR: Do NOT add headdress, hat, crown, tiara, feathers, or any accessories not visible in Image 2.
 - COSTUME: Unless the scene description above explicitly specifies a different outfit, ${config.costumeRule}

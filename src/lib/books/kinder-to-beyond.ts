@@ -38,7 +38,7 @@
 //
 // FONT: KGMissKindyMarker.ttf → "KG Miss Kindy Marker"
 // COLORS: NAVY=#405b89  WHITE=#ffffff  GOLD=#ffd366 (cover name — verify)
-// TEXT: all body pages use skipTextCollision=true (design coordinates are final)
+// TEXT: collision detection enabled on all pages — text auto-shifts away from the character
 
 import type { BookPage } from './before-the-music-plays'
 
@@ -95,7 +95,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `STYLE — CRITICAL: This must be a premium 3D CGI Pixar/Disney animated film still. NOT 2D illustrated, NOT watercolour, NOT flat cartoon. High-end cinematic 3D render with global illumination, subsurface skin scattering, soft depth-of-field bokeh.\n\nCHARACTER — CRITICAL: The child in this scene is the EXACT child from IMAGE 2. Copy their face, hair colour, hair style, skin tone, and features with complete precision. Do NOT invent or substitute a generic child — IMAGE 2 is the only valid source for the child's identity and appearance.\n\nSCENE: The child stands FULL BODY, LARGE and CLOSE TO THE VIEWER, HORIZONTALLY CENTERED on the right half of the canvas. The child's face must be clearly visible and centred in the middle zone of the right panel — approximately 40–50% from the top of the canvas. The body extends naturally downward so that the torso and legs fill the lower portion of the canvas. Pose is celebratory: big joyful smile, wearing a school backpack. The scene around the child shows a bright back-to-school world — a cheerful school building in the background, a gentle path, colourful stars and confetti in the air, crayons and books in the foreground, soft sunshine and fluffy clouds.\n\nFRAMING — CRITICAL: The top 25% of the canvas must remain clear for the book title above. The child's full body should be large and prominent — filling roughly 70–80% of the right panel width. Both feet must reach near the bottom of the canvas. Do NOT crop the head.\n\nThe LEFT half of the canvas must remain a completely clean solid white panel — place absolutely nothing there.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 1050, y: 258, width: 900, height: 1000 },
       svgOverlay: '<defs><radialGradient id="ktbglow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="1540" cy="790" rx="450" ry="200" fill="url(#ktbglow)"/>',
       textBlocks: [
@@ -157,7 +157,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A warm, joyful bedroom scene. The child stands on the right side of the canvas, facing slightly inward with a gentle smile — holding their backpack, looking hopeful and ready for the school year. The bedroom background shows softly behind them. The left half of the canvas must remain a completely clean white panel.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 999, y: 0, width: 1001, height: 1000 },
       textBlocks: [
         {
@@ -180,7 +180,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A sweet getting-ready moment in front of a bedroom mirror. The child stands proudly, adjusting their backpack or shirt, practising a brave little smile. The mirror reflects their excitement and nervousness. Around them are neat bedroom details: toy shelf, picture frame, little stool. The mood should feel encouraging. Place the child on the LEFT half, never centered. Leave soft open space on the right for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1246, height: 1000 },
       textBlocks: [
         {
@@ -202,7 +202,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A heartfelt front-door scene as the child pauses before leaving home for kindergarten. They stand with one hand on their backpack, looking ahead with anticipation. The doorway opens into a bright morning world with flowers and a walkway. Place the child on the RIGHT half, never centered. Leave the left side open for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 969, y: 0, width: 1031, height: 1000 },
       textBlocks: [
         {
@@ -224,7 +224,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A charming outdoor scene of the child walking toward school along a gentle path lined with grass, flowers, and trees. The school appears in the distance with a welcoming, cheerful presence. The child walks with small confident steps, looking ahead with excitement. Place the child on the LEFT half, never centered. Leave open space on the right for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1001, height: 1000 },
       textBlocks: [
         {
@@ -246,7 +246,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `The child stands at the edge of the schoolyard, seeing the kindergarten building up close for the first time. The school feels bright, friendly, and inviting with banners, windows, a clock, and child-friendly details. The child looks full of awe. Place the child on the RIGHT half, never centered. Leave the left side open for story text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 948, y: 0, width: 1052, height: 1000 },
       textBlocks: [
         {
@@ -268,7 +268,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A tender school entrance scene where the child is greeted warmly by their teacher. The teacher kneels slightly to meet their eye level, smiling kindly. The child looks shy but encouraged. The background includes the classroom doorway, a welcome sign, and soft hints of classroom decor. Place the child on the LEFT half, never centered. The teacher may stand behind or beside them. Leave open space on the right for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 9, width: 1261, height: 970 },
       textBlocks: [
         {
@@ -290,7 +290,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `Inside the kindergarten classroom, the child stands in wonder, taking in shelves of books, bright crayons, building blocks, puzzles, and tiny chairs. Their eyes are wide with curiosity. Keep the child as the only character. Place them on the RIGHT half, never centered. Leave the left side clear for text. The classroom should feel warm and full of colour.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 1188, y: 0, width: 812, height: 1000 },
       textBlocks: [
         {
@@ -312,7 +312,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A proud moment where the child finds their own cubby with their name on it. They reach toward it with delight while placing their backpack inside. Surround the area with little jackets, lunchboxes, and friendly classroom details. The feeling should be personal and special. Place the child on the LEFT half, never centered. Leave soft open text space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 914, height: 1000 },
       textBlocks: [
         {
@@ -334,7 +334,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A calm classroom moment during circle time. The child sits attentively on a cozy rug, looking up with bright eyes as if listening to a story or morning greeting. They are the clear focus. Add a calendar board, alphabet visuals, and plush classroom textures. Place the child on the RIGHT half, never centered. Leave the left side airy for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 990, y: 0, width: 1010, height: 1000 },
       textBlocks: [
         {
@@ -356,7 +356,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A sweet scene showing the child meeting a new classmate and sharing a shy but happy smile. The interaction feels innocent and gentle, perhaps near a puzzle table or block area. Keep the emotional focus on the child discovering friendship. The classmate remains secondary. The mood is warm, welcoming, and hopeful. Place the child on the LEFT half, never centered. Leave text space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1268, height: 1000 },
       textBlocks: [
         {
@@ -378,7 +378,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A playful literacy scene with the child exploring letters and books. They may be holding an alphabet card, looking at a storybook, or reaching toward a shelf of colourful books. Their expression shows curiosity and delight, as though letters are becoming little treasures. Place the child on the RIGHT half, never centered. Leave soft text space on the left.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 787, y: 0, width: 1213, height: 1000 },
       textBlocks: [
         {
@@ -400,7 +400,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `An art-table scene where the child paints or creates a craft project with joyful concentration. Show child-safe paint, paper, brushes, and a masterpiece taking shape. Add soft classroom decor and blurred creative supplies in the background. Their face glows with pride and imagination. Place the child on the LEFT half, never centered. Leave open text space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1221, height: 1000 },
       textBlocks: [
         {
@@ -422,7 +422,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A math-learning scene where the child is engaged with counting bears, blocks, beads, or kindergarten manipulatives. They look focused and pleased as they explore numbers through play. Keep the scene bright, tactile, and child-friendly. Place the child on the RIGHT half, never centered. Leave the left side open for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 1053, y: 0, width: 947, height: 1000 },
       textBlocks: [
         {
@@ -444,7 +444,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A happy classroom scene where the child enjoys music and movement time. They may be clapping, dancing, holding a simple rhythm instrument, or following along joyfully. The room feels lively yet soft and dreamy. Capture freedom, rhythm, and happiness. Place the child on the LEFT half, never centered. Leave soft negative space on the right for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 926, height: 987 },
       textBlocks: [
         {
@@ -466,7 +466,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A cheerful recess scene where the child plays outside on the school playground. Show them climbing, running, or pausing at the top of a slide with delight. The playground feels safe, colourful, and exciting with soft trees and sky. Their expression shows confidence growing. Place the child on the RIGHT half, never centered. Leave airy text space on the left.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 1097, y: 0, width: 903, height: 1000 },
       textBlocks: [
         {
@@ -488,7 +488,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A gentle snack-time scene where the child sits at a little table enjoying their snack and sharing a small smile with someone nearby. Show their lunchbox, napkin, and simple classroom table details. The focus is on comfort, routine, and the sweetness of everyday school moments. Place the child on the LEFT half, never centered. Leave soft open space on the right for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1125, height: 1000 },
       textBlocks: [
         {
@@ -510,7 +510,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A tender emotional scene where the child experiences a small kindergarten challenge — dropping crayons, struggling with a task, or feeling briefly unsure. Their expression is thoughtful or slightly discouraged, but not intensely upset. The mood stays reassuring, showing that small hard moments are part of growing. Place the child on the RIGHT half, never centered. Leave the left side open for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 727, y: 0, width: 1273, height: 999 },
       textBlocks: [
         {
@@ -532,7 +532,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A recovery moment after a small struggle. The child smiles again, perhaps picking up dropped crayons. The scene shows resilience, courage, and quiet pride. Make the emotion heartfelt and uplifting. Place the child on the LEFT half, never centered. Leave soft text space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 71, width: 1145, height: 923 },
       textBlocks: [
         {
@@ -554,7 +554,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A meaningful show-and-tell moment where the child proudly presents something dear to them — a drawing, a favourite toy, or a small family keepsake. The classroom feels attentive and warm while the focus stays on their confidence and joy. Capture the magical feeling of being seen and heard. Place the child on the RIGHT half, never centered. Leave soft open space on the left for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 947, y: 54, width: 1053, height: 946 },
       textBlocks: [
         {
@@ -576,7 +576,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A peaceful story-time scene where the child sits with a book, fully absorbed in imagination. They may be on a reading rug, a beanbag, or a cosy classroom nook. Light softly wraps around them, emphasising a dreamy love of books and learning. The scene feels calm, magical, and comforting. Place the child on the LEFT half, never centered. Leave text space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1168, height: 1000 },
       textBlocks: [
         {
@@ -598,7 +598,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A reflective classroom scene showing how much the child has grown. They stand proudly near a wall of artwork, a class project, or a display of things they have learned. They look more confident now — still sweet, but visibly braver. The mood feels proud, gentle, and full of progress. Place the child on the RIGHT half, never centered. Leave the left side reserved for text.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 931, y: 0, width: 1069, height: 1000 },
       textBlocks: [
         {
@@ -620,7 +620,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A sentimental end-of-school-year scene inside the classroom. The room feels softly celebratory with little decorations, neat shelves, and end-of-year warmth. The child looks around with a tender, grateful expression, as if realising this special place has become part of them. The scene feels nostalgic and beautiful. Place the child on the LEFT half, never centered. Leave soft negative space on the right.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 0, y: 0, width: 1111, height: 980 },
       textBlocks: [
         {
@@ -646,7 +646,7 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A hopeful final scene symbolising the future beyond kindergarten. The child stands looking ahead on a gentle path toward a bright horizon with a school visible in the background. Include soft symbolic elements: books, stars, paper aeroplanes. The mood feels inspiring, emotional, and full of promise.${STYLE}`,
       includesSenderCharacter: false,
-      skipTextCollision: true,
+
       characterPlacement: { x: 1450, y: 0, width: 510, height: 1000 },
       protectedBackgroundAreas: [{ x: 0, y: 0, width: 1000, height: 1000 }],
       svgOverlay: `<defs><filter id="ktb-text-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="white" flood-opacity="0.95"/></filter></defs>`,
