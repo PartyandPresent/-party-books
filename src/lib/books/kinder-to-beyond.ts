@@ -157,14 +157,14 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       characterActionPrompt:
         `A warm, joyful bedroom scene. The child stands on the right side of the canvas, facing slightly inward with a gentle smile — holding their backpack, looking hopeful and ready for the school year. The bedroom background shows softly behind them. The left half of the canvas must remain a completely clean white panel.${STYLE}`,
       includesSenderCharacter: false,
-
+      skipTextCollision: true,
       characterPlacement: { x: 999, y: 0, width: 1001, height: 1000 },
       textBlocks: [
         {
           id: 'dedication',
           template: '[DEDICATION]',
           defaultIfEmpty: 'To [CHILD_NAME],\n\nMay every year bring you new adventures, big discoveries, and the courage to try. We are so proud of who you are — and who you are becoming.\n\nWith all our love,',
-          x: 1020, y: 150, maxWidth: 420,
+          x: 1100, y: 150, maxWidth: 380,
           fontFamily: FONT, fontSize: FS,
           color: WHITE, align: 'center', lineHeight: 1.5,
         },
