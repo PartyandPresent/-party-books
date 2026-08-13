@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getBookBySlug } from '@/lib/books'
 import { getBookRenderConfig } from '@/lib/bookRenderConfig'
 
-export const maxDuration = 120
+export const maxDuration = 300
 export const dynamic = 'force-dynamic'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
@@ -13,11 +13,11 @@ async function sleep(ms: number) {
 }
 
 async function callGemini(promptParts: any[]): Promise<string> {
-  const delays = [5000, 10000, 20000]
+  const delays = [5000, 10000]
   for (let attempt = 0; attempt <= delays.length; attempt++) {
     try {
       const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 120000)
+      const timeout = setTimeout(() => controller.abort(), 90000)
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`,
         {

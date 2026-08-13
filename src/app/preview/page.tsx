@@ -188,8 +188,9 @@ export default function PreviewPage() {
       })
 
       if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Character generation failed')
+        let errMsg = 'Character generation failed'
+        try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'Our AI took too long to respond. Please try again!' }
+        throw new Error(errMsg)
       }
 
       const data = await res.json()
@@ -237,8 +238,9 @@ export default function PreviewPage() {
         })
 
         if (!res.ok) {
-          const err = await res.json()
-          throw new Error(err.error || 'Page generation failed')
+          let errMsg = 'Page generation failed'
+          try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'Our AI took too long to respond. Please try again!' }
+          throw new Error(errMsg)
         }
 
         const data = await res.json()
