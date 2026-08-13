@@ -643,8 +643,9 @@ export const kinderToBeyond: { slug: string; title: string; pages: BookPage[] } 
       pageIndex: 23,
       backgroundAsset: `${BG}/page-24-last.png`,
       characterActionPrompt:
-        `A hopeful final scene. The child stands on the far RIGHT portion of the canvas — place them fully within x=1500 to x=2000. They look ahead on a gentle stone path toward a bright horizon with a dreamy school building in the background. Stars drift overhead and paper aeroplanes glide through a soft sky. The mood feels inspiring, emotional, and full of promise. The LEFT HALF of the canvas (x=0 to x=1000) is a clean solid white panel — preserve it completely, place nothing there.${STYLE}`,
+        `A hopeful final scene. The child stands on the FAR RIGHT of the canvas — place the character fully within x=1500 to x=2000 (the rightmost quarter of the spread). They look ahead on a gentle stone path toward a bright horizon with a dreamy school building in the background. Stars drift overhead and paper aeroplanes glide through a soft sky. The mood feels inspiring, emotional, and full of promise. IMPORTANT: x=0 to x=1000 must remain a completely clean solid white panel — place nothing there. x=1000 to x=1500 must be a calm, uncluttered scene area with NO character — leave it visually open so the closing text can be read clearly over it.${STYLE}`,
       includesSenderCharacter: false,
+      skipTextCollision: true,
       characterPlacement: { x: 1500, y: 0, width: 500, height: 1000 },
       svgOverlay: `<defs><filter id="ktb-text-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="white" flood-opacity="0.95"/></filter></defs>`,
       textBlocks: [
