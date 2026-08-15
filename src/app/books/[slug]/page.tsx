@@ -201,11 +201,11 @@ export default function BookDetailPage() {
               {/* Price */}
               <div style={{ marginBottom: 4 }}>
                 <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 34, color: GREEN }}>
-                  ${book.price.toFixed(2)} CAD
+                  From $34.99
                 </span>
               </div>
               <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, marginBottom: 20 }}>
-                or 4 interest-free payments of <strong style={{ color: GREEN }}>${(book.price / 4).toFixed(2)}</strong> with Afterpay
+                Softcover or hardcover · Choose your size at checkout
               </p>
 
               {/* Feature icon row — 3 items with borderLeft dividers */}
