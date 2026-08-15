@@ -70,20 +70,20 @@ const STEPS = [
   {
     num: '1',
     imgKey: 'step1' as const,
-    title: 'Tell us about your child',
-    desc: 'Add their name, photo, and the story you want to tell — we take care of the rest.',
+    title: 'Choose their book',
+    desc: 'Pick the milestone you\'re celebrating.',
   },
   {
     num: '2',
     imgKey: 'step2' as const,
-    title: 'Personalise their story',
-    desc: 'Choose a book, add a dedication, and watch as AI brings their face into every scene.',
+    title: 'Add their name and one photo',
+    desc: 'One clear photo of their face is all we need. Add a dedication if you\'d like the first page to be from you.',
   },
   {
     num: '3',
     imgKey: 'step3' as const,
-    title: 'Receive a keepsake they\'ll treasure',
-    desc: 'A beautifully printed book, made to be read, loved and kept forever.',
+    title: 'We make it, then check it',
+    desc: 'A real person reviews every illustration before it prints. Your book is made to order and on its way in 1–3 business days.',
   },
 ]
 
@@ -485,7 +485,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div className="reveal" style={{ textAlign: 'center', marginBottom: 56 }}>
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 12px' }}>
-              How It Works ✦
+              Three steps. Five minutes. ✦
             </h2>
             <div className="line-draw" style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
           </div>
