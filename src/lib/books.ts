@@ -211,7 +211,7 @@ export const BOOKS: Book[] = [
     accordionContent: {
       aboutStory: "Before the Music Plays follows a little flower girl on the journey to her most important question yet: will you be part of our wedding day? Told through warm, painterly illustrations, this story turns a real proposal into a keepsake she'll treasure long after the walk down the aisle.",
       howPersonalized: "Every copy is personalized with your flower girl's name throughout the story, from the cover to the final page. You can also add an optional dedication message on the first page, printed exactly as you write it.",
-      sizeQuality: 'Available as a softcover in 5.5" Ã— 5.5", 8" Ã— 8", or 8" Ã— 11", and as a hardcover in 8" Ã— 8", 11" Ã— 11", or 8" Ã— 11". Printed on premium paper for vivid, long-lasting color.',
+      sizeQuality: 'Available as a softcover in 5.5" × 5.5", 8" × 8", or 8" × 11", and as a hardcover in 8" × 8", 11" × 11", or 8" × 11". Printed on premium paper for vivid, long-lasting color.',
     },
   },
 
