@@ -31,7 +31,7 @@ const FAQ_ITEMS = [
   {
     icon: '📦',
     q: 'How long will it take to receive my book?',
-    a: "Every book is made after you order it. Printing takes 2–3 days, then 5–7 days to anywhere in Canada and the US, 10–14 internationally. Ordering for a specific date? Tell us at checkout and we'll make sure it lands in time.",
+    a: "Every book is made after you order it. Printing takes 1–3 business days, then 5–7 days to anywhere in Canada and the US, 10–14 internationally. Ordering for a specific date? Tell us at checkout and we'll make sure it lands in time.",
   },
   {
     icon: '🌍',
