@@ -227,7 +227,6 @@ function ReviewsSection({ isMobile }: { isMobile: boolean }) {
             <div style={{ display: 'flex', gap: 3, alignItems: 'center', flexWrap: 'wrap' }}>
               {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 18, color: GOLD }}>★</span>)}
               <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15, color: GREEN, marginLeft: 8 }}>4.9/5</span>
-              <span style={{ fontSize: 13, color: MUTED, marginLeft: 4 }}>from 500+ reviews</span>
             </div>
           </div>
           {!isMobile && (
