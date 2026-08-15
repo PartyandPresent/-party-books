@@ -321,7 +321,7 @@ export default function BookDetailPage() {
                       fontFamily: 'Nunito, sans-serif', fontWeight: 800,
                       fontSize: 12, color: CORAL, marginBottom: 12,
                     }}>
-                      🎁 Buy together — save [TODO: X]% off · Discount % TBD
+                      🎁 Buy together — Free Shipping
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <input
