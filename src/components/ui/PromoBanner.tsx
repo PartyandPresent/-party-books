@@ -1,6 +1,6 @@
 // Update BANNER_TEXT here to change the banner message across the whole site.
 // Keep in sync with the bundle discount on the product page.
-const BANNER_TEXT = 'BUY ANY BOOK, GET ONE [TODO: X]% OFF'
+const BANNER_TEXT = 'Free shipping on two or more books'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
