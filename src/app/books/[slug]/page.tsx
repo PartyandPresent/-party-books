@@ -217,7 +217,7 @@ export default function BookDetailPage() {
                 {([
                   { icon: '👁', label: 'Preview the\nentire story' },
                   { icon: '📷', label: 'Upload your\nown photo' },
-                  { icon: '📦', label: 'Prints & ships\nin 3–5 days' },
+                  { icon: '📦', label: 'Prints & ships\nin 1–3 days' },
                 ] as const).map((feat, i) => (
                   <div key={feat.label} style={{
                     flex: 1, textAlign: 'center', padding: '0 4px',
