@@ -58,12 +58,12 @@ const IMAGES = {
 // ─────────────────────────────────────────────────────────────
 
 const MILESTONES = [
-  { icon: '🎂', label: 'Birthday\nBooks',       href: '/milestones/birthday'     },
-  { icon: '🕊️', label: 'Faith &\nBaptism',        href: '/milestones/baptism'      },
-  { icon: '🐣', label: 'New\nBaby',              href: '/milestones/new-baby'     },
-  { icon: '💍', label: 'Wedding',                href: '/milestones/christmas'    },
-  { icon: '👔', label: "Father's\nDay",          href: '/milestones/easter'       },
-  { icon: '💝', label: 'Just\nBecause',          href: '/milestones/just-because' },
+  { icon: '🎂', label: 'Birthday',        href: '/milestones/birthday'     },
+  { icon: '🕊️', label: 'Faith &\nBaptism', href: '/milestones/baptism'      },
+  { icon: '🐣', label: 'New Baby',        href: '/milestones/new-baby'     },
+  { icon: '💍', label: 'Wedding',         href: '/milestones/wedding'      },
+  { icon: '🎒', label: 'School',          href: '/milestones/school'       },
+  { icon: '💝', label: 'Just Because',    href: '/milestones/just-because' },
 ]
 
 const STEPS = [
@@ -453,8 +453,11 @@ export default function HomePage() {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div className="reveal" style={{ textAlign: 'center', marginBottom: 40 }}>
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 12px' }}>
-              Shop by Milestone ✦
+              What are you celebrating? ✦
             </h2>
+            <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: isMobile ? 14 : 16, color: MUTED, margin: '0 0 12px' }}>
+              Every book is built around one moment. Find theirs.
+            </p>
             <div className="line-draw" style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
