@@ -293,18 +293,6 @@ function ReviewsSection({ isMobile }: { isMobile: boolean }) {
           </div>
         )}
 
-        {/* Tagline */}
-        <div style={{ textAlign: 'center', paddingTop: 40, borderTop: '1px solid #EDE8DF', padding: isMobile ? '40px 20px 0' : '40px 0 0' }}>
-          <p style={{
-            fontFamily: 'Playfair Display, serif', fontStyle: 'italic',
-            fontWeight: 700, fontSize: isMobile ? 18 : 22,
-            color: GREEN, margin: 0, lineHeight: 1.4,
-          }}>
-            Where Your Child Becomes Part of the{' '}
-            <span style={{ color: CORAL }}>Story</span>
-          </p>
-        </div>
-
       </div>
     </section>
   )
