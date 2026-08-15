@@ -686,22 +686,20 @@ export default function HomePage() {
             {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 18, color: GOLD }}>★</span>)}
           </div>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 40, color: '#fff', marginBottom: 16, lineHeight: 1.2 }}>
-            Ready to create their next favourite story?
+            Ready to put them in the story?
           </h2>
-          <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.75)', marginBottom: 32, lineHeight: 1.7 }}>
-            A beautifully printed, fully personalized book — delivered to your door in 5–7 days.
+          <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: isMobile ? 15 : 17, color: 'rgba(255,255,255,0.8)', marginBottom: 32, lineHeight: 1.7 }}>
+            A hardcover with their name and their face on every page, made to order and at your door in 1–3 business days.
           </p>
           <Link href="/books" style={{
             background: CORAL, color: '#fff',
             fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16,
             padding: '16px 40px', borderRadius: 50, textDecoration: 'none',
             display: 'inline-block', boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-          }}>Create Your Book →</Link>
-          <div style={{ marginTop: 24, display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {['💳 Secure checkout', '📦 Ships worldwide', '💝 Satisfaction guaranteed'].map(b => (
-              <span key={b} style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>{b}</span>
-            ))}
-          </div>
+          }}>Create their book →</Link>
+          <p style={{ marginTop: 20, fontFamily: 'Nunito, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
+            Secure checkout ✦ Ships worldwide ✦ Love it or we reprint it free.
+          </p>
         </div>
       </section>
 
