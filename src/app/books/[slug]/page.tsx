@@ -321,7 +321,7 @@ export default function BookDetailPage() {
                       fontFamily: 'Nunito, sans-serif', fontWeight: 800,
                       fontSize: 12, color: CORAL, marginBottom: 12,
                     }}>
-                      🎁 Buy together — Free Shipping
+                      🎁 Buy together: Free Shipping
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <input
@@ -534,7 +534,7 @@ export default function BookDetailPage() {
                 Created with love, cherished forever.
               </h2>
               <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 480 }}>
-                Our personalized books are more than just stories — they're memories in the making.
+                Our personalized books are more than just stories. They're memories in the making.
               </p>
             </div>
             <Link href={`/personalize/${book.slug}`}

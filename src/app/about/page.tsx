@@ -11,10 +11,10 @@ const BEIGE = '#F5F0E8'
 const BODY  = '#4A5568'
 
 const VALUES = [
-  { icon: '💚', title: 'Every child is the hero', body: "We believe every child deserves to see themselves as the main character — not just in life, but on the page. That's why every book we make puts their face, their name, and their story front and centre." },
-  { icon: '✨', title: 'Crafted with intention', body: "Each book is reviewed by our team before it goes to print. We don't just generate and ship — we check every page, every illustration, every word to make sure it's something worth keeping forever." },
-  { icon: '📖', title: 'Stories that matter', body: "We only create books around themes that are genuinely meaningful — faith, love, belonging, courage. These aren't novelty gifts. They're keepsakes families return to year after year." },
-  { icon: '🎁', title: 'Gifts with a heartbeat', body: "We started party & presents because we wanted to give people a gift that actually meant something — something that couldn't be found on a shelf, couldn't be re-gifted, and wouldn't end up in a drawer." },
+  { icon: '💚', title: 'Every child is the hero', body: "We believe every child deserves to see themselves as the main character, in life and on the page. That's why every book we make puts their face, their name, and their story front and centre." },
+  { icon: '✨', title: 'Crafted with intention', body: "Each book is reviewed by our team before it goes to print. We don't just generate and ship, we check every page, every illustration, every word to make sure it's something worth keeping forever." },
+  { icon: '📖', title: 'Stories that matter', body: "We only create books around themes that are genuinely meaningful: faith, love, belonging, courage. These aren't novelty gifts. They're keepsakes families return to year after year." },
+  { icon: '🎁', title: 'Gifts with a heartbeat', body: "We started party & presents because we wanted to give people a gift that actually meant something: something that couldn't be found on a shelf, couldn't be re-gifted, and wouldn't end up in a drawer." },
 ]
 
 export default function AboutPage() {
@@ -32,7 +32,7 @@ export default function AboutPage() {
             Books as unique as<br /><span style={{ color: CORAL }}>the child you love.</span>
           </h1>
           <p style={{ fontSize: isMobile ? 15 : 18, color: 'rgba(255,255,255,0.7)', margin: '0 auto', lineHeight: 1.8, maxWidth: 560 }}>
-            We create personalised storybooks where every child is the main character — their face, their name, their story, beautifully illustrated on every page.
+            We create personalised storybooks where every child is the main character, their face, their name, their story beautifully illustrated on every page.
           </p>
         </div>
       </section>
@@ -42,16 +42,16 @@ export default function AboutPage() {
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <p style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, letterSpacing: 3, textTransform: 'uppercase', margin: '0 0 16px' }}>How It Started</p>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 38, color: GREEN, margin: '0 0 28px', lineHeight: 1.2 }}>
-            We couldn't find the gift we wanted to give — so we built it.
+            We couldn't find the gift we wanted to give. So we built it.
           </h2>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 20px' }}>
-            party & presents started as a celebration company — we know how much a milestone moment means to a family. Birthdays, baptisms, new arrivals, Christmas mornings. These moments matter, and the gifts given in them matter too.
+            party & presents started as a celebration company, and we know how much a milestone moment means to a family. Birthdays, baptisms, new arrivals, Christmas mornings. These moments matter, and the gifts given in them matter too.
           </p>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 20px' }}>
-            But when we looked for a gift that was truly personal — something that would last, something the child would grow up with — we kept coming up short. Generic books with a name printed in. Toys forgotten by the following week. Cards that went straight to recycling.
+            But when we looked for a gift that was truly personal: something that would last, something the child would grow up with. We kept coming up short. Generic books with a name printed in. Toys forgotten by the following week. Cards that went straight to recycling.
           </p>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: 0 }}>
-            So we built something different. A personalised storybook where your child is literally the character — their actual face, their name woven into every page, and illustrations so beautiful you'd frame them. That's party & presents books.
+            So we built something different. A personalised storybook where your child is literally the character, their actual face, their name woven into every page, and illustrations so beautiful you'd frame them. That's party & presents books.
           </p>
         </div>
       </section>
@@ -82,13 +82,13 @@ export default function AboutPage() {
         <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
           <p style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, letterSpacing: 3, textTransform: 'uppercase', margin: '0 0 12px' }}>How We Make Them</p>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 38, color: GREEN, margin: '0 0 20px' }}>
-            Not just generated — reviewed.
+            Not just generated. Reviewed.
           </h2>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 16px' }}>
-            We use advanced AI to generate Pixar-quality illustrations featuring your child's actual face — matched from the photo you upload. Every scene is illustrated fresh, for your child, with their likeness in every single spread.
+            We use advanced AI to generate Pixar-quality illustrations featuring your child's actual face, matched from the photo you upload. Every scene is illustrated fresh, for your child, with their likeness in every single spread.
           </p>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 32px' }}>
-            But we don't just send what the AI produces. Every order goes through a human quality review before it goes to print. Our team checks each page — the character consistency, the text, the composition — so the book that arrives is one we're proud of.
+            But we don't just send what the AI produces. Every order goes through a human quality review before it goes to print. Our team checks each page, checking character consistency, the text, the composition, so the book that arrives is one we're proud of.
           </p>
           <Link href="/how-it-works" style={{ background: GREEN, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, padding: '14px 32px', borderRadius: 50, textDecoration: 'none', display: 'inline-block' }}>
             See How It Works →
