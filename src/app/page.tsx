@@ -428,10 +428,10 @@ export default function HomePage() {
           gap: isMobile ? 16 : 0,
         }}>
           {[
-            { icon: '⭐', stat: '4.9/5', sub: 'From 500+ happy families' },
-            { icon: '💝', stat: '1,000+', sub: 'Personalized books created' },
-            { icon: '🌿', stat: 'Handcrafted', sub: 'With love and care' },
-            { icon: '🎁', stat: 'Loved &', sub: 'treasured worldwide' },
+            { icon: '📚', stat: '1,000+', sub: 'Personalized books created' },
+            { icon: '✅', stat: 'Human-checked', sub: 'Every book reviewed before it prints' },
+            { icon: '📦', stat: 'Ships in 1–3', sub: 'Business days · Worldwide delivery' },
+            { icon: '💝', stat: 'Love it or', sub: 'we redo it. Free reprint, no questions' },
           ].map((t, i) => (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 12,
