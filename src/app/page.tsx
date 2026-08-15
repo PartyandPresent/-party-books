@@ -586,17 +586,15 @@ export default function HomePage() {
               Some gifts are opened once.<br />
               Stories are remembered forever.
             </h2>
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12, marginBottom: isMobile ? 0 : 0, alignItems: isMobile ? 'flex-start' : 'center' }}>
-              <Link href="/books" style={{
-                background: '#fff', color: CORAL,
-                fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
-                padding: '13px 28px', borderRadius: 50, textDecoration: 'none',
-                display: 'inline-block', whiteSpace: 'nowrap',
-              }}>Create Their Book →</Link>
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, margin: 0 }}>
-                Create a book they'll love today and cherish forever.
-              </p>
-            </div>
+            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: isMobile ? 15 : 17, margin: '0 0 24px', lineHeight: 1.6 }}>
+              Twenty years from now, the toy is gone. The book is still on the shelf.
+            </p>
+            <Link href="/books" style={{
+              background: '#fff', color: CORAL,
+              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15,
+              padding: '13px 28px', borderRadius: 50, textDecoration: 'none',
+              display: 'inline-block', whiteSpace: 'nowrap',
+            }}>Create their book →</Link>
           </div>
           {!isMobile && (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', padding: '24px 24px 0', position: 'relative' }}>
