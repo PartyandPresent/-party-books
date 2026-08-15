@@ -307,27 +307,6 @@ export default function BookDetailPage() {
                 ))}
               </div>
 
-              {/* UGC thumbnail placeholder strip */}
-              <div style={{ marginTop: 24 }}>
-                <div style={{
-                  fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
-                  color: GREEN, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 10,
-                }}>Customer Photos</div>
-                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
-                  {[0,1,2,3,4].map(i => (
-                    <div key={i} style={{
-                      width: 56, height: 56, borderRadius: 10, flexShrink: 0,
-                      border: '1.5px dashed #C8C4BB', background: '#F8F6F1',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <span style={{ fontSize: 18, opacity: 0.22 }}>📷</span>
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: MUTED, margin: '8px 0 0' }}>
-                  Customer photos coming soon
-                </p>
-              </div>
 
               {/* Bundle cross-sell */}
               {(() => {
