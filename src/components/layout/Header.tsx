@@ -152,7 +152,7 @@ export default function Header() {
             }}
               onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(232,131,106,0.4)' }}
               onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(232,131,106,0.3)' }}>
-              Create a Book
+              Choose a Book
               <span style={{ fontSize: 13 }}>✦</span>
             </Link>
           </nav>
@@ -213,7 +213,7 @@ export default function Header() {
               fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 15,
               padding: '12px 24px', borderRadius: 50, textDecoration: 'none', marginTop: 8,
             }}>
-            Create a Book ✦
+            Choose a Book ✦
           </Link>
         </div>
       )}
