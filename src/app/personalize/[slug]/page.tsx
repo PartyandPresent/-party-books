@@ -624,7 +624,7 @@ export default function PersonalizePage() {
               }}
               onClick={handleGenerate}
             >
-              ✨ Generate My Book
+              ✨ Generate My Character
             </button>
             <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, marginTop: 16 }}>
               This will take about 60 seconds while your book is illustrated
