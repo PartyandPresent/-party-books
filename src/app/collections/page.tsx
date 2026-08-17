@@ -21,7 +21,7 @@ const COLLECTIONS = [
   { href: '/collections/birthday', icon: '🎂', label: 'Birthday Gifts', desc: 'Make their big day unforgettable' },
   { href: '/collections/baby-newborn', icon: '🐣', label: 'Baby & Newborn', desc: 'The sweetest welcome for a new arrival' },
   { href: '/collections/christmas', icon: '🎄', label: 'Christmas Gifts', desc: 'A gift they\'ll keep long after the tree comes down' },
-  { href: '/milestones/easter', icon: '👔', label: "Father's Day", desc: 'A gift that tells him exactly how you feel' },
+  { href: '/milestones/school', icon: '🎒', label: 'School', desc: 'Celebrate their first day and every milestone after' },
 ]
 
 const MILESTONES = [
