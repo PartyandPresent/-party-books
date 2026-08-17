@@ -18,6 +18,47 @@ const MUTED = '#888888'
 
 const PREVIEW_LABELS = ['Cover', 'Dedication', 'Page 3', 'Final Page']
 
+function getPageMessages(slug: string, name: string): string[][] {
+  const bySlug: Record<string, string[][]> = {
+    'kinder-to-beyond': [
+      [`Placing ${name} on the cover...`, 'Painting the school steps...', 'Adding the golden autumn sky...', 'Polishing the cover illustration...', 'Almost there!'],
+      [`Bringing ${name} into the classroom...`, 'Painting the brave little moment...', 'Adding the morning light...', 'Finishing the scene...', 'Almost done...'],
+      [`Painting ${name} stepping out the door...`, 'Capturing that first big smile...', 'Adding the storybook details...', 'Finishing the spread...', 'Almost done...'],
+      ['Painting the final chapter...', `Writing ${name}'s bright future...`, 'Adding the last golden details...', 'Book preview almost ready!', 'One moment more...'],
+    ],
+    'you-were-here-first-child-focus': [
+      [`Creating ${name}'s cover portrait...`, 'Painting the nursery scene...', 'Adding the warm family glow...', 'Finishing the cover...', 'Almost there!'],
+      [`Bringing ${name} into the story...`, 'Painting the moment they first met...', 'Adding the little family details...', 'Finishing the scene...', 'Almost done...'],
+      [`Painting ${name} welcoming the baby...`, 'Setting the soft nursery warmth...', 'Adding the tender details...', 'Finishing the spread...', 'Almost done...'],
+      [`Painting ${name}'s family portrait...`, 'Adding the final warmth and love...', 'Book preview almost ready!', 'One moment more...', 'Almost done...'],
+    ],
+    'before-the-music-plays': [
+      [`Creating ${name}'s flower girl portrait...`, 'Painting the wedding scene...', 'Adding the floral archway...', 'Finishing the cover...', 'Almost there!'],
+      [`Bringing ${name} down the aisle...`, 'Painting the ceremony glow...', 'Scattering the petals...', 'Finishing the spread...', 'Almost done...'],
+      [`Painting ${name} in the wedding light...`, 'Setting the soft golden scene...', 'Adding the storybook details...', 'Finishing the illustration...', 'Almost done...'],
+      [`Painting ${name}'s big moment...`, 'Adding the final florals and details...', 'Book preview almost ready!', 'One moment more...', 'Almost done...'],
+    ],
+    'spoken-over-you': [
+      [`Creating ${name}'s portrait...`, 'Painting the faith-filled cover...', 'Adding the gentle light and warmth...', 'Finishing the cover illustration...', 'Almost there!'],
+      [`Bringing ${name} into the blessing...`, 'Laying in your dedication...', 'Adding the sacred details...', 'Finishing the page...', 'Almost done...'],
+      [`Painting ${name} in God's promises...`, 'Adding the soft glow and scripture...', 'Finishing the illustration...', 'Adding the final details...', 'Almost done...'],
+      [`Writing ${name}'s final blessing...`, 'Adding the last gentle details...', 'Book preview almost ready!', 'One moment more...', 'Almost done...'],
+    ],
+    'can-you-be-my-ring-bearer': [
+      [`Creating ${name}'s ring bearer portrait...`, 'Painting the wedding ceremony...', 'Adding the golden celebration details...', 'Finishing the cover...', 'Almost there!'],
+      [`Bringing ${name} into the story...`, 'Painting the special wedding day...', 'Adding the ring pillow details...', 'Finishing the scene...', 'Almost done...'],
+      [`Painting ${name}'s big moment...`, 'Setting the ceremony scene...', 'Adding the storybook details...', 'Finishing the spread...', 'Almost done...'],
+      [`Writing ${name}'s special role...`, 'Adding the final celebration details...', 'Book preview almost ready!', 'One moment more...', 'Almost done...'],
+    ],
+  }
+  return bySlug[slug] ?? [
+    [`Placing ${name}'s character on the cover...`, 'Composing the title illustration...', 'Adding the scene details...', 'Polishing the final cover...', 'Almost there!'],
+    ['Setting up the dedication page...', `Positioning ${name}'s character...`, 'Laying in your personal message...', 'Finishing the dedication layout...', 'Almost done...'],
+    [`Painting ${name} in the illustration...`, 'Bringing this page to life...', 'Adding the storybook details...', 'Finishing the scene...', 'Almost done...'],
+    ['Creating the final spread...', `Writing ${name}'s happy ending...`, 'Adding the last details...', 'Book preview almost ready!', 'One moment more...'],
+  ]
+}
+
 type Status = 'loading-character' | 'character-ready' | 'loading-pages' | 'done' | 'error'
 type ErrorPhase = 'character' | 'pages'
 
@@ -499,12 +540,7 @@ export default function PreviewPage() {
 
   // ── Phase 3 loading: Generating pages ─────────────────────────
   if (status === 'loading-pages') {
-    const PAGE_MSGS = [
-      [`Placing ${childName}'s character on the cover...`, 'Composing the title illustration...', 'Adding the school background scene...', 'Polishing the final cover...', 'Almost there!'],
-      ['Setting up the dedication page...', `Positioning ${childName}'s character...`, 'Laying in your personal message...', 'Finishing the dedication layout...', 'Almost done...'],
-      [`Painting ${childName} in the illustration...`, 'Bringing this page to life...', 'Adding the storybook details...', 'Finishing the scene...', 'Almost done...'],
-      ['Creating the final spread...', `Writing ${childName}'s happy ending...`, 'Adding the last details...', 'Book preview almost ready!', 'One moment more...'],
-    ]
+    const PAGE_MSGS = getPageMessages(selectedSlug ?? '', childName ?? '')
     const idx = Math.max(0, currentGeneratingIdx)
     const msgSet = PAGE_MSGS[idx] ?? PAGE_MSGS[0]
     const currentMsg = msgSet[pageLoadMsgIdx % msgSet.length]
