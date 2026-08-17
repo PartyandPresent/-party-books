@@ -16,7 +16,7 @@ export default function ByRecipientsPage() {
       giftHeading="Books for every stage of childhood"
       giftPoints={[
         "Our books are designed to be treasured from babyhood through childhood and beyond",
-        "Every book features the child's real face, brought to life in stunning Pixar-quality illustration",
+        "Every book features the child's real face, brought to life in stunning custom illustration",
         "The perfect gift whether they're days old or celebrating their 10th birthday",
       ]}
       relatedLinks={[

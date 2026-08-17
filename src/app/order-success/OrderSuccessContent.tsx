@@ -159,7 +159,7 @@ export default function OrderSuccessContent() {
         <div style={{ backgroundColor: '#fff', borderRadius: 20, padding: '32px 28px', boxShadow: '0 4px 24px rgba(0,0,0,0.07)', marginBottom: 24 }}>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: GREEN, marginBottom: 24 }}>What happens next?</h2>
           {[
-            { icon: '🎨', title: 'We generate your full book', desc: 'Our AI is already illustrating all 17 pages with your child as the star character.', time: 'Within 15 minutes' },
+            { icon: '🎨', title: 'We generate your full book', desc: 'We are already illustrating all 17 pages with your child as the star character.', time: 'Within 15 minutes' },
             { icon: '✅', title: 'Quality check', desc: 'Our team reviews every page to make sure it looks perfect.', time: '1–2 business days' },
             { icon: '🖨️', title: 'Print & bind', desc: 'Your book is printed on premium paper and hardcover bound.', time: '2–3 business days' },
             { icon: '📦', title: 'Shipped to you', desc: 'Your book is carefully packaged and shipped to your door.', time: '3–5 business days' },

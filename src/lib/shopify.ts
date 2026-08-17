@@ -50,7 +50,7 @@ export async function createShopifyOrder(
       ],
       line_items: [
         {
-          title:              `${input.bookTitle} — Personalised for ${input.childName}`,
+          title:              `${input.bookTitle}: Personalised for ${input.childName}`,
           quantity:           1,
           price:              input.bookAmount.toFixed(2),
           requires_shipping:  true,

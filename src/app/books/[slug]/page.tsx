@@ -260,21 +260,21 @@ export default function BookDetailPage() {
                     icon: '📖',
                     label: 'About the story',
                     content: book.accordionContent?.aboutStory
-                      ?? '[TODO: About the story — describe the book\'s theme, the emotional journey, and what makes it special for this title.]',
+                      ?? '[TODO: About the story: describe the book\'s theme, the emotional journey, and what makes it special for this title.]',
                   },
                   {
                     key: 'personalized',
                     icon: '✏️',
                     label: "How it's personalized",
                     content: book.accordionContent?.howPersonalized
-                      ?? "[TODO: How it's personalized — what gets customized: child's name, face on every page, dedication message, etc.]",
+                      ?? "[TODO: How it's personalized: what gets customized: child's name, face on every page, dedication message, etc.]",
                   },
                   {
                     key: 'quality',
                     icon: '📐',
                     label: 'Size & quality',
                     content: book.accordionContent?.sizeQuality
-                      ?? '[TODO: Size & quality — dimensions, paper type, cover options (softcover/hardcover), print quality details.]',
+                      ?? '[TODO: Size & quality: dimensions, paper type, cover options (softcover/hardcover), print quality details.]',
                   },
                 ] as const).map(section => (
                   <div key={section.key} style={{ borderBottom: '1px solid #EDEAE0' }}>

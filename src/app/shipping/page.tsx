@@ -12,20 +12,20 @@ const BODY  = '#4A5568'
 const MUTED = '#888888'
 
 const TIMELINE = [
-  { day: 'Day 1–2', icon: '🎨', title: 'Generation & Review', body: 'After your order is placed, we generate all 17 pages of your personalised book using AI, then our team reviews every page for quality before it goes to print.' },
+  { day: 'Day 1–2', icon: '🎨', title: 'Generation & Review', body: 'After your order is placed, we illustrate all 17 pages of your personalised book, then our team reviews every page for quality before it goes to print.' },
   { day: 'Day 2–3', icon: '🖨️', title: 'Printing', body: 'Your approved book is sent to print on premium paper with vibrant, full-colour reproduction. We use quality materials that are built to last.' },
   { day: 'Day 3–7', icon: '📦', title: 'Shipping & Delivery', body: 'Your book is carefully packaged and shipped to your door. You\'ll receive a tracking number by email once it\'s on its way.' },
 ]
 
 const RATES = [
-  { region: 'Canada — Standard', time: '3–5 business days', rate: '$8.99 CAD', free: 'Free over $75' },
-  { region: 'Canada — Express', time: '1–2 business days', rate: '$18.99 CAD', free: null },
-  { region: 'United States — Standard', time: '5–8 business days', rate: '$12.99 CAD', free: 'Free over $100' },
-  { region: 'United States — Express', time: '2–4 business days', rate: '$24.99 CAD', free: null },
+  { region: 'Canada: Standard', time: '3–5 business days', rate: '$8.99 CAD', free: 'Free over $75' },
+  { region: 'Canada: Express', time: '1–2 business days', rate: '$18.99 CAD', free: null },
+  { region: 'United States: Standard', time: '5–8 business days', rate: '$12.99 CAD', free: 'Free over $100' },
+  { region: 'United States: Express', time: '2–4 business days', rate: '$24.99 CAD', free: null },
 ]
 
 const FAQS = [
-  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 4–7 business days total — this includes our generation and review process (1–2 days), printing (1–2 days), and standard shipping (2–5 days depending on your location)." },
+  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 4–7 business days total. This includes our generation and review process (1–2 days), printing (1–2 days), and standard shipping (2–5 days depending on your location)." },
   { q: 'Can I track my order?', a: "Yes. Once your book ships, you'll receive an email with a tracking number so you can follow it all the way to your door." },
   { q: 'What if my book arrives damaged?', a: "If your book arrives damaged in transit, contact us within 7 days of delivery with a photo and we'll send a replacement at no charge." },
   { q: 'Do you ship to PO Boxes?', a: "We're unable to deliver to PO Boxes at this time. Please provide a physical street address at checkout." },
@@ -56,7 +56,7 @@ export default function ShippingPage() {
             Shipping &<br /><span style={{ color: CORAL }}>Delivery Info</span>
           </h1>
           <p style={{ fontSize: isMobile ? 15 : 18, color: 'rgba(255,255,255,0.7)', margin: '0 auto', lineHeight: 1.8, maxWidth: 500 }}>
-            Everything you need to know about how your book gets from us to you — and how long it takes.
+            Everything you need to know about how your book gets from us to you, and how long it takes.
           </p>
         </div>
       </section>
@@ -114,7 +114,7 @@ export default function ShippingPage() {
                 </div>
                 {!isMobile && <span style={{ fontSize: 14, color: BODY }}>{r.time}</span>}
                 <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>{r.rate}</span>
-                {!isMobile && <span style={{ fontSize: 13, color: r.free ? CORAL : MUTED, fontWeight: r.free ? 700 : 400 }}>{r.free || '—'}</span>}
+                {!isMobile && <span style={{ fontSize: 13, color: r.free ? CORAL : MUTED, fontWeight: r.free ? 700 : 400 }}>{r.free || '-'}</span>}
               </div>
             ))}
           </div>
@@ -128,7 +128,7 @@ export default function ShippingPage() {
           <div style={{ fontSize: 40, marginBottom: 16 }}>🌏</div>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: isMobile ? 24 : 30, color: GREEN, margin: '0 0 16px' }}>International Shipping</h2>
           <p style={{ fontSize: 15, color: BODY, margin: '0 auto', lineHeight: 1.8, maxWidth: 520 }}>
-            We currently ship to Canada and the United States. International shipping to the UK, Australia, and other countries is on the way — sign up to be notified when it's available in your region.
+            We currently ship to Canada and the United States. International shipping to the UK, Australia, and other countries is on the way. Sign up to be notified when it's available in your region.
           </p>
         </div>
       </section>
@@ -148,7 +148,7 @@ export default function ShippingPage() {
           Ready to create<br /><span style={{ color: CORAL }}>their book?</span>
         </h2>
         <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', margin: '0 auto 36px', maxWidth: 420, lineHeight: 1.7 }}>
-          Preview 5 pages free before you pay — no commitment, no risk.
+          Preview 5 pages free before you pay. No commitment, no risk.
         </p>
         <Link href="/books" style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, padding: '16px 40px', borderRadius: 50, textDecoration: 'none', display: 'inline-block', boxShadow: '0 6px 28px rgba(232,131,106,0.45)' }}>
           Create Their Book →

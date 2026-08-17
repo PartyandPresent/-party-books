@@ -36,7 +36,7 @@ async function callGemini(promptParts: any[]): Promise<string> {
         const body = await res.json().catch(() => ({}))
         console.error(`Gemini ${res.status} (attempt ${attempt}):`, JSON.stringify(body))
         if (attempt < rateDelays.length) { await sleep(rateDelays[attempt]); continue }
-        throw new Error('Our AI is busy right now. Please try again in a moment.')
+        throw new Error('Our illustration service is busy right now. Please try again in a moment.')
       }
       if (!res.ok) {
         const e = await res.json().catch(() => ({}))

@@ -13,7 +13,7 @@ export const COVER_FORMAT_LABELS: Record<CoverFormat, string> = {
 }
 
 export const COVER_FORMAT_DESCS: Record<CoverFormat, string> = {
-  hardcover8: 'Premium rigid cover, 8×8 inch — beautifully durable.',
-  softcover8: 'Flexible cover, 8×8 inch — same quality printing inside.',
-  softcover5: 'Flexible cover, 5×5 inch — compact and lightweight.',
+  hardcover8: 'Premium rigid cover, 8×8 inch. Beautifully durable.',
+  softcover8: 'Flexible cover, 8×8 inch. Same quality printing inside.',
+  softcover5: 'Flexible cover, 5×5 inch. Compact and lightweight.',
 }

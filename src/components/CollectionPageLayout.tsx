@@ -152,7 +152,7 @@ export default function CollectionPageLayout({
               New books coming soon
             </h2>
             <p style={{ fontSize: 15, color: BODY, margin: '0 auto 32px', maxWidth: 440, lineHeight: 1.7 }}>
-              We're working on something beautiful for this collection. Check back soon — or browse all our books in the meantime.
+              We're working on something beautiful for this collection. Check back soon, or browse all our books in the meantime.
             </p>
             <Link href="/collections" style={{
               background: CORAL, color: '#fff',

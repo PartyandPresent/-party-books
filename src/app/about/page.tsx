@@ -85,10 +85,10 @@ export default function AboutPage() {
             Not just generated. Reviewed.
           </h2>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 16px' }}>
-            We use advanced AI to generate Pixar-quality illustrations featuring your child's actual face, matched from the photo you upload. Every scene is illustrated fresh, for your child, with their likeness in every single spread.
+            We use our custom illustration system to bring your child's face to life in every page, matched from the photo you upload. Every scene is illustrated fresh, just for them, with their likeness in every single spread.
           </p>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.9, margin: '0 0 32px' }}>
-            But we don't just send what the AI produces. Every order goes through a human quality review before it goes to print. Our team checks each page, checking character consistency, the text, the composition, so the book that arrives is one we're proud of.
+            But we don't just send what's generated. Every order goes through a human quality review before it goes to print. Our team checks each page, reviewing character consistency, the text, the composition, so the book that arrives is one we're proud of.
           </p>
           <Link href="/how-it-works" style={{ background: GREEN, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, padding: '14px 32px', borderRadius: 50, textDecoration: 'none', display: 'inline-block' }}>
             See How It Works →

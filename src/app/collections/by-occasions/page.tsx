@@ -6,7 +6,7 @@ export default function ByOccasionsPage() {
     <CollectionPageLayout
       title="Shop by Occasion"
       subtitle="Find the perfect book for every special moment"
-      description="Whether it's a baptism, birthday, Christmas or just because — there's a personalised book for every occasion."
+      description="Whether it's a baptism, birthday, Christmas or just because, there's a personalised book for every occasion."
       icon="🎁"
       books={BOOKS}
       breadcrumbs={[
@@ -15,9 +15,9 @@ export default function ByOccasionsPage() {
       ]}
       giftHeading="A personalised book for every occasion"
       giftPoints={[
-        "From sacred milestones like baptisms to everyday moments of love — every occasion deserves a keepsake",
+        "From sacred milestones like baptisms to everyday moments of love. Every occasion deserves a keepsake",
         "Each book is fully personalised with the child's face, name and a message from you",
-        "A gift that stands out — not found on any shelf, made just for them",
+        "A gift that stands out, not found on any shelf, made just for them",
       ]}
       relatedLinks={[
         { href: '/collections/baptism', label: 'Baptism Gifts' },

@@ -230,7 +230,7 @@ export default function PreviewPage() {
 
       if (!res.ok) {
         let errMsg = 'Character generation failed'
-        try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'Our AI took too long to respond. Please try again!' }
+        try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'This is taking longer than expected. Please try again!' }
         throw new Error(errMsg)
       }
 
@@ -280,7 +280,7 @@ export default function PreviewPage() {
 
         if (!res.ok) {
           let errMsg = 'Page generation failed'
-          try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'Our AI took too long to respond. Please try again!' }
+          try { const e = await res.json(); errMsg = e.error || errMsg } catch { errMsg = 'This is taking longer than expected. Please try again!' }
           throw new Error(errMsg)
         }
 
@@ -338,7 +338,7 @@ export default function PreviewPage() {
         </h1>
         <p style={{ fontSize: 16, color: BODY, marginBottom: 12 }}>{errorMsg}</p>
         <p style={{ fontSize: 14, color: MUTED, marginBottom: 40 }}>
-          This sometimes happens when our AI is busy. Please try again!
+          This sometimes happens when our servers are busy. Please try again!
         </p>
         <button
           onClick={errorPhase === 'character' ? generateCharacter : generatePages}
@@ -361,7 +361,7 @@ export default function PreviewPage() {
     `Styling ${pronoun} hair and outfit...`,
     `Rendering the illustration...`,
     `Adding the final details...`,
-    `Almost ready — just a moment more...`,
+    `Almost ready, just a moment more...`,
   ]
 
   if (status === 'loading-character') return (
@@ -426,7 +426,7 @@ export default function PreviewPage() {
         </div>
 
         <p style={{ fontSize: 13, color: MUTED }}>
-          Please don't close this tab — this takes about 20–30 seconds
+          Please don't close this tab. This takes about 20–30 seconds
         </p>
 
         <style>{`
@@ -451,7 +451,7 @@ export default function PreviewPage() {
             Meet {childName}!
           </h1>
           <p style={{ fontSize: 16, color: BODY, lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
-            This is how {childName} will look in every illustration — on every single page of the book.
+            This is how {childName} will look in every illustration, on every single page of the book.
           </p>
         </div>
 
@@ -481,7 +481,7 @@ export default function PreviewPage() {
 
           {/* Labels below portrait */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
-            {['Pixar-style illustration', 'Matches your photo', 'Appears on every page'].map(tag => (
+            {['Custom illustration', 'Matches your photo', 'Appears on every page'].map(tag => (
               <span key={tag} style={{
                 fontSize: 12, fontWeight: 700, color: GREEN,
                 backgroundColor: BEIGE, padding: '5px 14px', borderRadius: 50,
@@ -518,7 +518,7 @@ export default function PreviewPage() {
               boxShadow: '0 4px 20px rgba(232,131,106,0.4)',
             }}
           >
-            ✓ Looks perfect — Generate my book →
+            ✓ Looks perfect. Generate my book →
           </button>
 
           <button
@@ -697,10 +697,10 @@ export default function PreviewPage() {
 
           <p style={{ fontSize: 13, color: MUTED }}>
             {doneCount === 0
-              ? 'Starting generation — about 60–90 seconds total'
+              ? 'Starting generation, about 60–90 seconds total'
               : doneCount === previewIndices.length
               ? 'All pages complete!'
-              : `${doneCount} of ${previewIndices.length} pages ready — still painting...`}
+              : `${doneCount} of ${previewIndices.length} pages ready, still painting...`}
           </p>
 
         </main>
@@ -731,7 +731,7 @@ export default function PreviewPage() {
             {childName}'s book is ready!
           </h1>
           <p style={{ fontSize: 15, color: BODY }}>
-            Here's a preview of 4 pages — order to unlock all {bookTotalPages}!
+            Here's a preview of 4 pages. Order to unlock all {bookTotalPages}!
           </p>
         </div>
 
@@ -791,7 +791,7 @@ export default function PreviewPage() {
           </div>
 
           <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, fontWeight: 700, margin: '0 0 16px' }}>
-            {PREVIEW_LABELS[currentPage]} — Page {currentPage + 1} of 4 preview pages
+            {PREVIEW_LABELS[currentPage]}, Page {currentPage + 1} of 4 preview pages
           </p>
 
           {/* Thumbnail strip */}
@@ -910,7 +910,7 @@ export default function PreviewPage() {
                 flex: 1, width: isMobile ? '100%' : 'auto',
               }}
             >
-              Order This Book — ${COVER_FORMAT_PRICES[coverFormat].toFixed(2)}
+              Order This Book: ${COVER_FORMAT_PRICES[coverFormat].toFixed(2)}
             </button>
           </div>
         </div>

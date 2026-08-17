@@ -218,7 +218,7 @@ export default function PersonalizePage() {
           <div style={cardStyle}>
             <h2 style={headingStyle}>Upload a photo</h2>
             <p style={subStyle}>
-              Our AI will transform this photo into a custom illustrated character — the star of the book!
+              We will transform this photo into a custom illustrated character, the star of the book!
               Use a clear, well-lit face photo for best results.
             </p>
 
@@ -305,13 +305,13 @@ export default function PersonalizePage() {
             }}>
               <span style={{ fontSize: 18 }}>💡</span>
               <p style={{ fontSize: 13, color: '#166534', margin: 0, lineHeight: 1.5 }}>
-                <strong>Tip:</strong> A front-facing photo with good lighting gives the best AI results.
+                <strong>Tip:</strong> A front-facing photo with good lighting gives the best results.
                 Avoid sunglasses or hats.
               </p>
             </div>
 
             <button style={primaryBtn} onClick={goToStep2}>
-              Continue — Add Your Message →
+              Add Your Message →
             </button>
           </div>
         )}
@@ -322,7 +322,7 @@ export default function PersonalizePage() {
             <button style={backBtn} onClick={() => setStep(1)}>← Back</button>
             <h2 style={headingStyle}>Personalise the book</h2>
             <p style={subStyle}>
-              These details will be woven into the story — making it truly one of a kind.
+              These details will be woven into the story, making it truly one of a kind.
             </p>
 
             <div style={{ marginBottom: 24 }}>
@@ -433,7 +433,7 @@ export default function PersonalizePage() {
                     onChange={(e) => setSiblingBirthDate(e.target.value)}
                   />
                   <p style={{ fontSize: 12, color: MUTED, marginTop: 6 }}>
-                    Leave blank if the baby hasn't arrived yet — you can personalise this page later.
+                    Leave blank if the baby hasn't arrived yet. You can personalise this page later.
                   </p>
                 </div>
               </>
@@ -463,7 +463,7 @@ export default function PersonalizePage() {
               </label>
               <textarea
                 style={{ ...inputStyle(), height: 110, resize: 'vertical', lineHeight: 1.6 }}
-                placeholder="e.g. To our darling Sophia — may you always know how deeply you are loved. ❤️"
+                placeholder="e.g. To our darling Sophia, may you always know how deeply you are loved. ❤️"
                 maxLength={200}
                 value={dedication}
                 onChange={(e) => setDedication(e.target.value)}
@@ -474,7 +474,7 @@ export default function PersonalizePage() {
             </div>
 
             <button style={primaryBtn} onClick={goToStep3}>
-              Continue — Review Order →
+              Review Order →
             </button>
           </div>
         )}
@@ -600,7 +600,7 @@ export default function PersonalizePage() {
             {/* Trust signals */}
             <div style={{ display: 'flex', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
               {[
-                { icon: '🎨', text: 'AI-generated just for you' },
+                { icon: '🎨', text: 'Illustrated just for you' },
                 { icon: '🛡️', text: '100% satisfaction guarantee' },
                 { icon: '📦', text: 'Ships in 3–5 business days' },
               ].map(({ icon, text }) => (
@@ -627,7 +627,7 @@ export default function PersonalizePage() {
               ✨ Generate My Book
             </button>
             <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, marginTop: 16 }}>
-              This will take about 60 seconds while our AI works its magic
+              This will take about 60 seconds while your book is illustrated
             </p>
           </div>
         )}

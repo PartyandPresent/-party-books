@@ -15,13 +15,13 @@ const STEPS = [
     num: '01',
     icon: '📚',
     title: 'Choose your book',
-    body: "Browse our collection and choose a story that fits the moment — a baptism gift, a birthday keepsake, a Christmas surprise. Each book has a unique theme built around faith, love, and belonging.",
+    body: "Browse our collection and choose a story that fits the moment: a baptism gift, a birthday keepsake, a Christmas surprise. Each book has a unique theme built around faith, love, and belonging.",
   },
   {
     num: '02',
     icon: '📸',
     title: 'Upload their photo',
-    body: "Upload a clear photo of the child — our AI uses it to generate their likeness in every illustration. A well-lit front-facing photo works best. The better the photo, the better the result.",
+    body: "Upload a clear photo of the child. We use it to bring their likeness into every illustration. A well-lit front-facing photo works best. The better the photo, the better the result.",
   },
   {
     num: '03',
@@ -33,7 +33,7 @@ const STEPS = [
     num: '04',
     icon: '👀',
     title: 'Preview 5 pages free',
-    body: "Before you pay, we generate 5 pages so you can see exactly what the book will look like — your child's face, their name, the style and quality. Only pay if you love it.",
+    body: "Before you pay, we generate 5 pages so you can see exactly what the book will look like: your child's face, their name, the style and quality. Only pay if you love it.",
   },
   {
     num: '05',
@@ -51,17 +51,17 @@ const STEPS = [
     num: '07',
     icon: '📦',
     title: 'Printed & shipped to you',
-    body: "Once approved, your book goes to print. We use premium quality materials — the kind of book you keep on the shelf, not the bedside table. Delivered to your door in 3–5 business days.",
+    body: "Once approved, your book goes to print. We use premium quality materials, the kind of book you keep on the shelf, not the bedside table. Delivered to your door in 3–5 business days.",
   },
 ]
 
 const INCLUDED = [
   { icon: '🎨', title: '17 illustrated pages', body: 'Every page features a unique scene with your child as the character.' },
-  { icon: '🧒', title: 'Your child\'s face', body: "AI-generated from your photo — their likeness in every illustration." },
+  { icon: '🧒', title: 'Your child\'s face', body: "Illustrated from your photo. Their likeness in every illustration." },
   { icon: '✍️', title: 'Personalised name & dedication', body: 'Their name woven through the story, plus a dedication page from you.' },
   { icon: '📖', title: 'Premium print quality', body: 'Hardcover or softcover options, printed on high-quality paper.' },
-  { icon: '🎁', title: 'Gift-ready packaging', body: 'Arrives beautifully packaged — ready to give, no wrapping needed.' },
-  { icon: '💝', title: 'A keepsake for life', body: 'Not a novelty — a book families return to for years.' },
+  { icon: '🎁', title: 'Gift-ready packaging', body: 'Arrives beautifully packaged, ready to give. No wrapping needed.' },
+  { icon: '💝', title: 'A keepsake for life', body: 'Not a novelty. A book families return to for years.' },
 ]
 
 export default function HowItWorksPage() {
@@ -79,7 +79,7 @@ export default function HowItWorksPage() {
             From photo to<br /><span style={{ color: CORAL }}>keepsake in days.</span>
           </h1>
           <p style={{ fontSize: isMobile ? 15 : 18, color: 'rgba(255,255,255,0.7)', margin: '0 auto', lineHeight: 1.8, maxWidth: 520 }}>
-            Upload a photo, personalise the story, preview it free — then we do the rest. Here's exactly how it works.
+            Upload a photo, personalise the story, preview it free. Then we do the rest. Here's exactly how it works.
           </p>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function HowItWorksPage() {
       <section style={{ background: CREAM, padding: isMobile ? '48px 20px' : '64px 24px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 12px' }}>Still have questions?</h2>
-          <p style={{ fontSize: 15, color: BODY, margin: '0 0 28px', lineHeight: 1.7 }}>We've answered the most common ones in our FAQ — from photo requirements to shipping times.</p>
+          <p style={{ fontSize: 15, color: BODY, margin: '0 0 28px', lineHeight: 1.7 }}>We've answered the most common ones in our FAQ, from photo requirements to shipping times.</p>
           <Link href="/faq" style={{ background: 'transparent', color: GREEN, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 15, padding: '13px 30px', borderRadius: 50, textDecoration: 'none', display: 'inline-block', border: `2px solid ${GREEN}` }}>
             Read the FAQ →
           </Link>
@@ -149,7 +149,7 @@ export default function HowItWorksPage() {
           Ready to create<br /><span style={{ color: CORAL }}>their book?</span>
         </h2>
         <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', margin: '0 auto 36px', maxWidth: 420, lineHeight: 1.7 }}>
-          Preview 5 pages free before you pay — no commitment, no risk.
+          Preview 5 pages free before you pay. No commitment, no risk.
         </p>
         <Link href="/books" style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, padding: '16px 40px', borderRadius: 50, textDecoration: 'none', display: 'inline-block', boxShadow: '0 6px 28px rgba(232,131,106,0.45)' }}>
           Create Their Book →

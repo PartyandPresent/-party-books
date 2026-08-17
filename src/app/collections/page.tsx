@@ -48,7 +48,7 @@ export default function CollectionsPage() {
             All Collections
           </h1>
           <p style={{ fontSize: isMobile ? 15 : 18, color: 'rgba(255,255,255,0.65)', margin: '0 auto', maxWidth: 520, lineHeight: 1.7 }}>
-            Personalised storybooks for every milestone — crafted with love, treasured forever.
+            Personalised storybooks for every milestone, crafted with love, treasured forever.
           </p>
         </div>
       </section>

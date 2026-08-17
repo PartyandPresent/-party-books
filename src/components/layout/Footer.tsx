@@ -214,7 +214,7 @@ export default function Footer() {
               />
             </div>
             <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: DIM, lineHeight: 1.7, maxWidth: 220 }}>
-              Personalized storybooks that celebrate every milestone — crafted with love, treasured forever.
+              Personalized storybooks that celebrate every milestone, crafted with love, treasured forever.
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               {[

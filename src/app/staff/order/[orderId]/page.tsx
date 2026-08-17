@@ -154,7 +154,7 @@ function StaffOrderContent({ orderId }: { orderId: string }) {
       }}>
         <div>
           <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>
-            party & presents — Staff Review
+            party & presents: Staff Review
           </p>
           <h1 style={{ margin: '2px 0 0', fontSize: 20, fontWeight: 800, color: '#fff', fontFamily: 'Playfair Display, serif' }}>
             Order #{orderId}

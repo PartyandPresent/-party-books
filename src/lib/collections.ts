@@ -22,7 +22,7 @@ export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
     giftPoints: [
       "A lifelong keepsake that commemorates the day they were welcomed into the faith",
       "Scripture and God's promises woven into every beautifully illustrated page",
-      "A gift that grows with the child — meaningful at every age",
+      "A gift that grows with the child, meaningful at every age",
     ],
     relatedLinks: [
       { href: '/milestones/baptism', label: 'Faith & Baptism' },
@@ -33,12 +33,12 @@ export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
   birthday: {
     title: 'Birthday Gifts',
     subtitle: 'Make their birthday truly unforgettable',
-    description: "A personalised book where they're the hero — their face, their name, their story. Far more memorable than any toy.",
+    description: "A personalised book where they're the hero: their face, their name, their story. Far more memorable than any toy.",
     icon: '🎂',
     books: () => BOOKS.filter(b => b.occasion.includes('birthday')),
     giftHeading: 'Why personalised books make the best birthday gift',
     giftPoints: [
-      "They're the star of every single page — their face in every scene",
+      "They're the star of every single page, their face in every scene",
       "A gift they'll reread for years, not forget in a week",
       "Far more personal and memorable than a generic toy or voucher",
     ],
@@ -51,7 +51,7 @@ export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
   'baby-newborn': {
     title: 'Baby & Newborn',
     subtitle: 'The sweetest gift for a new arrival',
-    description: 'Welcome a new baby with a personalised book that tells their story from day one — beautiful enough to display on the nursery shelf.',
+    description: 'Welcome a new baby with a personalised book that tells their story from day one, beautiful enough to display on the nursery shelf.',
     icon: '🐣',
     books: () => BOOKS.filter(b => b.recipient.includes('baby')),
     giftHeading: 'Why personalised books are the perfect newborn gift',
@@ -76,7 +76,7 @@ export const COLLECTION_PAGES: Record<string, CollectionConfig> = {
     giftPoints: [
       "So much more meaningful and lasting than another toy",
       "A keepsake from the magic of this particular Christmas",
-      "Read it every Christmas Eve — a tradition that gets more precious each year",
+      "Read it every Christmas Eve, a tradition that gets more precious each year",
     ],
     relatedLinks: [
       { href: '/milestones/christmas', label: 'Wedding' },
@@ -95,7 +95,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
     books: () => BOOKS.filter(b => b.occasion.includes('birthday')),
     giftHeading: 'Make their birthday truly special',
     giftPoints: [
-      "Their face, their name — the hero of every single page",
+      "Their face, their name, the hero of every single page",
       "A gift they'll love to reread on every future birthday",
       "So much more personal than a card and gift voucher",
     ],
@@ -114,7 +114,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
     giftHeading: 'The perfect faith & baptism keepsake',
     giftPoints: [
       "A gift that marks the moment they were welcomed into the faith",
-      "God's promises made personal — woven through every illustrated page",
+      "God's promises made personal, woven through every illustrated page",
       "A keepsake godparents and grandparents will love to give",
     ],
     relatedLinks: [
@@ -126,13 +126,13 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
   'new-baby': {
     title: 'New Baby',
     subtitle: 'Welcome the newest member of the family',
-    description: "A personalised book is the most thoughtful new baby gift — something parents and child will return to again and again.",
+    description: "A personalised book is the most thoughtful new baby gift. Something parents and child will return to again and again.",
     icon: '🐣',
     books: () => BOOKS.filter(b => b.recipient.includes('baby')),
     giftHeading: 'Why a personalised book is the perfect new baby gift',
     giftPoints: [
       "A story that begins with their very first day",
-      "Beautiful Pixar-quality illustrations featuring their real face",
+      "Beautiful custom illustrations featuring their real face",
       "A gift the parents will treasure on the nursery shelf for years",
     ],
     relatedLinks: [
@@ -144,13 +144,13 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
   christmas: {
     title: 'Wedding',
     subtitle: 'Celebrate love with a personalised keepsake',
-    description: "Mark their special wedding day with a beautiful personalised book — a gift as unique as the love story it celebrates.",
+    description: "Mark their special wedding day with a beautiful personalised book, a gift as unique as the love story it celebrates.",
     icon: '💍',
     books: () => BOOKS.filter(b => b.occasion.includes('wedding')),
     giftHeading: 'A wedding gift that lasts a lifetime',
     giftPoints: [
       "A personalised keepsake that celebrates every detail of their big day",
-      "Beautiful Pixar-quality illustrations featuring the people they love",
+      "Beautiful custom illustrations featuring the people they love",
       "A gift the couple will treasure and return to for years to come",
     ],
     relatedLinks: [
@@ -162,7 +162,7 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
   easter: {
     title: "Father's Day",
     subtitle: "A gift that tells him exactly how you feel",
-    description: "Show Dad how much he means with a personalised book that puts him at the heart of the story — a gift he'll never forget.",
+    description: "Show Dad how much he means with a personalised book that puts him at the heart of the story, a gift he'll never forget.",
     icon: '👔',
     books: () => BOOKS.filter(b => b.occasion.includes('any')),
     giftHeading: "Why a personalised book is the perfect gift for Dad",
@@ -179,13 +179,13 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
   },
   'just-because': {
     title: 'Just Because Gifts',
-    subtitle: 'No occasion needed — just love',
+    subtitle: 'No occasion needed, just love',
     description: "Surprise them with a book that's entirely about them, on any ordinary day that deserves to feel extraordinary.",
     icon: '💝',
     books: () => BOOKS.filter(b => b.occasion.includes('any')),
     giftHeading: 'Because they deserve to feel special today',
     giftPoints: [
-      "No occasion needed — just a reason to show them they're loved",
+      "No occasion needed, just a reason to show them they're loved",
       "A surprise that feels completely personal, not off-the-shelf",
       "The gift that shows you really know them and how special they are",
     ],

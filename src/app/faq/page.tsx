@@ -155,7 +155,7 @@ export default function FAQPage() {
             <a href="mailto:miloria@partyandpresents.com" style={{ color: CORAL, fontWeight: 700, textDecoration: 'none' }}>
               miloria@partyandpresents.com
             </a>
-            {' '}— you'll hear back from a person, usually the same day.
+            {' '}and you'll hear back from a person, usually the same day.
           </p>
           <Link href="/books" style={{ color: GREEN, fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 14, textDecoration: 'none', border: `2px solid ${GREEN}`, padding: '10px 24px', borderRadius: 50, display: 'inline-block' }}>
             Choose a Book →

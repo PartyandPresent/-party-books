@@ -428,7 +428,7 @@ export default function CheckoutPage() {
                 {[
                   { icon: '🛡️', text: '100% satisfaction guarantee' },
                   { icon: '📦', text: 'Ships in 3–5 business days' },
-                  { icon: '🎨', text: 'AI-generated just for you' },
+                  { icon: '🎨', text: 'Illustrated just for you' },
                   { icon: '💝', text: 'Perfect keepsake gift' },
                 ].map(({ icon, text }) => (
                   <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, fontSize: 13, color: BODY, fontWeight: 600 }}>
