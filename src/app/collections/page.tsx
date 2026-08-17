@@ -25,12 +25,12 @@ const COLLECTIONS = [
 ]
 
 const MILESTONES = [
-  { href: '/milestones/birthday', icon: '🎂', label: 'Birthday Books' },
-  { href: '/milestones/baptism', icon: '🕊️', label: 'Faith & Baptism' },
-  { href: '/milestones/new-baby', icon: '🐣', label: 'New Baby' },
-  { href: '/milestones/christmas', icon: '💍', label: 'Wedding' },
-  { href: '/milestones/easter', icon: '👔', label: "Father's Day" },
-  { href: '/milestones/just-because', icon: '💝', label: 'Just Because' },
+  { href: '/milestones/birthday',    icon: '🎂',  label: 'Birthday'          },
+  { href: '/milestones/baptism',     icon: '🕊️',  label: 'Faith &\nBaptism'  },
+  { href: '/milestones/new-baby',    icon: '🐣',  label: 'New Baby'          },
+  { href: '/milestones/wedding',     icon: '💍',  label: 'Wedding'           },
+  { href: '/milestones/school',      icon: '🎒',  label: 'School'            },
+  { href: '/milestones/just-because', icon: '💝', label: 'Just Because'      },
 ]
 
 export default function CollectionsPage() {
@@ -53,56 +53,10 @@ export default function CollectionsPage() {
         </div>
       </section>
 
-      {/* Collection category cards */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '48px 20px' : '72px 24px' }}>
-        <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 32px' }}>
-          Browse Collections
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 14 : 20 }}>
-          {COLLECTIONS.map((c, i) => (
-            <Link key={i} href={c.href} style={{ textDecoration: 'none' }}>
-              <div
-                style={{ background: '#fff', borderRadius: 18, padding: '24px 20px', boxShadow: '0 2px 12px rgba(45,74,62,0.07)', transition: 'all 0.2s', height: '100%' }}
-                onMouseOver={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = 'translateY(-4px)'; el.style.boxShadow = '0 12px 36px rgba(45,74,62,0.13)' }}
-                onMouseOut={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = 'translateY(0)'; el.style.boxShadow = '0 2px 12px rgba(45,74,62,0.07)' }}
-              >
-                <div style={{ fontSize: 36, marginBottom: 12 }}>{c.icon}</div>
-                <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 16, color: GREEN, margin: '0 0 8px' }}>{c.label}</h3>
-                <p style={{ fontSize: 13, color: BODY, margin: '0 0 16px', lineHeight: 1.6 }}>{c.desc}</p>
-                <span style={{ color: CORAL, fontWeight: 800, fontSize: 13 }}>Shop now →</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Milestone shortcuts */}
-      <section style={{ background: BEIGE, padding: isMobile ? '48px 20px' : '64px 24px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 28px' }}>
-            Shop by Milestone ✦
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
-            {MILESTONES.map((m, i) => (
-              <Link key={i} href={m.href} style={{ textDecoration: 'none' }}>
-                <div
-                  style={{ background: '#fff', borderRadius: 16, padding: '20px 12px', textAlign: 'center', boxShadow: '0 2px 8px rgba(45,74,62,0.06)', transition: 'all 0.2s' }}
-                  onMouseOver={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = GREEN; el.style.transform = 'translateY(-3px)' }}
-                  onMouseOut={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = '#fff'; el.style.transform = 'translateY(0)' }}
-                >
-                  <div style={{ fontSize: 28, marginBottom: 8 }}>{m.icon}</div>
-                  <p style={{ fontSize: 12, fontWeight: 700, color: GREEN, margin: 0, lineHeight: 1.4 }}>{m.label}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Featured books */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '48px 20px 64px' : '72px 24px 80px' }}>
         <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 32px' }}>
-          Featured Books
+          Our Books
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? 16 : 28 }}>
           {BOOKS.filter(b => b.featured).map(book => (
@@ -134,6 +88,63 @@ export default function CollectionsPage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Collection category cards */}
+      <section style={{ background: BEIGE, padding: isMobile ? '48px 20px' : '64px 24px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 32px' }}>
+            Browse Collections
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 14 : 20 }}>
+            {COLLECTIONS.map((c, i) => (
+              <Link key={i} href={c.href} style={{ textDecoration: 'none' }}>
+                <div
+                  style={{ background: '#fff', borderRadius: 18, padding: '24px 20px', boxShadow: '0 2px 12px rgba(45,74,62,0.07)', transition: 'all 0.2s', height: '100%' }}
+                  onMouseOver={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = 'translateY(-4px)'; el.style.boxShadow = '0 12px 36px rgba(45,74,62,0.13)' }}
+                  onMouseOut={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = 'translateY(0)'; el.style.boxShadow = '0 2px 12px rgba(45,74,62,0.07)' }}
+                >
+                  <div style={{ fontSize: 36, marginBottom: 12 }}>{c.icon}</div>
+                  <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 16, color: GREEN, margin: '0 0 8px' }}>{c.label}</h3>
+                  <p style={{ fontSize: 13, color: BODY, margin: '0 0 16px', lineHeight: 1.6 }}>{c.desc}</p>
+                  <span style={{ color: CORAL, fontWeight: 800, fontSize: 13 }}>Shop now →</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Milestone shortcuts */}
+      <section style={{ background: BEIGE, padding: isMobile ? '48px 20px' : '64px 24px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 36, color: GREEN, margin: '0 0 12px' }}>
+              Shop by Milestone ✦
+            </h2>
+            <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: isMobile ? 14 : 16, color: MUTED, margin: '0 0 12px' }}>
+              Every book is built around one moment. Find theirs.
+            </p>
+            <div style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
+            {MILESTONES.map((m, i) => (
+              <Link key={i} href={m.href} className={`milestone-card`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                <div className="milestone-card" style={{
+                  background: '#fff', borderRadius: 16, padding: '20px 8px',
+                  textAlign: 'center', cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(45,74,62,0.06)',
+                  border: '1.5px solid #EDE8DF',
+                  height: '100%', boxSizing: 'border-box',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <div style={{ fontSize: isMobile ? 28 : 36, marginBottom: 10 }}>{m.icon}</div>
+                  <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 12, color: GREEN, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{m.label}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
