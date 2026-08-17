@@ -141,8 +141,8 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
       { href: '/milestones/birthday', label: 'Birthday Books' },
     ],
   },
-  christmas: {
-    title: 'Wedding',
+  wedding: {
+    title: 'Wedding Books',
     subtitle: 'Celebrate love with a personalised keepsake',
     description: "Mark their special wedding day with a beautiful personalised book, a gift as unique as the love story it celebrates.",
     icon: '💍',
