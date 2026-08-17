@@ -337,7 +337,7 @@ export const BOOKS: Book[] = [
     totalPages: 25,
     tags: ['new'],
     recipient: ['child'],
-    occasion: ['birthday', 'any'],
+    occasion: ['birthday', 'school', 'any'],
     description: "A personalized storybook following your child through every magical moment of their kindergarten year, from the first nervous morning to the joyful graduation day, with their face on every page.",
     shortDesc: 'Their kindergarten journey, personalized with their face.',
     badge: 'New',

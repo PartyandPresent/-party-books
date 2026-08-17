@@ -177,6 +177,24 @@ export const MILESTONE_PAGES: Record<string, CollectionConfig> = {
       { href: '/milestones/just-because', label: 'Just Because Gifts' },
     ],
   },
+  school: {
+    title: 'School Books',
+    subtitle: 'Celebrate the milestone that changes everything',
+    description: "Starting school is one of the biggest moments of their little life. Mark it with a personalised book that puts them right at the heart of the story.",
+    icon: '🎒',
+    books: () => BOOKS.filter(b => b.occasion.includes('school')),
+    giftHeading: 'Why a personalised book is the perfect school gift',
+    giftPoints: [
+      "Their face, their name, the hero of every single page",
+      "A keepsake from this once-in-a-lifetime milestone they can keep forever",
+      "A gift that eases first-day nerves and makes them feel ready for anything",
+    ],
+    relatedLinks: [
+      { href: '/milestones/birthday', label: 'Birthday Books' },
+      { href: '/milestones/just-because', label: 'Just Because Gifts' },
+      { href: '/collections/birthday', label: 'Birthday Gifts' },
+    ],
+  },
   'just-because': {
     title: 'Just Because Gifts',
     subtitle: 'No occasion needed, just love',
