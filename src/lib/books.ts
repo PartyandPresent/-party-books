@@ -362,7 +362,7 @@ export const BOOKS: Book[] = [
   {
     slug: 'spoken-over-you',
     title: 'Spoken Over You',
-    subtitle: "God's Promises for [Child's Name]",
+    subtitle: "God's Promises for You",
     price: 23.98,
     defaultDedication: 'These words were spoken long before you were born, [CHILD_NAME].\n\nThey have been waiting for you all along.',
     coverImage: '/books/spoken-over-you/card-cover.png',
