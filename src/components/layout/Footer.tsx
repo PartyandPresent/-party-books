@@ -242,7 +242,7 @@ export default function Footer() {
           <div>
             <h4 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12, color: CORAL, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Our Books</h4>
             {[
-              { href: '/books/gods-promises-for-you', label: "God's Promises For You" },
+              { href: '/books/spoken-over-you', label: 'Spoken Over You' },
               { href: '/books/before-the-music-plays', label: 'Before the Music Plays' },
               { href: '/books/you-were-here-first-child-focus', label: 'You Were Here First' },
               { href: '/books/kinder-to-beyond', label: 'Kinder to Beyond' },
