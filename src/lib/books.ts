@@ -384,7 +384,7 @@ export const BOOKS: Book[] = [
     // SOY dedication is at pageIndex 1 (page-02-bg), not the default 2.
     previewPageIndices: [0, 1, 2, 13],
     tags: ['faith', 'bestseller'],
-    recipient: ['baby', 'toddler', 'child'],
+    recipient: ['toddler', 'child'],
     occasion: ['baptism', 'birthday', 'christmas', 'easter', 'any'],
     description: "A one-of-a-kind personalized storybook where your child is the main character, woven through 14 stunning pages of God's promises, brought to life with their face and name.",
     shortDesc: "God's promises made personal: 14 stunning pages for your child.",
