@@ -25,9 +25,9 @@ const NAV = [
       { icon: '🎂', label: 'Birthday Books',  href: '/milestones/birthday' },
       { icon: '🕊️', label: 'Faith & Baptism', href: '/milestones/baptism' },
       { icon: '🐣', label: 'New Baby',         href: '/milestones/new-baby' },
-      { icon: '💍', label: 'Wedding',  href: '/milestones/christmas' },
-      { icon: '👔', label: "Father's Day",        href: '/milestones/easter' },
-      { icon: '💝', label: 'Just Because',     href: '/milestones/just-because' },
+      { icon: '💍', label: 'Wedding',      href: '/milestones/wedding' },
+      { icon: '🎒', label: 'School',        href: '/milestones/school' },
+      { icon: '💝', label: 'Just Because',  href: '/milestones/just-because' },
     ],
   },
   {
