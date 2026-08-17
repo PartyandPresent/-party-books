@@ -287,7 +287,7 @@ export const BOOKS: Book[] = [
     },
     totalPages: 12,
     tags: ['bestseller'],
-    recipient: ['toddler', 'child'],
+    recipient: ['baby', 'toddler', 'child'],
     occasion: ['baby-shower', 'any'],
     description: "A gentle, personalized picture book for a soon-to-be big sibling, reassuring the child that they were loved first and will always be loved just as much once the new baby arrives.",
     shortDesc: "For the big sibling, personalized with their face, their name, and their baby's arrival.",
