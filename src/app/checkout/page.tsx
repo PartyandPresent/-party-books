@@ -427,7 +427,7 @@ export default function CheckoutPage() {
               <div style={{ backgroundColor: BEIGE, borderRadius: 12, padding: '14px 16px' }}>
                 {[
                   { icon: '🛡️', text: '100% satisfaction guarantee' },
-                  { icon: '📦', text: 'Ships in 3–5 business days' },
+                  { icon: '📦', text: 'Ships in 1–3 business days' },
                   { icon: '🎨', text: 'Illustrated just for you' },
                   { icon: '💝', text: 'Perfect keepsake gift' },
                 ].map(({ icon, text }) => (
