@@ -303,6 +303,11 @@ export const BOOKS: Book[] = [
       'The perfect gift before or after the new baby arrives',
     ],
     coverLogoStyle: 'white',
+    accordionContent: {
+      aboutStory: "You Were Here First follows a soon-to-be big sibling through the tender moment before everything changes — the warmth of being the only one, and the gentle reassurance that love doesn't shrink when a new baby arrives, it grows. A story to read before the new arrival and return to again and again.",
+      howPersonalized: "Every copy is personalized with your child's name and a Pixar-style character generated from their photo. You can also add an optional dedication message on the first page. The final spread is a keepsake page featuring the big sibling's name, the new baby's name, and birth date.",
+      sizeQuality: 'Available as a softcover in 5.5" × 5.5", 8" × 8", or 8" × 11", and as a hardcover in 8" × 8", 11" × 11", or 8" × 11". Printed on premium paper for vivid, long-lasting color.',
+    },
   },
 
 
@@ -395,6 +400,11 @@ export const BOOKS: Book[] = [
       "Closes with a personal keepsake page — name, signature, and date",
     ],
     coverLogoStyle: 'white',
+    accordionContent: {
+      aboutStory: "Spoken Over You is a faith-filled picture book that weaves your child into 14 pages of God's promises — told through warmly illustrated scenes where they are the main character. A book to treasure at baptism, birthday, Christmas, or any moment that calls for a blessing.",
+      howPersonalized: "Every copy is personalized with your child's name and a Pixar-style character generated from their photo, placed into every illustrated scene. You can also add an optional dedication message on the first page. The final spread is a personal keepsake with their name, a space for a signature, and a date.",
+      sizeQuality: 'Available as a softcover in 5.5" × 5.5", 8" × 8", or 8" × 11", and as a hardcover in 8" × 8", 11" × 11", or 8" × 11". Printed on premium paper for vivid, long-lasting color.',
+    },
   },
 
 ]
