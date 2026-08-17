@@ -244,6 +244,8 @@ export default function Footer() {
             {[
               { href: '/books/gods-promises-for-you', label: "God's Promises For You" },
               { href: '/books/before-the-music-plays', label: 'Before the Music Plays' },
+              { href: '/books/you-were-here-first-child-focus', label: 'You Were Here First' },
+              { href: '/books/kinder-to-beyond', label: 'Kinder to Beyond' },
             ].map(l => (
               <Link key={l.href} href={l.href}
                 style={{ display: 'block', color: DIM, fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none', marginBottom: 10 }}
