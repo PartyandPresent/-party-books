@@ -7,7 +7,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, price, shipping, shippingType, childName, email, shippingDetails } = await req.json()
+    const { title, cadBookPrice, cadShipping, shippingType, currency, childName, email, shippingDetails } = await req.json()
+
+    const CAD_TO_USD = 0.74
+    const isUSD = currency === 'usd'
+    const rate = isUSD ? CAD_TO_USD : 1
+    const stripeCurrency = isUSD ? 'usd' : 'cad'
 
     const rawBase = (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim()
     const baseUrl = rawBase.startsWith('http') ? rawBase : 'https://www.miloriabooks.com'
@@ -20,6 +25,7 @@ export async function POST(req: NextRequest) {
         childName: childName || '',
         bookTitle: title || '',
         shippingType: shippingType || 'Standard Shipping',
+        currency: stripeCurrency,
         shippingName: shippingDetails?.name || '',
         shippingPhone: shippingDetails?.phone || '',
         shippingStreet: shippingDetails?.street || '',
@@ -31,20 +37,20 @@ export async function POST(req: NextRequest) {
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: stripeCurrency,
             product_data: {
               name: title || 'Personalised Children\'s Book',
               description: `Personalised for ${childName}`,
             },
-            unit_amount: Math.round((price || 23.98) * 100),
+            unit_amount: Math.round((cadBookPrice || 23.98) * rate * 100),
           },
           quantity: 1,
         },
         {
           price_data: {
-            currency: 'usd',
+            currency: stripeCurrency,
             product_data: { name: shippingType || 'Standard Shipping' },
-            unit_amount: Math.round((shipping || 7.99) * 100),
+            unit_amount: Math.round((cadShipping || 7.99) * rate * 100),
           },
           quantity: 1,
         },

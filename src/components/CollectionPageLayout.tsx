@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { Book } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -44,6 +45,7 @@ export default function CollectionPageLayout({
   breadcrumbs, giftHeading, giftPoints, relatedLinks,
 }: Props) {
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
   const [sort, setSort]           = useState<SortOrder>('popular')
   const [ageFilter, setAgeFilter] = useState<AgeFilter>('all')
 
@@ -252,7 +254,7 @@ export default function CollectionPageLayout({
                     {/* Price + CTA */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN }}>
-                        ${book.price.toFixed(2)}
+                        {formatPrice(book.price)}
                       </span>
                       <span style={{
                         background: CORAL, color: '#fff',

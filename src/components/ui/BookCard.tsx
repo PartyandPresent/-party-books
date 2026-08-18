@@ -1,6 +1,8 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Book } from '@/lib/books'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -9,6 +11,7 @@ const MUTED = '#888888'
 const BODY = '#4A5568'
 
 export default function BookCard({ book }: { book: Book }) {
+  const { formatPrice } = useCurrency()
   return (
     <div className="card-hover" style={{
       background: '#fff',
@@ -89,7 +92,7 @@ export default function BookCard({ book }: { book: Book }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 22, color: GREEN }}>
-              ${book.price.toFixed(2)}
+              {formatPrice(book.price)}
             </span>
           </div>
           <Link href={`/books/${book.slug}`} className="btn-shine" style={{

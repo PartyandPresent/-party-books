@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 import { type CoverFormat, COVER_FORMAT_PRICES, COVER_FORMAT_LABELS } from '@/lib/coverFormat'
 import { getBookBySlug } from '@/lib/books'
 
@@ -72,6 +73,7 @@ export default function PreviewPage() {
   } = useOrderStore()
 
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
 
   const book = getBookBySlug(selectedSlug ?? '')
   const bookTotalPages = book?.totalPages ?? 17
@@ -882,7 +884,7 @@ export default function PreviewPage() {
                       {COVER_FORMAT_LABELS[fmt]}
                     </span>
                     <span style={{ fontWeight: 800, fontSize: isMobile ? 13 : 16, color: CORAL }}>
-                      ${COVER_FORMAT_PRICES[fmt].toFixed(2)}
+                      {formatPrice(COVER_FORMAT_PRICES[fmt])}
                     </span>
                     {fmt === 'hardcover8' && (
                       <span style={{
@@ -910,7 +912,7 @@ export default function PreviewPage() {
                 flex: 1, width: isMobile ? '100%' : 'auto',
               }}
             >
-              Order This Book: ${COVER_FORMAT_PRICES[coverFormat].toFixed(2)}
+              Order This Book: {formatPrice(COVER_FORMAT_PRICES[coverFormat])}
             </button>
           </div>
         </div>

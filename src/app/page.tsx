@@ -9,6 +9,7 @@ import SparkleField from '@/components/ui/SparkleField'
 import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { BOOKS, REVIEWS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN  = '#2D4A3E'
 const CORAL  = '#E8836A'
@@ -164,7 +165,7 @@ function FindYourStory({ isMobile }: { isMobile: boolean }) {
                         {book.title}
                       </div>
                       <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: isMobile ? 13 : 14, color: CORAL }}>
-                        ${book.price.toFixed(2)} CAD
+                        {formatPrice(book.price)}
                       </div>
                     </div>
                   </div>
@@ -300,6 +301,7 @@ function ReviewsSection({ isMobile }: { isMobile: boolean }) {
 
 export default function HomePage() {
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
 
 
   return (

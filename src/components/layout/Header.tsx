@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -45,6 +46,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const isMobile = useIsMobile()
+  const { currency, setCurrency } = useCurrency()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -142,6 +144,22 @@ export default function Header() {
               ← Main Store
             </a>
 
+            {/* Currency toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 2, background: '#F0F5F3', borderRadius: 50, padding: '3px 4px' }}>
+              {(['CAD', 'USD'] as const).map(c => (
+                <button key={c} onClick={() => setCurrency(c)} style={{
+                  border: 'none', cursor: 'pointer', borderRadius: 50,
+                  padding: '4px 10px',
+                  fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 11,
+                  background: currency === c ? GREEN : 'transparent',
+                  color: currency === c ? '#fff' : '#888',
+                  transition: 'all 0.15s',
+                }}>
+                  {c}
+                </button>
+              ))}
+            </div>
+
             <Link href="/books" className="btn-shine" style={{
               background: CORAL, color: '#fff',
               fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14,
@@ -207,6 +225,23 @@ export default function Header() {
             style={{ color: '#888888', fontFamily: 'Nunito, sans-serif', fontSize: 14, textDecoration: 'none', padding: '10px 0' }}>
             ← Main Store
           </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 0' }}>
+            <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: '#888', fontWeight: 600 }}>Currency:</span>
+            <div style={{ display: 'flex', gap: 2, background: '#F0F5F3', borderRadius: 50, padding: '3px 4px' }}>
+              {(['CAD', 'USD'] as const).map(c => (
+                <button key={c} onClick={() => setCurrency(c)} style={{
+                  border: 'none', cursor: 'pointer', borderRadius: 50,
+                  padding: '4px 12px',
+                  fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
+                  background: currency === c ? GREEN : 'transparent',
+                  color: currency === c ? '#fff' : '#888',
+                  transition: 'all 0.15s',
+                }}>
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
           <Link href="/books" onClick={() => setMenuOpen(false)}
             style={{
               background: CORAL, color: '#fff', textAlign: 'center',

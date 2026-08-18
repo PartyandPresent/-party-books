@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency, CAD_TO_USD } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -33,6 +34,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<'details' | 'payment'>('details')
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard')
   const isMobile = useIsMobile()
+  const { currency, formatPrice } = useCurrency()
 
   const SHIPPING_OPTIONS = [
     { id: 'standard' as const, label: 'Standard Shipping', price: 7.99, days: '4–7 business days', icon: '📦' },
@@ -83,9 +85,10 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: selectedTitle,
-          price: selectedPrice,
-          shipping,
+          cadBookPrice: selectedPrice,
+          cadShipping: shipping,
           shippingType: selectedShipping.label,
+          currency: currency.toLowerCase(),
           childName,
           email: form.email,
           shippingDetails: {
@@ -285,7 +288,7 @@ export default function CheckoutPage() {
                           <div style={{ fontSize: 22, marginBottom: 6 }}>{opt.icon}</div>
                           <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13, color: GREEN, marginBottom: 2 }}>{opt.label}</div>
                           <div style={{ fontSize: 12, color: MUTED, marginBottom: 4 }}>{opt.days}</div>
-                          <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 15, color: selected ? GREEN : BODY }}>${opt.price.toFixed(2)}</div>
+                          <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 15, color: selected ? GREEN : BODY }}>{formatPrice(opt.price)}</div>
                         </button>
                       )
                     })}
@@ -383,7 +386,7 @@ export default function CheckoutPage() {
                       letterSpacing: 0.3,
                     }}
                   >
-                    {isProcessing ? '⏳ Redirecting to Stripe...' : `💳 Pay $${total.toFixed(2)} Securely`}
+                    {isProcessing ? '⏳ Redirecting to Stripe...' : `💳 Pay ${formatPrice(total)} Securely`}
                   </button>
 
                   <p style={{ textAlign: 'center', fontSize: 13, color: MUTED, marginTop: 16 }}>
@@ -445,11 +448,11 @@ export default function CheckoutPage() {
               <div style={{ marginBottom: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 14, color: BODY }}>Book</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${selectedPrice.toFixed(2)}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>{formatPrice(selectedPrice)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                   <span style={{ fontSize: 14, color: BODY }}>{selectedShipping.label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${shipping.toFixed(2)}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>{formatPrice(shipping)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 12, color: MUTED }}>{selectedShipping.days}</span>
@@ -457,7 +460,7 @@ export default function CheckoutPage() {
                 <div style={{ height: 1, backgroundColor: '#F0F0F0', margin: '14px 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: 16, fontWeight: 800, color: GREEN }}>Total</span>
-                  <span style={{ fontSize: 18, fontWeight: 800, color: CORAL }}>${total.toFixed(2)}</span>
+                  <span style={{ fontSize: 18, fontWeight: 800, color: CORAL }}>{formatPrice(total)}</span>
                 </div>
               </div>
 

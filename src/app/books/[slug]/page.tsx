@@ -9,6 +9,7 @@ import { BOOKS, REVIEWS } from '@/lib/books'
 import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -25,6 +26,7 @@ export default function BookDetailPage() {
   const [activeImage, setActiveImage] = useState(0)
   const [openAccordion, setOpenAccordion] = useState<string | null>(null)
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
 
   if (!book) {
     return (
@@ -346,7 +348,7 @@ export default function BookDetailPage() {
                           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                         }}>{bundleBook.title}</div>
                         <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: CORAL, fontWeight: 700 }}>
-                          ${bundleBook.price.toFixed(2)} CAD
+                          {formatPrice(bundleBook.price)}
                         </div>
                       </div>
                     </div>
@@ -517,7 +519,7 @@ export default function BookDetailPage() {
                     </div>
                     <div style={{ padding: '12px 16px', background: '#fff' }}>
                       <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13, color: GREEN, marginBottom: 4, lineHeight: 1.3 }}>{b.title}</div>
-                      <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: CORAL, fontWeight: 700 }}>${b.price.toFixed(2)} CAD</div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: CORAL, fontWeight: 700 }}>{formatPrice(b.price)}</div>
                     </div>
                   </div>
                 </Link>

@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { BOOKS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -35,6 +36,7 @@ const MILESTONES = [
 
 export default function CollectionsPage() {
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
 
   return (
     <div style={{ minHeight: '100vh', background: CREAM, fontFamily: 'Nunito, sans-serif' }}>
@@ -81,7 +83,7 @@ export default function CollectionsPage() {
                     <span style={{ fontSize: 12, color: MUTED, fontWeight: 600 }}>{book.rating} ({book.reviews})</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN }}>${book.price.toFixed(2)}</span>
+                    <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN }}>{formatPrice(book.price)}</span>
                     <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 13, padding: isMobile ? '6px 12px' : '8px 16px', borderRadius: 50 }}>Personalise →</span>
                   </div>
                 </div>

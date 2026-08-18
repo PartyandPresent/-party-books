@@ -7,6 +7,7 @@ import {
   COVER_FORMAT_LABELS,
   COVER_FORMAT_DESCS,
 } from '@/lib/coverFormat'
+import { useCurrency } from '@/store/currency'
 
 interface Props {
   selected: CoverFormat
@@ -28,6 +29,7 @@ const FORMATS: CoverFormat[] = ['hardcover8', 'softcover8', 'softcover5']
 export default function CoverFormatStep({
   selected, onSelect, onContinue, onBack, bookCoverImage, bookTitle, isMobile,
 }: Props) {
+  const { formatPrice } = useCurrency()
   return (
     <>
       {/* back link */}
@@ -113,7 +115,7 @@ export default function CoverFormatStep({
                   fontSize: isMobile ? 14 : 16,
                   transition: 'background-color 0.18s ease',
                 }}>
-                  ${price.toFixed(2)} CAD
+                  {formatPrice(price)}
                 </div>
               </div>
 

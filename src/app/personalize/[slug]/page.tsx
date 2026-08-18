@@ -9,6 +9,7 @@ import { useOrderStore } from '@/store/order'
 import { COVER_FORMAT_PRICES } from '@/lib/coverFormat'
 import { BOOKS } from '@/lib/books'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -51,6 +52,7 @@ export default function PersonalizePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { setBook, setPhoto, setPersonalization } = useOrderStore()
   const isMobile = useIsMobile()
+  const { formatPrice } = useCurrency()
 
   useEffect(() => {
     if (book) setBook(book.slug, book.title, book.coverImage)
@@ -167,7 +169,7 @@ export default function PersonalizePage() {
             </p>
           </div>
           <p style={{ flexShrink: 0, fontWeight: 700, fontSize: 14, color: MUTED, margin: 0 }}>
-            From ${COVER_FORMAT_PRICES.softcover5.toFixed(2)}
+            From {formatPrice(COVER_FORMAT_PRICES.softcover5)}
           </p>
         </div>
 
@@ -588,7 +590,7 @@ export default function PersonalizePage() {
                   </p>
                 </div>
                 <p style={{ fontWeight: 700, fontSize: 14, color: MUTED, margin: 0, flexShrink: 0 }}>
-                  From $29.99
+                  From {formatPrice(29.99)}
                 </p>
               </div>
               <div style={{ padding: '12px 20px', display: 'flex', justifyContent: 'space-between' }}>
