@@ -24,7 +24,7 @@ const RATES = [
 ]
 
 const FAQS = [
-  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 5–10 business days total with Standard shipping, or 3–6 days with Express. This includes our generation and review process (1–2 days), printing (1–2 days), and your chosen shipping speed." },
+  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 4–7 business days total with Standard shipping, or 1–3 days with Express. This includes our generation and review process (1–2 days), printing (1–2 days), and your chosen shipping speed." },
   { q: 'Can I track my order?', a: "Yes. Once your book ships, you'll receive an email with a tracking number so you can follow it all the way to your door." },
   { q: 'What if my book arrives damaged?', a: "If your book arrives damaged in transit, contact us within 7 days of delivery with a photo and we'll send a replacement at no charge." },
   { q: 'Do you ship to PO Boxes?', a: "We're unable to deliver to PO Boxes at this time. Please provide a physical street address at checkout." },
