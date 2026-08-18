@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useCurrency } from '@/store/currency'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -18,8 +19,8 @@ const TIMELINE = [
 ]
 
 const RATES = [
-  { region: 'Canada & USA: Standard', time: '4–7 business days', rate: '$7.99 USD', free: null },
-  { region: 'Canada & USA: Express', time: '1–3 business days', rate: '$14.99 USD', free: null },
+  { region: 'Canada & USA: Standard', time: '4–7 business days', cadPrice: 7.99,  free: null },
+  { region: 'Canada & USA: Express',  time: '1–3 business days', cadPrice: 14.99, free: null },
 ]
 
 const FAQS = [
@@ -41,6 +42,7 @@ function FaqRow({ q, a }: { q: string; a: string }) {
 
 export default function ShippingPage() {
   const isMobile = useIsMobile()
+  const { formatPrice, currency } = useCurrency()
 
   return (
     <div style={{ minHeight: '100vh', background: CREAM, fontFamily: 'Nunito, sans-serif' }}>
@@ -111,12 +113,12 @@ export default function ShippingPage() {
                   {isMobile && <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{r.time}</div>}
                 </div>
                 {!isMobile && <span style={{ fontSize: 14, color: BODY }}>{r.time}</span>}
-                <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>{r.rate}</span>
+                <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>{formatPrice(r.cadPrice)}</span>
                 {!isMobile && <span style={{ fontSize: 13, color: r.free ? CORAL : MUTED, fontWeight: r.free ? 700 : 400 }}>{r.free || '-'}</span>}
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 13, color: MUTED, textAlign: 'center', marginTop: 16 }}>All prices in USD. Select your preferred shipping speed at checkout.</p>
+          <p style={{ fontSize: 13, color: MUTED, textAlign: 'center', marginTop: 16 }}>All prices in {currency}. Select your preferred shipping speed at checkout.</p>
         </div>
       </section>
 
