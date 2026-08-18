@@ -83,7 +83,7 @@ export default function ShippingPage() {
           <div style={{ textAlign: 'center', marginTop: 32 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: BEIGE, borderRadius: 50, padding: '12px 24px' }}>
               <span style={{ fontSize: 20 }}>⏱️</span>
-              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>Total estimated time: <span style={{ color: CORAL }}>5–10 business days (Standard) · 3–6 days (Express)</span></span>
+              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>Total estimated time: <span style={{ color: CORAL }}>4–7 business days (Standard) · 1–3 days (Express)</span></span>
             </div>
           </div>
         </div>
