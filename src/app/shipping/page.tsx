@@ -18,14 +18,12 @@ const TIMELINE = [
 ]
 
 const RATES = [
-  { region: 'Canada: Standard', time: '3–5 business days', rate: '$8.99 CAD', free: 'Free over $75' },
-  { region: 'Canada: Express', time: '1–2 business days', rate: '$18.99 CAD', free: null },
-  { region: 'United States: Standard', time: '5–8 business days', rate: '$12.99 CAD', free: 'Free over $100' },
-  { region: 'United States: Express', time: '2–4 business days', rate: '$24.99 CAD', free: null },
+  { region: 'Canada & USA: Standard', time: '4–7 business days', rate: '$7.99 USD', free: null },
+  { region: 'Canada & USA: Express', time: '1–3 business days', rate: '$14.99 USD', free: null },
 ]
 
 const FAQS = [
-  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 4–7 business days total. This includes our generation and review process (1–2 days), printing (1–2 days), and standard shipping (2–5 days depending on your location)." },
+  { q: 'When will my order arrive?', a: "From the moment you place your order, allow 5–10 business days total with Standard shipping, or 3–6 days with Express. This includes our generation and review process (1–2 days), printing (1–2 days), and your chosen shipping speed." },
   { q: 'Can I track my order?', a: "Yes. Once your book ships, you'll receive an email with a tracking number so you can follow it all the way to your door." },
   { q: 'What if my book arrives damaged?', a: "If your book arrives damaged in transit, contact us within 7 days of delivery with a photo and we'll send a replacement at no charge." },
   { q: 'Do you ship to PO Boxes?', a: "We're unable to deliver to PO Boxes at this time. Please provide a physical street address at checkout." },
@@ -83,7 +81,7 @@ export default function ShippingPage() {
           <div style={{ textAlign: 'center', marginTop: 32 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: BEIGE, borderRadius: 50, padding: '12px 24px' }}>
               <span style={{ fontSize: 20 }}>⏱️</span>
-              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>Total estimated time: <span style={{ color: CORAL }}>4–7 business days</span></span>
+              <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 14, color: GREEN }}>Total estimated time: <span style={{ color: CORAL }}>5–10 business days (Standard) · 3–6 days (Express)</span></span>
             </div>
           </div>
         </div>
@@ -118,7 +116,7 @@ export default function ShippingPage() {
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 13, color: MUTED, textAlign: 'center', marginTop: 16 }}>All prices in CAD. Rates calculated at checkout based on your location.</p>
+          <p style={{ fontSize: 13, color: MUTED, textAlign: 'center', marginTop: 16 }}>All prices in USD. Select your preferred shipping speed at checkout.</p>
         </div>
       </section>
 

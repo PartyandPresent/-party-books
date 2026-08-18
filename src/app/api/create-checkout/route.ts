@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, price, shipping, childName, email, shippingDetails } = await req.json()
+    const { title, price, shipping, shippingType, childName, email, shippingDetails } = await req.json()
 
     const rawBase = (process.env.NEXT_PUBLIC_BASE_URL || '').replace(/^﻿/, '').trim()
     const baseUrl = rawBase.startsWith('http') ? rawBase : 'https://www.miloriabooks.com'
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         childName: childName || '',
         bookTitle: title || '',
+        shippingType: shippingType || 'Standard Shipping',
         shippingName: shippingDetails?.name || '',
         shippingPhone: shippingDetails?.phone || '',
         shippingStreet: shippingDetails?.street || '',
@@ -42,8 +43,8 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'usd',
-            product_data: { name: 'Shipping' },
-            unit_amount: Math.round((shipping || 9.99) * 100),
+            product_data: { name: shippingType || 'Standard Shipping' },
+            unit_amount: Math.round((shipping || 7.99) * 100),
           },
           quantity: 1,
         },

@@ -602,7 +602,7 @@ export default function PersonalizePage() {
               {[
                 { icon: '🎨', text: 'Illustrated just for you' },
                 { icon: '🛡️', text: '100% satisfaction guarantee' },
-                { icon: '📦', text: 'Ships in 1–3 business days' },
+                { icon: '📦', text: 'Standard & Express shipping available' },
               ].map(({ icon, text }) => (
                 <div key={text} style={{
                   display: 'flex', alignItems: 'center', gap: 8,

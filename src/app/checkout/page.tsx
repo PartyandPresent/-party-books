@@ -31,9 +31,15 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isProcessing, setIsProcessing] = useState(false)
   const [step, setStep] = useState<'details' | 'payment'>('details')
+  const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard')
   const isMobile = useIsMobile()
 
-  const shipping = 9.99
+  const SHIPPING_OPTIONS = [
+    { id: 'standard' as const, label: 'Standard Shipping', price: 7.99, days: '4–7 business days', icon: '📦' },
+    { id: 'express'  as const, label: 'Express Shipping',  price: 14.99, days: '1–3 business days', icon: '⚡' },
+  ]
+  const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shippingMethod)!
+  const shipping = selectedShipping.price
   const total = selectedPrice + shipping
 
   const update = (field: string, value: string) => {
@@ -79,6 +85,7 @@ export default function CheckoutPage() {
           title: selectedTitle,
           price: selectedPrice,
           shipping,
+          shippingType: selectedShipping.label,
           childName,
           email: form.email,
           shippingDetails: {
@@ -257,6 +264,34 @@ export default function CheckoutPage() {
                   </select>
                 </div>
 
+                {/* Shipping method selector */}
+                <div style={{ marginBottom: 28 }}>
+                  <label style={labelStyle}>Shipping Method</label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    {SHIPPING_OPTIONS.map(opt => {
+                      const selected = shippingMethod === opt.id
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setShippingMethod(opt.id)}
+                          style={{
+                            border: `2px solid ${selected ? GREEN : '#E0E0E0'}`,
+                            borderRadius: 14, padding: '14px 16px', cursor: 'pointer',
+                            background: selected ? '#F0F5F3' : '#fff',
+                            textAlign: 'left', transition: 'all 0.15s',
+                          }}
+                        >
+                          <div style={{ fontSize: 22, marginBottom: 6 }}>{opt.icon}</div>
+                          <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13, color: GREEN, marginBottom: 2 }}>{opt.label}</div>
+                          <div style={{ fontSize: 12, color: MUTED, marginBottom: 4 }}>{opt.days}</div>
+                          <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 15, color: selected ? GREEN : BODY }}>${opt.price.toFixed(2)}</div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
                 <button
                   onClick={handleContinue}
                   style={{
@@ -412,9 +447,12 @@ export default function CheckoutPage() {
                   <span style={{ fontSize: 14, color: BODY }}>Book</span>
                   <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${selectedPrice.toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                  <span style={{ fontSize: 14, color: BODY }}>Shipping</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <span style={{ fontSize: 14, color: BODY }}>{selectedShipping.label}</span>
                   <span style={{ fontSize: 14, fontWeight: 700, color: GREEN }}>${shipping.toFixed(2)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, color: MUTED }}>{selectedShipping.days}</span>
                 </div>
                 <div style={{ height: 1, backgroundColor: '#F0F0F0', margin: '14px 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -427,7 +465,7 @@ export default function CheckoutPage() {
               <div style={{ backgroundColor: BEIGE, borderRadius: 12, padding: '14px 16px' }}>
                 {[
                   { icon: '🛡️', text: '100% satisfaction guarantee' },
-                  { icon: '📦', text: 'Ships in 1–3 business days' },
+                  { icon: '📦', text: `Ships in ${selectedShipping.days}` },
                   { icon: '🎨', text: 'Illustrated just for you' },
                   { icon: '💝', text: 'Perfect keepsake gift' },
                 ].map(({ icon, text }) => (
