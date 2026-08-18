@@ -98,6 +98,7 @@ const TAB_TAG: Record<FeaturedTab, string> = {
 function FindYourStory({ isMobile }: { isMobile: boolean }) {
   const [activeTab, setActiveTab] = useState<FeaturedTab>('Bestsellers')
   const filtered = BOOKS.filter(b => b.tags.includes(TAB_TAG[activeTab]))
+  const { formatPrice } = useCurrency()
 
   return (
     <section id="collections" style={{ background: CREAM, padding: isMobile ? '48px 20px' : '72px 24px' }}>
