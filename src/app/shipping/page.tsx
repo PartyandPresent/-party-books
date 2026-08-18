@@ -148,7 +148,7 @@ export default function ShippingPage() {
           Ready to create<br /><span style={{ color: CORAL }}>their book?</span>
         </h2>
         <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', margin: '0 auto 36px', maxWidth: 420, lineHeight: 1.7 }}>
-          Preview 5 pages free before you pay. No commitment, no risk.
+          Preview 4 pages free before you pay. No commitment, no risk.
         </p>
         <Link href="/books" style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, padding: '16px 40px', borderRadius: 50, textDecoration: 'none', display: 'inline-block', boxShadow: '0 6px 28px rgba(232,131,106,0.45)' }}>
           Create Their Book →

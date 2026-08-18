@@ -27,13 +27,13 @@ const STEPS = [
     num: '03',
     icon: '✏️',
     title: 'Personalise the details',
-    body: "Add their name, a personal dedication from you, and any other details your chosen book requires. This is what gets woven into the story across all 17 pages.",
+    body: "Add their name, a personal dedication from you, and any other details your chosen book requires. This is what gets woven into the story across all pages.",
   },
   {
     num: '04',
     icon: '👀',
-    title: 'Preview 5 pages free',
-    body: "Before you pay, we generate 5 pages so you can see exactly what the book will look like: your child's face, their name, the style and quality. Only pay if you love it.",
+    title: 'Preview 4 pages free',
+    body: "Before you pay, we generate 4 pages so you can see exactly what the book will look like: your child's face, their name, the style and quality. Only pay if you love it.",
   },
   {
     num: '05',
@@ -149,7 +149,7 @@ export default function HowItWorksPage() {
           Ready to create<br /><span style={{ color: CORAL }}>their book?</span>
         </h2>
         <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', margin: '0 auto 36px', maxWidth: 420, lineHeight: 1.7 }}>
-          Preview 5 pages free before you pay. No commitment, no risk.
+          Preview 4 pages free before you pay. No commitment, no risk.
         </p>
         <Link href="/books" style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, padding: '16px 40px', borderRadius: 50, textDecoration: 'none', display: 'inline-block', boxShadow: '0 6px 28px rgba(232,131,106,0.45)' }}>
           Create Their Book →
