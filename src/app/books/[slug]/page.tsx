@@ -10,6 +10,7 @@ import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useCurrency } from '@/store/currency'
+import { COVER_FORMAT_PRICES } from '@/lib/coverFormat'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -203,7 +204,7 @@ export default function BookDetailPage() {
               {/* Price */}
               <div style={{ marginBottom: 4 }}>
                 <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 28 : 34, color: GREEN }}>
-                  From $34.99
+                  From {formatPrice(COVER_FORMAT_PRICES.softcover5)}
                 </span>
               </div>
               <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: MUTED, marginBottom: 20 }}>

@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
       customerName:    details?.name || '',
       email:           details?.email || '',
       amountTotal:     (session.amount_total || 0) / 100,
+      currency:        (session.currency || 'cad').toUpperCase(),
       childName:       meta.childName || '',
       bookTitle:       meta.bookTitle || '',
       shippingAddress: address

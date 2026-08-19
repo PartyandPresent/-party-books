@@ -145,7 +145,7 @@ export default function OrderSuccessContent() {
               { label: 'Book', value: orderDetails?.bookTitle || selectedTitle },
               { label: 'Personalised for', value: orderDetails?.childName || childName },
               { label: 'Email', value: orderDetails?.email },
-              { label: 'Amount Paid', value: `$${((orderDetails?.amountTotal || (selectedPrice + 9.99))).toFixed(2)}` },
+              { label: 'Amount Paid', value: `${orderDetails?.currency === 'USD' ? 'US$' : 'CA$'}${((orderDetails?.amountTotal || (selectedPrice + 9.99))).toFixed(2)}` },
               { label: 'Status', value: '✅ Payment confirmed' },
             ].map(({ label, value }) => value ? (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 14, borderBottom: '1px solid #F5F5F5' }}>
