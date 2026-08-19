@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
               name: title || 'Personalised Children\'s Book',
               description: `Personalised for ${childName}`,
             },
-            unit_amount: Math.round((cadBookPrice || 23.98) * rate * 100),
+            unit_amount: Math.round((cadBookPrice || 34.99) * rate * 100),
           },
           quantity: 1,
         },

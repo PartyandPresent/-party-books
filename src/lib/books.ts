@@ -169,7 +169,7 @@ export const BOOKS: Book[] = [
     slug: 'before-the-music-plays',
     title: 'Before the Music Plays',
     subtitle: 'A flower girl story, personalized with her face',
-    price: 23.98,
+    price: 34.99,
     // Dedication is at pageIndex 1 (page-01-bg); preview must include it explicitly.
     previewPageIndices: [0, 1, 2, 16],
     coverImage: '/books/before-the-music-plays/card-cover.png',
@@ -266,7 +266,7 @@ export const BOOKS: Book[] = [
     slug: 'you-were-here-first-child-focus',
     title: 'You Were Here First',
     subtitle: 'A big-sibling story, personalized with their face',
-    price: 23.98,
+    price: 34.99,
     // Dedication is at pageIndex 1; preview must include it explicitly.
     previewPageIndices: [0, 1, 2, 11],
     defaultDedication: 'the very first,\nand always so loved.',
@@ -315,7 +315,7 @@ export const BOOKS: Book[] = [
     slug: 'kinder-to-beyond',
     title: 'Kinder to Beyond',
     subtitle: 'A kindergarten story, personalized with their face',
-    price: 23.98,
+    price: 34.99,
     defaultDedication: 'For [CHILD_NAME],\nwho showed us what brave looks like\non the very first day.',
     // Dedication at array[1] (page-02.png), page_3 spread at array[3] (page-03.png).
     previewPageIndices: [0, 1, 3, 24],
@@ -363,7 +363,7 @@ export const BOOKS: Book[] = [
     slug: 'spoken-over-you',
     title: 'Spoken Over You',
     subtitle: "God's Promises for You",
-    price: 23.98,
+    price: 34.99,
     defaultDedication: 'These words were spoken long before you were born, [CHILD_NAME].\n\nThey have been waiting for you all along.',
     coverImage: '/books/spoken-over-you/card-cover.png',
     cardImage:  '/books/spoken-over-you/card-cover.png',
