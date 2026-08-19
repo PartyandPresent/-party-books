@@ -60,7 +60,7 @@ export default function CollectionsPage() {
         <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 32px' }}>
           Our Books
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? 16 : 28 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))', gap: isMobile ? 16 : 28 }}>
           {BOOKS.filter(b => b.featured).map(book => (
             <Link key={book.slug} href={`/books/${book.slug}`} style={{ textDecoration: 'none' }}>
               <div
@@ -82,9 +82,9 @@ export default function CollectionsPage() {
                     <span style={{ color: GOLD, fontSize: 13 }}>{'★'.repeat(Math.round(book.rating))}</span>
                     <span style={{ fontSize: 12, color: MUTED, fontWeight: 600 }}>{book.rating} ({book.reviews})</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN }}>{formatPrice(book.price)}</span>
-                    <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 13, padding: isMobile ? '6px 12px' : '8px 16px', borderRadius: 50 }}>Personalise →</span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                    <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: isMobile ? 15 : 18, color: GREEN }}>{formatPrice(book.price)}</span>
+                    <span style={{ background: CORAL, color: '#fff', fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: isMobile ? 11 : 13, padding: isMobile ? '6px 11px' : '8px 16px', borderRadius: 50, whiteSpace: 'nowrap' }}>Personalise →</span>
                   </div>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function CollectionsPage() {
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 900, fontSize: isMobile ? 24 : 32, color: GREEN, margin: '0 0 32px' }}>
             Browse Collections
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 14 : 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))', gap: isMobile ? 14 : 20 }}>
             {COLLECTIONS.map((c, i) => (
               <Link key={i} href={c.href} style={{ textDecoration: 'none' }}>
                 <div
@@ -130,7 +130,7 @@ export default function CollectionsPage() {
             </p>
             <div style={{ height: 2, background: CORAL, borderRadius: 2, maxWidth: 80, margin: '0 auto' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(6, 1fr)', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, minmax(0, 1fr))' : 'repeat(6, minmax(0, 1fr))', gap: 12 }}>
             {MILESTONES.map((m, i) => (
               <Link key={i} href={m.href} className={`milestone-card`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                 <div className="milestone-card" style={{

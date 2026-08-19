@@ -178,11 +178,12 @@ export default function Header() {
 
         {/* Mobile: CTA + Hamburger */}
         {isMobile && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Link href="/books" className="btn-shine" style={{
               background: CORAL, color: '#fff',
-              fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13,
-              padding: '8px 16px', borderRadius: 50, textDecoration: 'none',
+              fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 12,
+              padding: '7px 13px', borderRadius: 50, textDecoration: 'none',
+              lineHeight: 1.3, whiteSpace: 'nowrap',
             }}>
               Create ✦
             </Link>

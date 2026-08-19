@@ -186,7 +186,7 @@ export default function CollectionPageLayout({
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
             gap: isMobile ? 16 : 28,
           }}>
             {filtered.map(book => (
@@ -252,15 +252,15 @@ export default function CollectionPageLayout({
                     </div>
 
                     {/* Price + CTA */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: GREEN }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                      <span style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: isMobile ? 15 : 18, color: GREEN }}>
                         {formatPrice(book.price)}
                       </span>
                       <span style={{
                         background: CORAL, color: '#fff',
                         fontFamily: 'Nunito, sans-serif', fontWeight: 700,
-                        fontSize: isMobile ? 11 : 13, padding: isMobile ? '6px 12px' : '8px 16px',
-                        borderRadius: 50,
+                        fontSize: isMobile ? 11 : 13, padding: isMobile ? '6px 11px' : '8px 16px',
+                        borderRadius: 50, whiteSpace: 'nowrap',
                       }}>
                         Personalise →
                       </span>
