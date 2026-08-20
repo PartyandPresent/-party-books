@@ -419,7 +419,7 @@ export default function HomePage() {
         }}>
           {[
             { icon: '📚', stat: '1,000+', sub: 'Personalized books created' },
-            { icon: '✅', stat: 'Human-checked', sub: 'Every book reviewed before it prints' },
+            { icon: '🧐', stat: 'Human-checked', sub: 'Every book reviewed before it prints' },
             { icon: '📦', stat: 'Ships in 1–3', sub: 'Business days · Worldwide delivery' },
             { icon: '💝', stat: 'Love it or', sub: 'we redo it. Free reprint, no questions' },
           ].map((t, i) => (
