@@ -202,6 +202,7 @@ export default function Header() {
         <div style={{
           background: '#fff', borderTop: '1px solid #EDE8DF',
           padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 4,
+          maxHeight: 'calc(100dvh - 72px)', overflowY: 'auto', WebkitOverflowScrolling: 'touch',
         }}>
           {NAV.map(item => (
             <div key={item.href}>
