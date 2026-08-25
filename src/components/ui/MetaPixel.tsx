@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1598333211643000'
 
 export function MetaPixel() {
   const pathname = usePathname()
