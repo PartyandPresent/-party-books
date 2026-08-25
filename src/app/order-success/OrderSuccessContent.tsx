@@ -1,11 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { trackMetaEvent } from '@/lib/metaPixel'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -18,11 +19,12 @@ export default function OrderSuccessContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const sessionId = searchParams.get('session_id')
-  const { childName, senderName, selectedTitle, selectedPrice, reset } = useOrderStore()
+  const { childName, senderName, selectedTitle, selectedSlug, selectedPrice, reset } = useOrderStore()
 
   const isMobile = useIsMobile()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [orderDetails, setOrderDetails] = useState<any>(null)
+  const purchaseTracked = useRef(false)
 
   useEffect(() => {
     if (!sessionId) {
@@ -39,6 +41,17 @@ export default function OrderSuccessContent() {
       if (data.success) {
         setOrderDetails(data)
         setStatus('success')
+
+        if (!purchaseTracked.current) {
+          purchaseTracked.current = true
+          trackMetaEvent('Purchase', {
+            content_ids: [selectedSlug],
+            content_name: data.bookTitle || selectedTitle,
+            content_type: 'product',
+            value: data.amountTotal,
+            currency: data.currency,
+          })
+        }
 
         // Send confirmation email
         await fetch('/api/send-confirmation', {

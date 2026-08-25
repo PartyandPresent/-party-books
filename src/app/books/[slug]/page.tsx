@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -9,8 +9,9 @@ import { BOOKS, REVIEWS } from '@/lib/books'
 import { ReviewPhoto } from '@/components/ui/ReviewPhoto'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { useIsMobile } from '@/hooks/useIsMobile'
-import { useCurrency } from '@/store/currency'
+import { useCurrency, CAD_TO_USD } from '@/store/currency'
 import { COVER_FORMAT_PRICES } from '@/lib/coverFormat'
+import { trackMetaEvent } from '@/lib/metaPixel'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -27,7 +28,18 @@ export default function BookDetailPage() {
   const [activeImage, setActiveImage] = useState(0)
   const [openAccordion, setOpenAccordion] = useState<string | null>(null)
   const isMobile = useIsMobile()
-  const { formatPrice } = useCurrency()
+  const { currency, formatPrice } = useCurrency()
+
+  useEffect(() => {
+    if (!book) return
+    trackMetaEvent('ViewContent', {
+      content_ids: [book.slug],
+      content_name: book.title,
+      content_type: 'product',
+      value: Math.round((currency === 'USD' ? book.price * CAD_TO_USD : book.price) * 100) / 100,
+      currency,
+    })
+  }, [book?.slug, currency])
 
   if (!book) {
     return (

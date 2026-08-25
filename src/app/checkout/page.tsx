@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Header from '@/components/layout/Header'
@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer'
 import { useOrderStore } from '@/store/order'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useCurrency, CAD_TO_USD } from '@/store/currency'
+import { trackMetaEvent } from '@/lib/metaPixel'
 
 const GREEN = '#2D4A3E'
 const CORAL = '#E8836A'
@@ -43,6 +44,18 @@ export default function CheckoutPage() {
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shippingMethod)!
   const shipping = selectedShipping.price
   const total = selectedPrice + shipping
+
+  useEffect(() => {
+    if (!selectedSlug) return
+    trackMetaEvent('InitiateCheckout', {
+      content_ids: [selectedSlug],
+      content_name: selectedTitle,
+      value: Math.round((currency === 'USD' ? total * CAD_TO_USD : total) * 100) / 100,
+      currency,
+    })
+    // Fire once on entering checkout — not on every shipping/price recalculation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const update = (field: string, value: string) => {
     setForm(p => ({ ...p, [field]: value }))
