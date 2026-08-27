@@ -476,7 +476,7 @@ export default function PersonalizePage() {
             </div>
 
             <button style={primaryBtn} onClick={goToStep3}>
-              Review Order →
+              Next →
             </button>
           </div>
         )}
@@ -590,7 +590,7 @@ export default function PersonalizePage() {
                   </p>
                 </div>
                 <p style={{ fontWeight: 700, fontSize: 14, color: MUTED, margin: 0, flexShrink: 0 }}>
-                  From {formatPrice(29.99)}
+                  From {formatPrice(book.price)}
                 </p>
               </div>
               <div style={{ padding: '12px 20px', display: 'flex', justifyContent: 'space-between' }}>

@@ -196,7 +196,7 @@ export const BOOKS: Book[] = [
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
-    reviews: 0,
+    reviews: 4,
     featured: true,
     highlights: [
       "Personalized with your flower girl's name and her face on every page",
@@ -294,7 +294,7 @@ export const BOOKS: Book[] = [
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
-    reviews: 0,
+    reviews: 4,
     featured: true,
     highlights: [
       "Personalized with your child's name and their face on every page",
@@ -343,7 +343,7 @@ export const BOOKS: Book[] = [
     badge: 'New',
     badgeColor: '#E8836A',
     rating: 5.0,
-    reviews: 0,
+    reviews: 4,
     featured: true,
     highlights: [
       "Personalized with your child's name and their face on every page",
@@ -391,7 +391,7 @@ export const BOOKS: Book[] = [
     badge: 'Bestseller',
     badgeColor: '#E8B84B',
     rating: 5.0,
-    reviews: 0,
+    reviews: 4,
     featured: true,
     highlights: [
       "Personalized with your child's face and name on every page",
