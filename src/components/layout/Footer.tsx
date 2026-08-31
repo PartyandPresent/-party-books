@@ -312,12 +312,16 @@ export default function Footer() {
             © 2026 party & presents. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            {['Privacy Policy', 'Terms of Service', 'Refund Policy'].map(item => (
-              <a key={item} href="#"
+            {[
+              { label: 'Privacy Policy',   href: '/privacy-policy' },
+              { label: 'Terms of Service', href: '/terms-of-service' },
+              { label: 'Refund Policy',    href: '/refund-policy' },
+            ].map(item => (
+              <a key={item.label} href={item.href}
                 style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: DIM, textDecoration: 'none' }}
                 onMouseOver={e => (e.currentTarget.style.color = '#fff')}
                 onMouseOut={e => (e.currentTarget.style.color = DIM)}>
-                {item}
+                {item.label}
               </a>
             ))}
           </div>
