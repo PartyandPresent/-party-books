@@ -313,9 +313,8 @@ export default function Footer() {
           </p>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             {[
-              { label: 'Privacy Policy',   href: '/privacy-policy' },
-              { label: 'Terms of Service', href: '/terms-of-service' },
-              { label: 'Refund Policy',    href: '/refund-policy' },
+              { label: 'Privacy Policy', href: '/privacy-policy' },
+              { label: 'Refund Policy',  href: '/refund-policy' },
             ].map(item => (
               <a key={item.label} href={item.href}
                 style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: DIM, textDecoration: 'none' }}
